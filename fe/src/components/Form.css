@@ -59,6 +59,7 @@
 
 .form-text:focus{
     border: 3px solid #8a8ae4;
+    box-shadow: 0 4px 11px #cdcdaa;
     outline: none;
 }
 
@@ -75,6 +76,10 @@
     border-radius: 4px;
     border: 0;
     cursor: pointer;
+}
+
+.form-button:hover{
+    box-shadow: 0 4px 11px #babacd;
 }
 
 .form-error{
