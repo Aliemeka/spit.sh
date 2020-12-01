@@ -1,4 +1,4 @@
-
+import UrlForm from '../components/UrlForm'
 
 const Home = () => {
     return (
@@ -7,6 +7,7 @@ const Home = () => {
             <p className="text-center paragraph">
             Create short quick links with custom slugs
             </p>
+            <UrlForm/>
       </main>
     )
 }
