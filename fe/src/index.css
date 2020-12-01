@@ -6,8 +6,13 @@ body {
   font-family: Montserrat, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100vw;
+  font-size: calc(10px + 2vmin);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #000032;
+  color: #fde;
 }
-
 
 h1, h2, h3, h4, h5, h6{
   font-family: 'Montserrat Alternates', -apple-system, BlinkMacSystemFont, 'Segoe UI', 
