@@ -52,7 +52,7 @@ async def shortenLink(urlData: URLDataCreate, db: Session = Depends(get_db)):
     if not urlData.slug:
         urlData.slug = ''.join(random.choices(ascii_letters + digits, k=7))
 
-    generated_link = f'spit.sh/{urlData.slug}'
+    generated_link = f'https://spit.sh/{urlData.slug}'
     
     return save_urlData(db, urlData, generated_link)
 
