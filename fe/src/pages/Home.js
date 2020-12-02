@@ -1,12 +1,21 @@
 import UrlForm from '../components/UrlForm'
 
+import update from '../assets/Update.png'
+
 const Home = () => {
     return (
         <main className="App-main">
-            <h1 className="text-center heading">Shorter urls for your pages</h1>
-            <p className="text-center paragraph">
-            Create short quick links with custom slugs
-            </p>
+            <section className="top-section">
+                <div className="img-container">
+                    <img src={update} alt="Rocket" className="full-width"/>
+                </div>
+                <div className="content">
+                    <h1 className="heading">Shorter urls for your pages</h1>
+                    <p className="paragraph">
+                    Create short quick links with custom slugs
+                    </p>
+                </div>
+            </section>
             <UrlForm/>
       </main>
     )

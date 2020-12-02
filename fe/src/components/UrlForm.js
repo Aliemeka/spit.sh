@@ -36,8 +36,12 @@ const UrlForm = () => {
                     <input className="form-text" name="slug" id="slug" placeholder="Enter a custom slug (Optional)"/>
                 </div>
                 <div className="form-group">
-                    <button type="submit" className="form-button">Generate URL</button>
+                    <button type="submit" className="form-button">Shorten Link</button>
                 </div>
+            </div>
+            <div className="form-footer">
+                <p className="link-name">https://spit/sh</p>
+                <div className="short-link">Copy</div>
             </div>
         </form>
     )
