@@ -86,15 +86,34 @@
     color: #f66;
 }
 
+.loading{
+    width: 100%;
+    margin-top: 1.5rem;
+    height: 1.5rem;
+    background-color: #dcdcff;
+    animation: load 1s linear infinite;
+  }
+  
+  @keyframes load{
+    0%{
+      opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+  }
+
 .form-footer{
-    display: flex;
-    justify-content: space-between;
     margin-top: 1.5rem;
     padding: 5px 1.3rem;
     border: 3px solid #4f6;
     background-color: #afb;
     font-size: 1.2rem;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .form-footer p{
@@ -111,8 +130,16 @@
         margin-left: auto;
     }
 
+    .loading{
+        width: 85%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
     
     .form-footer{
+        display: flex;
+        justify-content: space-between;
         margin-right: auto;
         margin-left: auto;
         width: 80%;

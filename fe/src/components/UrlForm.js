@@ -1,8 +1,45 @@
-import './Form.css'
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import axios from 'axios'
+
+
+import './Form.css'
 
 const UrlForm = () => {
+    const [loading, setLoading] = useState(false);
+    const [shortLink, setShortLink] = useState('');
+    const [errorMessage, setError] = useState('');
+    const [isCopied, setCopied] = useState(false);
+
+    const copyUrl = async shortLink =>{
+        navigator.clipboard.writeText(shortLink);
+        setCopied(true);
+        await setTimeout(() => {
+            setCopied(false);
+        }, 3000);
+    }
+
+    const getShortenedLink = urlData =>{
+        setLoading(true);
+        // axios.defaults.headers = {
+        //     'content-type': "application/json"
+        // };
+        axios.post("http://localhost:8000/generate", urlData)
+        .then(res =>{
+            setLoading(false);
+            const generatedData = res.data;
+            const { shortenUrl } = generatedData;
+            setShortLink(shortenUrl);
+            setError('')
+        })
+        .catch(err =>{
+            setLoading(false);
+            console.log(err.message);
+            setError('Slug is already in use.');
+            setShortLink('');
+        })
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -13,7 +50,7 @@ const UrlForm = () => {
             longUrl: Yup.string().required("You have to enter a URL").url("Please enter a valid URL")
         }),
         onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
+          getShortenedLink({url: values.longUrl, slug: values.slug});
         },
       });
     return (
@@ -25,7 +62,7 @@ const UrlForm = () => {
             <div className="form-body">
                 <div className="form-group">
                     <label className="form-label" htmlFor="longUrl">Long URL<span className="text-needed">*</span></label>
-                    <input className="form-text" name="longUrl" id="longUrl" placeholder="https://www.facebook.com" onChange={formik.handleChange} value={formik.values.firstName}/>
+                    <input className="form-text" name="longUrl" id="longUrl" placeholder="https://www.facebook.com" onChange={formik.handleChange} value={formik.values.longUrl}/>
                     {formik.touched.longUrl && formik.errors.longUrl ? (
                             <p className="form-error">{formik.errors.longUrl}</p>
                         ) : null}
@@ -33,18 +70,30 @@ const UrlForm = () => {
                 </div>
                 <div className="form-group">
                     <label className="form-label" htmlFor="slug">Custom slug</label>
-                    <input className="form-text" name="slug" id="slug" placeholder="Enter a custom slug (Optional)"/>
+                    <input className="form-text" name="slug" id="slug" placeholder="Enter a custom slug (Optional)"
+                    onChange={formik.handleChange} value={formik.values.slug}/>
+                    {errorMessage ? (
+                            <p className="form-error">{errorMessage}</p>
+                        ) : null}
                 </div>
                 <div className="form-group">
                     <button type="submit" className="form-button">Shorten Link</button>
                 </div>
             </div>
-            <div className="form-footer">
-                <p className="link-name">https://spit/sh</p>
-                <div className="short-link">Copy</div>
-            </div>
+            {
+                loading ? 
+                (<div className="loading"/>):
+                shortLink && (
+                    <div className="form-footer" onClick={()=>copyUrl(shortLink)}>
+                        <p className="link-name">{shortLink}</p>
+                        <div className="short-link">{isCopied ? 'Copied!' : 'Copy'}</div>
+                    </div>
+                )
+            }
+            
+            
         </form>
-    )
+    );
 }
 
 export default UrlForm
