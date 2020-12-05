@@ -16,7 +16,7 @@ const Redirects = () => {
         axios.defaults.headers = {
             'content-type': "application/json"
         };
-        axios.get(`http://localhost:8000/get-redirect-url${pathname}`)
+        axios.get(`https://spit-sh.herokuapp.com/get-redirect-url${pathname}`)
         .then(res =>{
             const redirectURL = res.data.redirectsTo;
             console.log(res.data)

@@ -25,7 +25,7 @@ const UrlForm = () => {
         // axios.defaults.headers = {
         //     'content-type': "application/json"
         // };
-        axios.post("http://localhost:8000/generate", urlData)
+        axios.post("https://spit-sh.herokuapp.com/generate", urlData)
         .then(res =>{
             setLoading(false);
             const generatedData = res.data;
