@@ -62,4 +62,4 @@ async def getRedirectUrl(slug: str, db: Session = Depends(get_db)):
     if db_urlData:
         return { 'redirectsTo': db_urlData.url}
     else:
-        raise HTTPException(status_code=404, detail="Sorry we can't find the link you are looking for")
+        raise HTTPException(status_code=404, detail="Page not found!")
