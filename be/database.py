@@ -1,12 +1,24 @@
+from os import environ
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import String, Integer, Column
 from sqlalchemy.orm import sessionmaker
+from pydantic import BaseSettings
 
-DATABASE_URL = "sqlite:///./sql_app.db"
+class Settings(BaseSettings):
+    database_url: str = "sqlite:///./sql_app.db"
+
+    class Config:
+        env_file = ".env"
+
+
+settings = Settings()
+
+DATABASE_URL = settings.database_url
+
 
 engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
