@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --radial: radial-gradient(rgba(0, 0, 0, 1) 2px, transparent 2px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+    --radial: radial-gradient(rgba(255, 255, 255, 1) 2px, transparent 2px);
+  }
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.dot-overlay {
+  background-image: var(--radial);
+  background-size: 80px 80px;
+  background-blend-mode: overlay;
+}
