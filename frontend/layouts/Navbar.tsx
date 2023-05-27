@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Navbar = () => {
@@ -7,7 +8,12 @@ const Navbar = () => {
         <h1 className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl'>
           Spit.sh ✨
         </h1>
-        <p>Sign in</p>
+        <Link
+          href='/signin'
+          className='duration-200 transition-colors hover:text-fuchsia-600 dark:hover:text-fuchsia-500'
+        >
+          Sign in
+        </Link>
       </nav>
     </header>
   );

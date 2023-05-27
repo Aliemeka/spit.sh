@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React, { FC, PropsWithChildren } from "react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -14,6 +15,7 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
       >
         {children}
       </main>
+      <Footer />
     </>
   );
 };
