@@ -5,7 +5,7 @@ import uuid
 
 
 class URLData(SQLModel, table=True):
-    id: str = Field(default=uuid.uuid4, primary_key=True, index=True)
+    id: uuid.UUID = Field(default=uuid.uuid4, primary_key=True, index=True)
     url: str
     slug: str
     shortenUrl: str
@@ -14,10 +14,11 @@ class URLData(SQLModel, table=True):
 
     # Relationships
     clicks: List["ClickModal"] = Relationship(back_populates="urlData")
+    project_id: Optional[uuid.UUID] = Field(default=None, foreign_key="project.id")
 
 
 class ClickModal(SQLModel, table=True):
-    id: str = Field(default=uuid.uuid4, primary_key=True, index=True)
+    id: uuid.UUID = Field(default=uuid.uuid4, primary_key=True, index=True)
     ip_address: str
     country: str
     city: str
@@ -25,4 +26,4 @@ class ClickModal(SQLModel, table=True):
     created_at: datetime = Field(default=datetime.utcnow(), nullable=False)
 
     # Relationships
-    url_id: Optional[int] = Field(default=None, foreign_key="urlData.id")
+    url_id: Optional[uuid.UUID] = Field(default=None, foreign_key="urlData.id")

@@ -26,7 +26,7 @@ export default function Home() {
           </Link>
           <a
             href='/'
-            className='inline-flex items-center rounded-full bg-zinc-800 dark:bg-zinc-200 px-8 py-3 text-sm font-semibold text-zinc-100 dark:text-zinc-800 transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
+            className='inline-flex items-center rounded-full bg-zinc-800 dark:bg-zinc-50 px-8 py-3 text-sm font-semibold text-zinc-100 dark:text-zinc-800 transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -183,7 +183,7 @@ export default function Home() {
           </p>
           <a
             href=''
-            className='inline-flex items-center rounded-full bg-zinc-800 dark:bg-zinc-200 px-8 py-3 text-sm font-semibold text-zinc-100 dark:text-zinc-800 transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
+            className='inline-flex items-center rounded-full bg-zinc-800 dark:bg-zinc-50 px-8 py-3 text-sm font-semibold text-zinc-100 dark:text-zinc-800 transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
           >
             Give us a star on GitHub{" "}
             <svg
