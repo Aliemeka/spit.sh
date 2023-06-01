@@ -7,7 +7,7 @@ from models.linkModel import Link
 
 async def get_link(slug: str, session: AsyncSession) -> Link:
     result = await session.execute(select(Link).where(Link.slug == slug))
-    link: Link = result.scalars().one()
+    link: Link = result.scalars().one_or_none()
     return link
 
 

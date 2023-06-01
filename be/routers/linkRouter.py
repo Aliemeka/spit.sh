@@ -21,7 +21,7 @@ async def create_new_link(
     if payload.slug:
         exist_link = await get_link(payload.slug, session)
         if exist_link:
-            raise HTTPException(status_code=401, detail="Slug already exist")
+            raise HTTPException(status_code=409, detail="Slug already exist")
 
     if not payload.slug:
         payload.slug = generate_slug()
