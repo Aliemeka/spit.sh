@@ -1,8 +1,8 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..schemas.linkSchema import LinkData
-from ..models.linkModel import Link
+from schemas.linkSchema import LinkCreate
+from models.linkModel import Link
 
 
 async def get_link(slug: str, session: AsyncSession) -> Link:
@@ -11,8 +11,10 @@ async def get_link(slug: str, session: AsyncSession) -> Link:
     return link
 
 
-async def create_link(linkData: LinkData, session: AsyncSession) -> Link:
-    link = Link(**linkData)
+async def create_link(
+    linkData: LinkCreate, short_link: str, session: AsyncSession
+) -> Link:
+    link = Link(url=linkData.url, slug=linkData.slug, shortenUrl=short_link)
     session.add(link)
     await session.commit()
     await session.refresh(link)

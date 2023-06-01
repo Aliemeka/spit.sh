@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
-import datetime
+from datetime import datetime
 import uuid
 from .base import User
 import enum

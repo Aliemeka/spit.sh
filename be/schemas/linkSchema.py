@@ -1,12 +1,13 @@
+from sqlmodel import SQLModel
 from typing import Optional
 
 
-class LinkBase:
+class LinkBase(SQLModel):
     url: str
 
 
 class LinkCreate(LinkBase):
-    slug: Optional[str]
+    slug: Optional[str] = None
 
 
 class LinkData(LinkBase):
@@ -14,7 +15,7 @@ class LinkData(LinkBase):
     shortenUrl: str
 
 
-class ClickBase:
+class ClickBase(SQLModel):
     ip_address: str
 
 
