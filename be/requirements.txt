@@ -2,6 +2,9 @@ dataclasses
 fastapi
 gunicorn
 psycopg2
+asyncpg
+aiosqlite
+greenlet
 pydantic
 python-dotenv
 SQLAlchemy
