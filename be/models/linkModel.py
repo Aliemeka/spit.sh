@@ -1,13 +1,15 @@
 import datetime
 from typing import List, Optional
-from sqlmodel import Field, SQLModel, Relationship
+from sqlmodel import Field, Relationship, SQLModel
 import uuid
 
+from ..schemas.linkSchema import ClickInfo
+from ..schemas.linkSchema import LinkBase
 
-class URLData(SQLModel, table=True):
+
+class Link(SQLModel, LinkBase, table=True):
     id: uuid.UUID = Field(default=uuid.uuid4, primary_key=True, index=True)
-    url: str
-    slug: str
+    slug: str = Field(unique=True)
     shortenUrl: str
     created_at: datetime = Field(default=datetime.utcnow(), nullable=False)
     last_edited: datetime = Field(default_factory=datetime.utcnow, nullable=False)
@@ -17,7 +19,7 @@ class URLData(SQLModel, table=True):
     project_id: Optional[uuid.UUID] = Field(default=None, foreign_key="project.id")
 
 
-class ClickModal(SQLModel, table=True):
+class ClickModal(SQLModel, ClickInfo, table=True):
     id: uuid.UUID = Field(default=uuid.uuid4, primary_key=True, index=True)
     ip_address: str
     country: str
