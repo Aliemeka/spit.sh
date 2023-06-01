@@ -25,7 +25,8 @@ export default function Home() {
             Get started for free
           </Link>
           <a
-            href='/'
+            href='https://github.com/aliemeka/spit.sh'
+            target='_blank'
             className='inline-flex items-center rounded-full bg-zinc-800 dark:bg-zinc-50 px-8 py-3 text-sm font-semibold text-zinc-100 dark:text-zinc-800 transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
           >
             <svg
@@ -182,7 +183,8 @@ export default function Home() {
             Links with Spit-sh, Empowering Your Online Presence.
           </p>
           <a
-            href=''
+            href='https://github.com/aliemeka/spit.sh'
+            target='_blank'
             className='inline-flex items-center rounded-full bg-zinc-800 dark:bg-zinc-50 px-8 py-3 text-sm font-semibold text-zinc-100 dark:text-zinc-800 transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
           >
             Give us a star on GitHub{" "}
