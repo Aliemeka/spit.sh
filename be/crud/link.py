@@ -2,7 +2,7 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from schemas.linkSchema import LinkCreate
-from models.linkModel import Link
+from models.base import Link
 
 
 async def get_link(slug: str, session: AsyncSession) -> Link:

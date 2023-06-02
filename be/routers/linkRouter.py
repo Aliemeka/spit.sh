@@ -3,7 +3,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from schemas.linkSchema import LinkCreate
-from models.linkModel import Link
 from crud.link import get_link, create_link
 from utils.generate import generate_slug
 from database import get_session
