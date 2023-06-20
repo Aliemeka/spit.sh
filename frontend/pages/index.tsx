@@ -20,7 +20,7 @@ export default function Home() {
         <div className='flex flex-col items-center justify-center sm:flex-row gap-x-6 gap-y-4 sm:gap-y-0'>
           <Link
             className='inline-flex rounded-full bg-fuchsia-600 px-8 py-3 text-sm font-semibold text-white transition hover:rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-fuchsia-500'
-            href='/sigin'
+            href='/signin'
           >
             Get started for free
           </Link>
@@ -162,7 +162,7 @@ export default function Home() {
           <div className='mt-12 text-center'>
             <Link
               className='inline-flex rounded-full bg-fuchsia-600 px-8 py-3 text-sm font-semibold text-white transition hover:-rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-indigo-500'
-              href='/sigin'
+              href='/signin'
             >
               Get started today
             </Link>

@@ -8,5 +8,5 @@ def generate_slug() -> str:
 
 def generate_otp(is_generic: bool = False) -> str:
     if is_generic:
-        return "123456"
+        return "456321"
     return "".join(random.choices(digits, k=6))
