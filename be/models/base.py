@@ -27,6 +27,9 @@ class User(SQLModel, table=True):
     username: Optional[str] = Field(nullable=True, unique=True)
     joined_at: datetime = Field(default=datetime.utcnow(), nullable=False)
 
+    first_name: Optional[str] = Field(nullable=True, max_length=20)
+    last_name: Optional[str] = Field(nullable=True, max_length=25)
+
     #     # Relationships
     projects: List["Project"] = Relationship(
         back_populates="users", link_model=ProjectUsers
@@ -35,7 +38,7 @@ class User(SQLModel, table=True):
 
 class Project(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    name: str
+    name: str = Field(max_length=20)
     slug: str = Field(unique=True, index=True)
     logo: Optional[str] = Field(default=None)
     created_at: datetime = Field(default=datetime.utcnow(), nullable=False)
