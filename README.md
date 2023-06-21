@@ -30,10 +30,8 @@ To set up and run the Spit-sh project locally, follow these steps:
 4. Start the backend server:
 
    ```bash
-   yarn dev
+   uvicorn app.main:app --reload
    ```
-
-   This will start the backend server using `ts-node-dev` and automatically reload on file changes.
 
 ### Frontend
 
