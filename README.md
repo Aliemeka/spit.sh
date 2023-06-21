@@ -1,6 +1,6 @@
 # Spit-sh
 
-Spit-sh is an open-source URL shortener project that provides the ability to shorten URLs, track clicks, and generate QR codes for the links. It consists of a FastAPI backend written in TypeScript and a Next.js frontend.
+Spit-sh is an open-source URL shortener project that provides the ability to shorten URLs, track clicks, and generate QR codes for the links. It consists of a FastAPI backend and a Next.js frontend.
 
 ## Getting Started
 
