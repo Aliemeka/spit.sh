@@ -17,13 +17,14 @@ To set up and run the Spit-sh project locally, follow these steps:
 2. Set up the backend:
 
    ```bash
-   cd spit-sh/be
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
 3. Install the dependencies using Yarn:
 
    ```bash
-   yarn
+   pip install -r requirements.txt
    ```
 
 4. Start the backend server:
