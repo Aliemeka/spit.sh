@@ -36,6 +36,14 @@ class User(SQLModel, table=True):
     )
 
 
+class Token(SQLModel, Table=True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4(), primary_key=True, index=True)
+    temp_token: str
+    expires: datetime
+
+    user_id: uuid.UUID = Field(foreign_key="user.id")
+
+
 class Project(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     name: str = Field(max_length=20)
