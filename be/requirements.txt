@@ -11,3 +11,5 @@ SQLAlchemy
 starlette
 uvicorn
 sqlmodel
+ip2geotools
+alembic

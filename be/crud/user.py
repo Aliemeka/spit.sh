@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from models.base import User
 
 
-async def find_user_by_id(id: uuid.UUID, session: AsyncSession) -> User:
+async def find_user_by_id(id: uuid.UUID, session: AsyncSession) -> User | None:
     return await session.get(User, id)
 
 

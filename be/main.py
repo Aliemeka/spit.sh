@@ -1,5 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_login import LoginManager
+
 from routers import linkRouter
 
 from database import init_db
@@ -31,9 +33,9 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-async def on_startup():
-    await init_db()
+# @app.on_event("startup")
+# async def on_startup():
+#     await init_db()
 
 
 @app.get("/")
