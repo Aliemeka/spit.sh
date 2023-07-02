@@ -41,6 +41,7 @@ class Session(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4(), primary_key=True, index=True)
     temp_token: str
     expires: datetime
+    hashed_otp: str
 
     user_id: Optional[uuid.UUID] = Field(foreign_key="user.id")
     # user: User = Relationship(back_populates="sessions")
