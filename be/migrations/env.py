@@ -43,7 +43,7 @@ target_metadata = SQLModel.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 def get_url():
-    print("SOOMM", os.environ.get("DATABASE_URL"))
+    # print("SOOMM", os.environ.get("DATABASE_URL"))
     return os.environ.get("DATABASE_URL")
 
 
