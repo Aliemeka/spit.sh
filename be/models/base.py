@@ -22,7 +22,7 @@ class ProjectUsers(SQLModel, table=True):
 
 
 class User(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4(), primary_key=True, index=True)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     email: str = Field(unique=True)
     username: Optional[str] = Field(nullable=True, unique=True)
     joined_at: datetime = Field(default=datetime.utcnow(), nullable=False)
@@ -38,7 +38,7 @@ class User(SQLModel, table=True):
 
 
 class Session(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4(), primary_key=True, index=True)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     temp_token: str
     expires: datetime
     hashed_otp: str
