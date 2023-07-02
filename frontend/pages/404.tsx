@@ -8,7 +8,7 @@ const NotFoundPage = () => {
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 1024 768'
-          className='w-auto h-56 mx-auto text-zinc-900 dark:text-zinc-100 sm:h-64'
+          className='w-auto h-56 mx-auto text-zinc-900 dark:text-zinc-100 sm:h-64 scale-125'
         >
           <g fill='none' fillRule='evenodd'>
             <g fill='#c026d3'>
@@ -24,7 +24,7 @@ const NotFoundPage = () => {
           </g>
         </svg>
 
-        <h1 className='mt-6 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-4xl'>
+        <h1 className='mt-12 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-4xl'>
           Uh-oh!
         </h1>
 

@@ -1,3 +1,5 @@
+import Groovy from "@/components/illustrations/Groovy";
+import Meditating from "@/components/illustrations/Meditating";
 import MainLayout from "@/layouts/MainLayout";
 // import Image from "next/image";
 import Link from "next/link";
@@ -13,10 +15,14 @@ export default function Home() {
           </span>
           🪄
         </h1>
-        <p className='text-center max-w-lg mx-auto md:text-xl w-3/5 mb-8 text-zinc-700 dark:text-zinc-300'>
+        <p className='text-center max-w-lg mx-auto md:text-xl w-3/5 mb-2 text-zinc-700 dark:text-zinc-300'>
           Unleash the magic: Get more out of your links with analytics and
           tracking.
         </p>
+        <div className='flex w-full justify-center'>
+          <Meditating />
+        </div>
+
         <div className='flex flex-col items-center justify-center sm:flex-row gap-x-6 gap-y-4 sm:gap-y-0'>
           <Link
             className='inline-flex rounded-full bg-fuchsia-600 px-8 py-3 text-sm font-semibold text-white transition hover:rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-fuchsia-500'
@@ -94,6 +100,9 @@ export default function Home() {
               Gain an edge with custom links, track performance with robust
               analytics, and generate QR codes among other tricks
             </p>
+            <div className='flex w-full justify-center -my-20 md:-my-12'>
+              <Groovy />
+            </div>
           </div>
 
           <div className='mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
