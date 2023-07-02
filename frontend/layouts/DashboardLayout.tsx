@@ -6,7 +6,7 @@ const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <main className='flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
-        <aside className='flex h-screen flex-col justify-between border-e bg-white dark:bg-zinc-950 dark:border-zinc-700 w-72'>
+        <aside className='flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
           <div className='px-4 py-6'>
             <Link
               href='/'
