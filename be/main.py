@@ -4,7 +4,6 @@ from fastapi_login import LoginManager
 
 from routers import linkRouter
 
-from database import init_db
 from typing import List
 
 app = FastAPI(
@@ -31,11 +30,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# @app.on_event("startup")
-# async def on_startup():
-#     await init_db()
 
 
 @app.get("/")

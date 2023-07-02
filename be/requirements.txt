@@ -13,3 +13,4 @@ uvicorn
 sqlmodel
 ip2geotools
 alembic
+bcrypt
