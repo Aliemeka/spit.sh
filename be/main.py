@@ -2,7 +2,7 @@ from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_login import LoginManager
 
-from routers import linkRouter
+from routers import linkRouter, authRouter
 
 from typing import List
 
@@ -16,7 +16,7 @@ def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
         app.include_router(router, prefix=prefix)
 
 
-configure_routes([linkRouter.router])
+configure_routes([linkRouter.router, authRouter.router])
 
 origins = [
     "*",

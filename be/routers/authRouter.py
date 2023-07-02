@@ -7,10 +7,10 @@ from crud.session import get_session_by_token, create_session
 from utils.generate import generate_otp
 from models.base import User
 
-auth_router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="/auth", tags=["authentication"])
 
 
-@auth_router.post("/login", status_code=200)
+@router.post("/login", status_code=200, response_model=LoginResponseSchema)
 async def sign_in_user(payload: EmailLoginSchema, session: AsyncSession):
     otp = generate_otp()
     print(otp)
