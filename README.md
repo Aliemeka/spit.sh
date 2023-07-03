@@ -33,6 +33,18 @@ To set up and run the Spit-sh project locally, follow these steps:
    uvicorn app.main:app --reload
    ```
 
+#### Backend dependencies
+
+[FastAPI](https://fastapi.tiangolo.com "FastAPI") for api server<br>
+[Uvicorn](https://www.uvicorn.org/ "uvicorn") - Python ASGI web server<br>
+[SQLmodel](https://sqlmodel.tiangolo.com/ "sqlmodel") ORM platform built on SQLAlchemy<br>
+[asyncpg](https://sqlmodel.tiangolo.com/ "asyncpg") Async driver for Postgres<br>
+[Ip2geotools](https://pypi.org/project/ip2geotools/ "Ip2geotools") for geolocationing<br>
+[Resend Python SDK](https://resend.com/docs/send-with-python "resend") for sending emails<br>
+[python-dotenv](https://pypi.org/project/python-dotenv/ "python-dotenv") for parsing envvironment variables<br>
+[Alembic](https://alembic.sqlalchemy.org/en/latest/ "alembic") for database migrations<br>
+[fastapi-login](https://fastapi-login.readthedocs.io "fastapi-login") - Auth manager
+
 ### Frontend
 
 1. Open a new terminal window/tab.
@@ -66,11 +78,13 @@ Once you have both the backend and frontend servers running, you can access the 
 2. You will see the Spit-sh homepage with the list of shortened links and an option to shorten a new URL.
 
 3. To shorten a URL:
+
    - Enter the original URL in the input field.
    - Click the "Shorten" button.
    - The shortened URL will be displayed below with an associated QR code.
 
 4. To track clicks:
+
    - Click on a shortened URL from the list.
    - You will be redirected to the details page for that URL.
    - The details page will show the number of clicks and a list of all the clicks with timestamps.
