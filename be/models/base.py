@@ -22,7 +22,7 @@ class ProjectUsers(SQLModel, table=True):
 
 
 class User(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4(), primary_key=True, index=True)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     email: str = Field(unique=True)
     username: Optional[str] = Field(nullable=True, unique=True)
     joined_at: datetime = Field(default=datetime.utcnow(), nullable=False)
@@ -34,6 +34,17 @@ class User(SQLModel, table=True):
     projects: List["Project"] = Relationship(
         back_populates="users", link_model=ProjectUsers
     )
+    # sessions: List["Session"] = Relationship(back_populates="user")
+
+
+class Session(SQLModel, table=True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
+    temp_token: str
+    expires: datetime
+    hashed_otp: str
+
+    user_id: Optional[uuid.UUID] = Field(foreign_key="user.id")
+    # user: User = Relationship(back_populates="sessions")
 
 
 class Project(SQLModel, table=True):
@@ -57,12 +68,12 @@ class Link(LinkBase, table=True):
     last_edited: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
     # Relationships
-    clicks: List["ClickModal"] = Relationship(back_populates="link")
+    clicks: List["Click"] = Relationship(back_populates="link")
     project_id: Optional[uuid.UUID] = Field(default=None, foreign_key="project.id")
     project: Optional[Project] = Relationship(back_populates="links")
 
 
-class ClickModal(ClickInfo, table=True):
+class Click(ClickInfo, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     ip_address: str
     country: str

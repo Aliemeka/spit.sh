@@ -18,9 +18,9 @@ settings = Settings()
 DATABASE_URL = settings.database_url
 
 
-connect_args = {"check_same_thread": False}
+# connect_args = {"check_same_thread": False}
 
-engine = create_async_engine(DATABASE_URL, echo=True, connect_args=connect_args)
+engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
 
 # SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

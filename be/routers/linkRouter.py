@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -31,7 +31,11 @@ async def create_new_link(
 
 
 @router.get("/{slug}")
-async def get_link_by_slug(slug: str, session: AsyncSession = Depends(get_session)):
+async def get_link_by_slug(
+    request: Request, slug: str, session: AsyncSession = Depends(get_session)
+):
+    client_host = request.client.host
+    print(client_host)
     link = await get_link(slug, session)
     if not link:
         raise HTTPException(status_code=404, detail="Link does not exist")

@@ -1,8 +1,9 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from routers import linkRouter
+from fastapi_login import LoginManager
 
-from database import init_db
+from routers import linkRouter, authRouter
+
 from typing import List
 
 app = FastAPI(
@@ -15,7 +16,7 @@ def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
         app.include_router(router, prefix=prefix)
 
 
-configure_routes([linkRouter.router])
+configure_routes([linkRouter.router, authRouter.router])
 
 origins = [
     "*",
@@ -29,11 +30,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-async def on_startup():
-    await init_db()
 
 
 @app.get("/")

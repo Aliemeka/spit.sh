@@ -5,7 +5,7 @@ const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Sigin to Spit.sh</title>
+        <title>Sigin to Spit.sh | Shorter URLs with extra magic</title>
       </Head>
       {children}
     </>

@@ -11,3 +11,8 @@ SQLAlchemy
 starlette
 uvicorn
 sqlmodel
+ip2geotools
+alembic
+bcrypt
+fastapi-login
+resend
