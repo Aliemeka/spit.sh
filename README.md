@@ -14,20 +14,25 @@ To set up and run the Spit-sh project locally, follow these steps:
    git clone https://github.com/your-username/spit-sh.git
    ```
 
-2. Set up the backend:
+2. Go the backend directory:
+   ```bash
+   cd be
+   ```
+
+3. Set up the backend:
 
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. Install the dependencies using Yarn:
+4. Install the dependencies using Yarn:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Start the backend server:
+5. Start the backend server:
 
    ```bash
    uvicorn app.main:app --reload
