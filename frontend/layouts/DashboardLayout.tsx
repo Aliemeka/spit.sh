@@ -1,12 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 import React, { FC, PropsWithChildren } from "react";
 
-const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
+const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
+  children,
+  title,
+}) => {
   return (
     <>
-      <main className='flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
-        <aside className='flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
+      <Head>
+        <title>Spit.sh | Dashboard - {title}</title>
+      </Head>
+      <main className='flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 relative'>
+        <aside className='absolute left-0 inset-y-0 -translate-x-96 md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
           <div className='px-4 py-6'>
             <Link
               href='/'
@@ -38,9 +45,9 @@ const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
                         fill='currentColor'
                       >
                         <path
-                          fill-rule='evenodd'
+                          fillRule='evenodd'
                           d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                          clip-rule='evenodd'
+                          clipRule='evenodd'
                         />
                       </svg>
                     </span>
@@ -99,9 +106,9 @@ const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
                         fill='currentColor'
                       >
                         <path
-                          fill-rule='evenodd'
+                          fillRule='evenodd'
                           d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                          clip-rule='evenodd'
+                          clipRule='evenodd'
                         />
                       </svg>
                     </span>
@@ -166,13 +173,19 @@ const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
           </div>
         </aside>
         <section className='flex-1 h-screen relative'>
-          <nav className='py-6 px-6 border-b bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 flex w-full justify-end relative'>
+          <nav className='py-5 px-6 border-b bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 flex w-full justify-between items-center relative'>
+            <Link
+              href='/'
+              className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl'
+            >
+              Spit.sh ✨
+            </Link>
             <p className='text-sm'>
               <strong className='block font-medium'>Eric Frusciante</strong>
             </p>
           </nav>
-          <main className='p-6'>
-            <div className='h-full p-4 md:p-8 flex flex-col bg-inherit border dark:border-zinc-700 shadow-sm rounded-xl dark:shadow-slate-700/[.7]'>
+          <main className='p-6 md:px-10 relative'>
+            {/* <div className='h-full p-4 md:p-8 flex flex-col bg-inherit border dark:border-zinc-700 shadow-sm rounded-xl dark:shadow-slate-700/[.7]'>
               <div className='grid place-items-center p-4 md:p-5'>
                 <svg
                   className='max-w-[5rem]'
@@ -245,8 +258,8 @@ const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
                   No data to show
                 </p>
               </div>
-              {children}
-            </div>
+            </div> */}
+            {children}
           </main>
         </section>
       </main>
