@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   try {
     console.log("Called!");
-    const response = await fetch(`${linkUrl}${slug}`, { method: "GET" });
+    const response = await fetch(`${linkUrl}/${slug}`, { method: "GET" });
     if (!response.ok) {
       return {
         notFound: true,
