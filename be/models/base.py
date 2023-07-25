@@ -60,7 +60,7 @@ class Project(SQLModel, table=True):
     users: List[User] = Relationship(back_populates="projects", link_model=ProjectUsers)
 
 
-class Link(LinkBase, table=True):
+class Link(LinkBase, SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     slug: str = Field(unique=True)
     shortenUrl: str

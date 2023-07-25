@@ -17,7 +17,8 @@ root_domain = "https://spit.sh/"
 async def create_new_link(
     payload: LinkCreate, session: AsyncSession = Depends(get_session)
 ):
-    if payload.slug:
+    print(payload.url)
+    if payload.slug and payload.slug != "":
         exist_link = await get_link(payload.slug, session)
         if exist_link:
             raise HTTPException(status_code=409, detail="Slug already exist")
