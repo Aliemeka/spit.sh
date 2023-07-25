@@ -73,7 +73,7 @@ const ShortLinkForm = () => {
         <a
           href={shortenedLink}
           target='_blank'
-          className='max-w-sm mx-auto rounded-lg bg-slate-300 dark:bg-slate-800 h-14 justify-between flex items-center text-12 mt-6 px-4 border-2 border-fuchsia-500 hover:underline hover:text-fuchsia-500 dark:hover:text-fuchsia-400 group focus:ring-offset-2 focus:ring-offset-transparent focus:ring-1 focus:ring-fuchsia-200 focus:shadow-lg focus:shadow-fuchsia-400/50 transition-all duration-300'
+          className='max-w-sm mx-auto rounded-lg bg-slate-300 dark:bg-slate-800 h-14 justify-between flex items-center text-12 mt-6 px-4 hover:border border-fuchsia-500 hover:underline hover:text-fuchsia-500 dark:hover:text-fuchsia-400 group focus:ring-offset-2 focus:ring-offset-transparent focus:ring-1 focus:ring-fuchsia-200 focus:shadow-lg focus:shadow-fuchsia-400/50 transition-all duration-300'
         >
           <span className='hover:underline'>{shortenedLink}</span>
           <svg
