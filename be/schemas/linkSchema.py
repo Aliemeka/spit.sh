@@ -1,13 +1,14 @@
 from sqlmodel import SQLModel
+from pydantic import BaseModel
 from typing import Optional
 
 
-class LinkBase(SQLModel):
+class LinkBase(BaseModel):
     url: str
 
 
 class LinkCreate(LinkBase):
-    slug: Optional[str] = None
+    slug: str | None
 
 
 class LinkData(LinkBase):
