@@ -22,11 +22,13 @@ export const getServerSideProps: GetServerSideProps = async ({
       };
     }
     const data = await response.json();
-    console.log("data", JSON.stringify(data));
-    res.writeHead(302, { Location: data });
-    return { props: {} };
+    return {
+      redirect: {
+        destination: data.url,
+        permanent: true,
+      },
+    };
   } catch (error) {
-    console.log(JSON.stringify(error));
     return {
       notFound: true,
     };
