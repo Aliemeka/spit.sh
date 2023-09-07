@@ -101,3 +101,7 @@ Once you have both the backend and frontend servers running, you can access the 
 ## Conclusion
 
 Congratulations! You have successfully set up the Spit-sh URL shortener project. You can now start using the application to shorten URLs, track clicks, and generate QR codes. Feel free to explore and customize the project according to your requirements. If you have any questions or issues, refer to the project's documentation or seek assistance from the Spit-sh community. Happy URL shortening!
+
+## Building in Public
+
+I'm using [Buildshare](https://www.buildshare.io/ "Buildshare") to build in public
