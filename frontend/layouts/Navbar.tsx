@@ -1,3 +1,4 @@
+import ThemeButton from "@/components/units/ThemeButton";
 import Link from "next/link";
 import React from "react";
 
@@ -8,12 +9,15 @@ const Navbar = () => {
         <h1 className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl'>
           Spit.sh ✨
         </h1>
-        <Link
-          href='/signin'
-          className='duration-200 transition-colors hover:text-fuchsia-600 dark:hover:text-fuchsia-500'
-        >
-          Sign in
-        </Link>
+        <div className='flex gap-x-8 items-center'>
+          <Link
+            href='/signin'
+            className='duration-200 transition-colors hover:text-fuchsia-600 dark:hover:text-fuchsia-500'
+          >
+            Sign in
+          </Link>
+          <ThemeButton />
+        </div>
       </nav>
     </header>
   );

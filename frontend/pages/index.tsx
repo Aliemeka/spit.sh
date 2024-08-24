@@ -2,7 +2,6 @@ import ShortLinkForm from "@/components/forms/ShortLinkForm";
 import Groovy from "@/components/illustrations/Groovy";
 import Meditating from "@/components/illustrations/Meditating";
 import MainLayout from "@/layouts/MainLayout";
-// import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
