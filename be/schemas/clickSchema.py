@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class ClickBase(BaseModel):
@@ -10,3 +11,7 @@ class ClickBase(BaseModel):
 
 class ClickCreate(ClickBase):
     link_id: str
+
+
+class ClickReponse(ClickCreate):
+    id: UUID
