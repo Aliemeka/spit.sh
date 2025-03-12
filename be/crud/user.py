@@ -18,7 +18,6 @@ async def find_user_by_email(email: str, db: AsyncSession) -> User | None:
 
 
 async def create_user(email: str, db: AsyncSession) -> User:
-    print("Called!")
     new_user = User(email=email)
     db.add(new_user)
     await db.commit()
