@@ -1,3 +1,4 @@
+"use client";
 import useCreateLink from "@/hooks/useCreateLink";
 import { useFormik } from "formik";
 import React from "react";

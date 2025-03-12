@@ -1,7 +1,6 @@
-import React from "react";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 
-const DashboardPage = () => {
+export default function DashboardPage() {
   return (
     <DashboardLayout title='Home'>
       <section>
@@ -49,6 +48,4 @@ const DashboardPage = () => {
       </section>
     </DashboardLayout>
   );
-};
-
-export default DashboardPage;
+}
