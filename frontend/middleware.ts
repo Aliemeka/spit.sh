@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { API_URL } from "@/lib/config/environment";
 
+const fetchSlug = async (slug: string, retryTimes = 3) => {
+  const response = await fetch(`${API_URL}/links/${slug}`, { method: "GET" });
+  if (!response.ok) {
+    if (retryTimes <= 0) {
+      return null;
+    }
+    return fetchSlug(slug, retryTimes - 1);
+  }
+  const data = await response.json();
+  return data.url as string;
+};
+
 export async function middleware(request: NextRequest) {
   const slug = request.nextUrl.pathname.slice(1);
 
@@ -18,14 +30,12 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(`${API_URL}/links/${slug}`, { method: "GET" });
+    const url = await fetchSlug(slug);
 
-    if (!response.ok) {
+    if (!url) {
       return NextResponse.next();
     }
-
-    const data = await response.json();
-    return NextResponse.redirect(new URL(data.url));
+    return NextResponse.redirect(new URL(url));
   } catch (error) {
     return NextResponse.next();
   }
