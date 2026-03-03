@@ -4,15 +4,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
 from models.base import Click
-from ..schemas.clickSchema import ClickCreate
+from schemas.clickSchema import ClickCreate
 
 
 async def create_click(payload: ClickCreate, db: AsyncSession) -> Click:
     click = Click(
         city=payload.city,
-        country=payload.city,
+        country=payload.country,
         country_code=payload.country_code,
         link_id=payload.link_id,
+        ip_address=payload.ip_address,
     )
     db.add(click)
     await db.commit()
@@ -20,7 +21,7 @@ async def create_click(payload: ClickCreate, db: AsyncSession) -> Click:
     return click
 
 
-async def get_link_clicks(link_id: uuid.UUID, db: AsyncSession) -> Click:
+async def get_link_clicks(link_id: uuid.UUID, db: AsyncSession) -> List[Click]:
     results = await db.execute(select(Click).where(Click.link_id == link_id))
-    clicks: List[Click] = results.all()
+    clicks: List[Click] = results.scalars().all()
     return clicks

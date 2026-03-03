@@ -23,3 +23,11 @@ async def create_user(email: str, db: AsyncSession) -> User:
     await db.commit()
     await db.refresh(new_user)
     return new_user
+
+
+async def update_user(user_id: uuid.UUID, email: str, db: AsyncSession) -> User:
+    user = await db.get(User, user_id)
+    user.email = email
+    await db.commit()
+    await db.refresh(user)
+    return user

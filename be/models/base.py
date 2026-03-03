@@ -79,6 +79,7 @@ class Click(ClickInfo, table=True):
     country: str
     city: str
     country_code: str
+
     created_at: datetime = Field(default=datetime.utcnow(), nullable=False)
 
     # Relationships
