@@ -1,24 +1,7 @@
-from os import environ
 from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-
-from pydantic import BaseSettings
-
-
-class Settings(BaseSettings):
-    database_url: str = "sqlite+aiosqlite:///./test_db.db"
-
-    class Config:
-        env_file = ".env"
-
-
-settings = Settings()
-
-DATABASE_URL = settings.database_url
-
-
-# connect_args = {"check_same_thread": False}
+from config.environment import DATABASE_URL
 
 engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
