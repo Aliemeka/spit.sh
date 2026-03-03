@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from uuid import UUID
+from datetime import datetime
 
 
 class ClickBase(BaseModel):
@@ -15,3 +16,8 @@ class ClickCreate(ClickBase):
 
 class ClickReponse(ClickCreate):
     id: UUID
+
+
+class ClickCountResponse(BaseModel):
+    click_count: int
+    created_at: datetime

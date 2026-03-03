@@ -1,6 +1,9 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_login import LoginManager
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from utils.limiter import limiter
 
 from routers import linkRouter, authRouter
 
@@ -9,6 +12,9 @@ from typing import List
 app = FastAPI(
     title="Spit.sh API", version="1.1.0", description="API endpoints for Spit.sh"
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
