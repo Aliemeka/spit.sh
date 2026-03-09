@@ -1,8 +1,5 @@
 from sqlmodel import SQLModel
 from pydantic import BaseModel
-from typing import Optional
-from uuid import UUID
-
 
 class LinkBase(BaseModel):
     url: str
@@ -15,10 +12,6 @@ class LinkCreate(LinkBase):
 class LinkData(LinkBase):
     slug: str
     shortenUrl: str
-
-
-class LinkResponse(LinkData, table=True):
-    id: UUID
 
 
 class LinkInfo(LinkData):
