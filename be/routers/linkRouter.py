@@ -18,7 +18,7 @@ router = APIRouter(prefix="/links", tags=["short links"])
 @router.post("/", status_code=201)
 async def create_new_link(
     payload: LinkCreate, session: AsyncSession = Depends(get_session)
-):
+) -> LinkData:
     if payload.slug and payload.slug != "":
         exist_link = await get_link(payload.slug, session)
         if exist_link:
@@ -48,7 +48,7 @@ async def get_link_by_slug(
     slug: str,
     background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_session),
-):
+) -> LinkData:
     link = await get_link(slug, session)
     if not link:
         raise HTTPException(status_code=404, detail="Link does not exist")
