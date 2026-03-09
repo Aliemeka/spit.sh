@@ -1,12 +1,11 @@
 import ShortLinkForm from "@/components/forms/ShortLinkForm";
 import Groovy from "@/components/illustrations/Groovy";
 import Meditating from "@/components/illustrations/Meditating";
-import MainLayout from "@/layouts/MainLayout";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <MainLayout>
+    <>
       <header className='pt-24 md:pt-24'>
         <h1 className='font-bold text-center text-3xl md:text-5xl xl:text-6xl mt-10 lg:mt-12 mb-4 lg:mb-6 w-5/6 max-w-xl mx-auto'>
           Shorter URLs with extra{" "}
@@ -172,6 +171,6 @@ export default function Home() {
           </a>
         </div>
       </section>
-    </MainLayout>
+    </>
   );
 }
