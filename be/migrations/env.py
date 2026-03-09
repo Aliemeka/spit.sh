@@ -16,7 +16,6 @@ from models.base import (
     Click,
     Project,
     ProjectUsers,
-    Session,
 )
 
 # Load environment

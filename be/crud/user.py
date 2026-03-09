@@ -2,10 +2,8 @@ import uuid
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.base import User
-from config.authentication import manager
 
 
-@manager.user_loader()
 async def find_user_by_id(id: uuid.UUID, db: AsyncSession) -> User | None:
     return await db.get(User, id)
 

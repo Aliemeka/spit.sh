@@ -11,7 +11,7 @@ uvicorn
 sqlmodel==0.0.8
 ip2geotools
 alembic==1.11.1
-bcrypt
-fastapi-login
 resend
 slowapi
+python-jose[cryptography]
+httpx
