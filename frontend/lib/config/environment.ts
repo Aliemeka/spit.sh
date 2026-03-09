@@ -1,9 +1,9 @@
-const getEnv = (
-  name: string,
-  options?: { optional?: boolean },
-): string | undefined => {
+const getEnv = (name: string, options?: { optional?: boolean }): string => {
   const value = process.env[name];
-  if (!value && !options?.optional) {
+  if (!value) {
+    if (options?.optional) {
+      return "";
+    }
     throw new Error(`Missing required environment variable: ${name}`);
   }
   return value;
