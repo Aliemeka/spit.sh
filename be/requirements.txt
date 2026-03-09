@@ -14,4 +14,4 @@ alembic==1.11.1
 resend
 slowapi
 python-jose[cryptography]
-httpx
+httpx==0.28.1
