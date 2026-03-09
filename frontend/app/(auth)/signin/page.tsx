@@ -1,8 +1,43 @@
 "use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    const { error } = await authClient.emailOtp.sendVerificationOtp({
+      email,
+      type: "sign-in",
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      console.error("Error sending OTP:", error);
+      setIsLoading(false);
+      setError(error.message ?? "Failed to send code. Please try again.");
+      return;
+    }
+
+    router.push(`/verify?email=${encodeURIComponent(email)}`);
+  };
+
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    await authClient.signIn.social({ provider, callbackURL: "/dashboard" });
+  };
+
   return (
     <AuthLayout>
       <main className='w-full h-screen dot-overlay flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
@@ -18,17 +53,24 @@ export default function SignInPage() {
               <h3 className='text-2xl font-bold'>Sign in to your account</h3>
             </div>
           </div>
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={handleEmailSubmit}>
             <div>
               <label className='font-medium'>Email</label>
               <input
                 type='email'
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className='w-full mt-2 px-3 py-2 dark:bg-gray-800 dark:text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg focus:ring-offset-2 focus:ring-offset-transparent focus:ring-1 focus:ring-fuchsia-200 focus:shadow-lg focus:shadow-fuchsia-400/50'
               />
             </div>
-            <button className='w-full mt-4 px-4 py-2 text-white font-medium bg-fuchsia-600 focus:ring active:bg-fuchsia-500 rounded-lg duration-150'>
-              Sign in
+            {error && <p className='mt-2 text-sm text-red-500'>{error}</p>}
+            <button
+              type='submit'
+              disabled={isLoading}
+              className='w-full mt-4 px-4 py-2 text-white font-medium bg-fuchsia-600 focus:ring active:bg-fuchsia-500 rounded-lg duration-150 disabled:opacity-60 disabled:cursor-not-allowed'
+            >
+              {isLoading ? "Sending code..." : "Sign in"}
             </button>
           </form>
           <div className='relative'>
@@ -38,7 +80,10 @@ export default function SignInPage() {
             </p>
           </div>
           <div className='space-y-4 text-sm font-medium'>
-            <button className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100'>
+            <button
+              onClick={() => handleSocialSignIn("google")}
+              className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100'
+            >
               <svg
                 className='w-5 h-5'
                 viewBox='0 0 48 48'
@@ -71,7 +116,10 @@ export default function SignInPage() {
               </svg>
               Continue with Google
             </button>
-            <button className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100'>
+            <button
+              onClick={() => handleSocialSignIn("github")}
+              className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100'
+            >
               <svg
                 className='w-5 h-5 text-zinc-900 dark:text-zinc-200'
                 viewBox='0 0 48 48'

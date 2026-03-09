@@ -17,6 +17,15 @@ const fetchSlug = async (slug: string, retryTimes = 3) => {
 export async function middleware(request: NextRequest) {
   const slug = request.nextUrl.pathname.slice(1);
 
+  // Protect dashboard — redirect to sign-in if no session cookie
+  if (slug.startsWith("dashboard")) {
+    const sessionCookie = request.cookies.get("better-auth.session_token");
+    if (!sessionCookie) {
+      return NextResponse.redirect(new URL("/signin", request.url));
+    }
+    return NextResponse.next();
+  }
+
   // Skip middleware for specific paths
   if (
     slug === "" ||
@@ -24,7 +33,7 @@ export async function middleware(request: NextRequest) {
     slug.startsWith("_next") ||
     slug.startsWith("api/") ||
     slug.startsWith("signin") ||
-    slug.startsWith("dashboard")
+    slug.startsWith("verify")
   ) {
     return NextResponse.next();
   }

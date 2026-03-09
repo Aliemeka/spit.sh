@@ -1,12 +1,24 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 import React, { FC, PropsWithChildren } from "react";
+import { useRouter } from "next/navigation";
+import { useSession, signOut } from "@/lib/auth-client";
 
 const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
   children,
   title,
 }) => {
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/signin");
+  };
+
   return (
     <>
       <Head>
@@ -134,14 +146,12 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
                     </li>
 
                     <li>
-                      <form action='/logout'>
-                        <button
-                          type='submit'
-                          className='w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700'
-                        >
-                          Logout
-                        </button>
-                      </form>
+                      <button
+                        onClick={handleLogout}
+                        className='w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700'
+                      >
+                        Logout
+                      </button>
                     </li>
                   </ul>
                 </details>
@@ -150,26 +160,29 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
           </div>
 
           <div className='sticky inset-x-0 bottom-0 border-t border-gray-100 dark:border-gray-700'>
-            <a
-              href='#'
-              className='flex items-center gap-2 bg-white dark:bg-slate-900 p-4 hover:bg-gray-50 dark:text-slate-100 dark:hover:bg-slate-800'
-            >
-              <Image
-                alt='Man'
-                src=''
-                className='rounded-full object-cover'
-                height={40}
-                width={40}
-              />
-
+            <div className='flex items-center gap-2 bg-white dark:bg-slate-900 p-4 dark:text-slate-100'>
+              {session?.user.image ? (
+                <Image
+                  alt={session.user.name ?? "User"}
+                  src={session.user.image}
+                  className='rounded-full object-cover'
+                  height={40}
+                  width={40}
+                />
+              ) : (
+                <div className='h-10 w-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-medium text-sm'>
+                  {session?.user.name?.[0]?.toUpperCase() ?? session?.user.email?.[0]?.toUpperCase() ?? "?"}
+                </div>
+              )}
               <div>
                 <p className='text-xs'>
-                  <strong className='block font-medium'>Eric Frusciante</strong>
-
-                  <span> eric@frusciante.com </span>
+                  <strong className='block font-medium'>
+                    {session?.user.name ?? "—"}
+                  </strong>
+                  <span>{session?.user.email}</span>
                 </p>
               </div>
-            </a>
+            </div>
           </div>
         </aside>
         <section className='flex-1 h-screen relative'>
@@ -181,7 +194,7 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
               Spit.sh ✨
             </Link>
             <p className='text-sm'>
-              <strong className='block font-medium'>Eric Frusciante</strong>
+              <strong className='block font-medium'>{session?.user.name ?? session?.user.email}</strong>
             </p>
           </nav>
           <main className='p-6 md:px-10 relative'>
