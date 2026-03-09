@@ -1,11 +1,10 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi_login import LoginManager
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from utils.limiter import limiter
 
-from routers import linkRouter, authRouter
+from routers import linkRouter
 
 from typing import List
 
@@ -22,7 +21,7 @@ def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
         app.include_router(router, prefix=prefix)
 
 
-configure_routes([linkRouter.router, authRouter.router])
+configure_routes([linkRouter.router])
 
 origins = [
     "*",
