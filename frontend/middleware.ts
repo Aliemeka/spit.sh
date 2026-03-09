@@ -19,7 +19,9 @@ export async function middleware(request: NextRequest) {
 
   // Protect dashboard — redirect to sign-in if no session cookie
   if (slug.startsWith("dashboard")) {
-    const sessionCookie = request.cookies.get("better-auth.session_token");
+    const isLocalhost = (process.env.BETTER_AUTH_URL || "").startsWith("http://localhost");
+    const cookieName = isLocalhost ? "better-auth.session_token" : "__Secure-better-auth.session_token";
+    const sessionCookie = request.cookies.get(cookieName);
     if (!sessionCookie) {
       return NextResponse.redirect(new URL("/signin", request.url));
     }
