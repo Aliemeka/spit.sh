@@ -161,20 +161,13 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
 
           <div className='sticky inset-x-0 bottom-0 border-t border-gray-100 dark:border-gray-700'>
             <div className='flex items-center gap-2 bg-white dark:bg-slate-900 p-4 dark:text-slate-100'>
-              {session?.user.image ? (
-                <Image
-                  alt={session.user.name ?? "User"}
-                  src={session.user.image}
-                  className='rounded-full object-cover'
-                  height={40}
-                  width={40}
-                  unoptimized
-                />
-              ) : (
-                <div className='h-10 w-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-medium text-sm'>
-                  {session?.user.name?.[0]?.toUpperCase() ?? session?.user.email?.[0]?.toUpperCase() ?? "?"}
-                </div>
-              )}
+              <Image
+                alt={session?.user.name ?? "User"}
+                src={session?.user.image ?? `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session?.user.email ?? "user")}`}
+                className='rounded-full object-cover'
+                height={40}
+                width={40}
+              />
               <div>
                 <p className='text-xs'>
                   <strong className='block font-medium'>
