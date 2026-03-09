@@ -9,8 +9,6 @@ import React from "react";
 const Navbar = () => {
   const { data: session } = useSession();
 
-  console.log("Session in Navbar:", session?.user); // Debugging line to check session data
-
   return (
     <header className='absolute inset-x-0 z-30'>
       <nav className='flex py-4 md:py-6 px-12 w-full max-w-7xl items-center inset-x-auto justify-between dark:bg-zinc-900 dark:text-zinc-200 mx-auto bg-opacity-20'>
@@ -22,10 +20,13 @@ const Navbar = () => {
             <>
               <Link
                 href='/dashboard'
-                className='hidden md:flex items-center gap-x-2 bg-fuchsia-600 hover:bg-fuchsia-700 text-white text-sm font-medium px-4 py-2 rounded-full transition-colors duration-200'
+                className='hidden md:flex items-center gap-x-2 dark:text-zinc-200 text-sm font-medium hover:underline underline-offset-4'
               >
                 <Image
-                  src={session.user.image ?? `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session.user.email ?? "user")}`}
+                  src={
+                    session.user.image ??
+                    `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session.user.email ?? "user")}`
+                  }
                   alt={session.user.name ?? "User"}
                   width={22}
                   height={22}
@@ -35,7 +36,10 @@ const Navbar = () => {
               </Link>
               <Link href='/dashboard' className='md:hidden'>
                 <Image
-                  src={session.user.image ?? `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session.user.email ?? "user")}`}
+                  src={
+                    session.user.image ??
+                    `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session.user.email ?? "user")}`
+                  }
                   alt={session.user.name ?? "User"}
                   width={22}
                   height={22}
