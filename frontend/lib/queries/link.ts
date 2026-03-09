@@ -1,4 +1,4 @@
-import { API_URL } from "../config/environment";
+import { API_URL } from "../config/public_env";
 
 const linkUrl = API_URL + "/links";
 

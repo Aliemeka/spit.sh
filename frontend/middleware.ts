@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { API_URL } from "@/lib/config/environment";
+import { API_URL } from "@/lib/config/public_env";
 
 const fetchSlug = async (slug: string, retryTimes = 3) => {
   const response = await fetch(`${API_URL}/links/${slug}`, { method: "GET" });

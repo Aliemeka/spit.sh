@@ -9,14 +9,9 @@ const getEnv = (
   return value;
 };
 
-export const API_URL = getEnv("NEXT_PUBLIC_API_URL");
-
 // Better Auth
 export const BETTER_AUTH_URL = getEnv("BETTER_AUTH_URL");
 export const BETTER_AUTH_SECRET = getEnv("BETTER_AUTH_SECRET");
-export const NEXT_PUBLIC_BETTER_AUTH_URL = getEnv(
-  "NEXT_PUBLIC_BETTER_AUTH_URL",
-);
 
 // Database
 export const DATABASE_URL = getEnv("DATABASE_URL");
