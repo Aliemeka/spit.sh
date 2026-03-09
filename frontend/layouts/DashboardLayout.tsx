@@ -16,7 +16,7 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
 
   const handleLogout = async () => {
     await signOut();
-    router.push("/signin");
+    window.location.href = "/signin";
   };
 
   return (
@@ -163,7 +163,10 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
             <div className='flex items-center gap-2 bg-white dark:bg-slate-900 p-4 dark:text-slate-100'>
               <Image
                 alt={session?.user.name ?? "User"}
-                src={session?.user.image ?? `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session?.user.email ?? "user")}`}
+                src={
+                  session?.user.image ??
+                  `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session?.user.email ?? "user")}`
+                }
                 className='rounded-full object-cover'
                 height={40}
                 width={40}
@@ -188,7 +191,9 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
               Spit.sh ✨
             </Link>
             <p className='text-sm'>
-              <strong className='block font-medium'>{session?.user.name ?? session?.user.email}</strong>
+              <strong className='block font-medium'>
+                {session?.user.name ?? session?.user.email}
+              </strong>
             </p>
           </nav>
           <main className='p-6 md:px-10 relative'>
