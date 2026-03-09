@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas.linkSchema import LinkCreate
+from schemas.linkSchema import LinkCreate, LinkData
 from schemas.clickSchema import ClickCountResponse
 from crud.link import get_link, create_link
 from crud.click import get_link_clicks
@@ -41,7 +41,7 @@ async def get_click_count(slug: str, session: AsyncSession = Depends(get_session
     return ClickCountResponse(click_count=len(clicks), created_at=link.created_at)
 
 
-@router.get("/{slug}")
+@router.get("/{slug}", response_model=LinkData)
 @limiter.limit("30/minute")
 async def get_link_by_slug(
     request: Request,
