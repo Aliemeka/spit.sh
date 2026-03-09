@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas.linkSchema import LinkCreate
+from schemas.linkSchema import LinkCreate, LinkData
 from schemas.clickSchema import ClickCountResponse
 from crud.link import get_link, create_link
 from crud.click import get_link_clicks
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/links", tags=["short links"])
 @router.post("/", status_code=201)
 async def create_new_link(
     payload: LinkCreate, session: AsyncSession = Depends(get_session)
-):
+) -> LinkData:
     if payload.slug and payload.slug != "":
         exist_link = await get_link(payload.slug, session)
         if exist_link:
@@ -41,14 +41,14 @@ async def get_click_count(slug: str, session: AsyncSession = Depends(get_session
     return ClickCountResponse(click_count=len(clicks), created_at=link.created_at)
 
 
-@router.get("/{slug}")
+@router.get("/{slug}", response_model=LinkData)
 @limiter.limit("30/minute")
 async def get_link_by_slug(
     request: Request,
     slug: str,
     background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_session),
-):
+) -> LinkData:
     link = await get_link(slug, session)
     if not link:
         raise HTTPException(status_code=404, detail="Link does not exist")
