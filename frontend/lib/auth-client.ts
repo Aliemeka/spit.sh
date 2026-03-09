@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/react";
 import { emailOTPClient } from "better-auth/client/plugins";
-import { NEXT_PUBLIC_BETTER_AUTH_URL } from "@/lib/config/environment";
+import { NEXT_PUBLIC_BETTER_AUTH_URL } from "@/lib/config/public_env";
 
 const baseURL = NEXT_PUBLIC_BETTER_AUTH_URL;
 
