@@ -5,12 +5,12 @@ from schemas.linkSchema import LinkCreate, LinkData
 from models.base import Link
 
 
-async def get_link(slug: str, db: AsyncSession) -> LinkData:
+async def get_link(slug: str, db: AsyncSession) -> Link | None:
     result = await db.execute(select(Link).where(Link.slug == slug))
     link: Link = result.scalars().one_or_none()
     if link is None:
         return None
-    return LinkData(url=link.url, slug=link.slug, shortenUrl=link.shortenUrl)
+    return link
 
 
 async def create_link(
