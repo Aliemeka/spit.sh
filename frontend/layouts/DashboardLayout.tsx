@@ -168,6 +168,7 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
                   className='rounded-full object-cover'
                   height={40}
                   width={40}
+                  unoptimized
                 />
               ) : (
                 <div className='h-10 w-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-medium text-sm'>
