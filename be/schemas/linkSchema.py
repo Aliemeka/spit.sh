@@ -1,6 +1,5 @@
 from sqlmodel import SQLModel
 from pydantic import BaseModel
-from typing import Optional
 
 
 class LinkBase(BaseModel):
@@ -14,6 +13,10 @@ class LinkCreate(LinkBase):
 class LinkData(LinkBase):
     slug: str
     shortenUrl: str
+
+
+class LinkInfo(LinkData):
+    clicks: int
 
 
 class ClickBase(SQLModel):
