@@ -48,11 +48,11 @@ async def get_link_by_slug(
     slug: str,
     background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_session),
-) -> LinkData:
+):
     link = await get_link(slug, session)
     if not link:
         raise HTTPException(status_code=404, detail="Link does not exist")
 
     background_tasks.add_task(record_click, request.client.host, str(link.id), session)
 
-    return link
+    return LinkData(url=link.url, slug=link.slug, shortenUrl=link.shortenUrl)
