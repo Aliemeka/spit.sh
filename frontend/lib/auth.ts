@@ -30,7 +30,7 @@ export const auth = betterAuth({
         const { data, error } = await resend.emails.send({
           from: "Spit.sh <noreply@spit.sh>",
           to: email,
-          subject: "Your sign-in code",
+          subject: `Your sign-in code | ${new Date().toLocaleDateString("en-GB")} - ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`,
           text: `Your one-time sign-in code is: ${otp}\n\nThis code expires in 10 minutes.`,
         });
 
