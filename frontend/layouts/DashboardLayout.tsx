@@ -2,16 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Head from "next/head";
 import React, { FC, PropsWithChildren } from "react";
-import { useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 
-const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
-  children,
-  title,
-}) => {
-  const router = useRouter();
+const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { data: session } = useSession();
 
   const handleLogout = async () => {
@@ -21,9 +15,6 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
 
   return (
     <>
-      <Head>
-        <title>Spit.sh | Dashboard - {title}</title>
-      </Head>
       <main className='flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 relative'>
         <aside className='absolute left-0 inset-y-0 -translate-x-96 md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
           <div className='px-4 py-6'>
@@ -47,7 +38,7 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
               <li>
                 <details className='group [&_summary::-webkit-details-marker]:hidden'>
                   <summary className='flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700'>
-                    <span className='text-sm font-medium'> Teams </span>
+                    <span className='text-sm font-medium'> Links </span>
 
                     <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
                       <svg
@@ -71,7 +62,7 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
                         href=''
                         className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
                       >
-                        Banned Users
+                        All Links
                       </a>
                     </li>
 
@@ -184,16 +175,9 @@ const DashboardLayout: FC<PropsWithChildren<{ title: string }>> = ({
         </aside>
         <section className='flex-1 h-screen relative'>
           <nav className='py-5 px-6 border-b bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 flex w-full justify-between items-center relative'>
-            <Link
-              href='/'
-              className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl'
-            >
-              Spit.sh ✨
-            </Link>
-            <p className='text-sm'>
-              <strong className='block font-medium'>
-                {session?.user.name ?? session?.user.email}
-              </strong>
+            <h1 className='text-lg font-semibold'>Dashboard</h1>
+            <p className='text-xs font-medium px-3 py-1.5 border border-fuchsia-200 dark:border-fuchsia-900 text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-950/50 rounded-full'>
+              Currently in beta
             </p>
           </nav>
           <main className='p-6 md:px-10 relative'>
