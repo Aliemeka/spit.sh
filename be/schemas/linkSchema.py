@@ -1,5 +1,9 @@
+from uuid import UUID
+
 from sqlmodel import SQLModel
 from pydantic import BaseModel
+from tomlkit import datetime
+
 
 class LinkBase(BaseModel):
     url: str
@@ -16,6 +20,14 @@ class LinkData(LinkBase):
 
 class LinkInfo(LinkData):
     clicks: int
+
+
+class LinkResponse(LinkInfo):
+    id: UUID
+
+    project_id: UUID | None
+    created_at: datetime
+    last_edited: datetime
 
 
 class ClickBase(SQLModel):

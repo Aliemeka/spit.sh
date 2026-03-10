@@ -1,7 +1,8 @@
+from uuid import UUID
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas.linkSchema import LinkCreate, LinkData
+from schemas.linkSchema import LinkCreate, LinkData, LinkInfo
 from models.base import Link
 
 
@@ -21,3 +22,20 @@ async def create_link(
     await db.commit()
     await db.refresh(link)
     return LinkData(url=link.url, slug=link.slug, shortenUrl=link.shortenUrl)
+
+
+async def create_link_with_user(
+    linkData: LinkCreate, short_link: str, project_id: UUID, db: AsyncSession
+) -> LinkInfo:
+    link = Link(
+        url=linkData.url,
+        slug=linkData.slug,
+        shortenUrl=short_link,
+        project_id=project_id,
+    )
+    db.add(link)
+    await db.commit()
+    await db.refresh(link)
+    return LinkInfo(
+        id=link.id, url=link.url, slug=link.slug, shortenUrl=link.shortenUrl, clicks=[]
+    )
