@@ -5,6 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 function VerifyForm() {
   const router = useRouter();
@@ -17,12 +24,11 @@ function VerifyForm() {
   const [error, setError] = useState("");
   const [resendMessage, setResendMessage] = useState("");
 
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const verify = async (code: string) => {
     setIsVerifying(true);
     setError("");
 
-    const { error } = await authClient.signIn.emailOtp({ email, otp });
+    const { error } = await authClient.signIn.emailOtp({ email, otp: code });
 
     setIsVerifying(false);
 
@@ -32,6 +38,17 @@ function VerifyForm() {
     }
 
     router.push("/dashboard");
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await verify(otp);
+  };
+
+  const handleOtpChange = (value: string) => {
+    setOtp(value);
+    setError("");
+    if (value.length === 6) verify(value);
   };
 
   const handleResend = async () => {
@@ -74,21 +91,32 @@ function VerifyForm() {
           </div>
 
           <form onSubmit={handleVerify}>
-            <div>
+            <div className='flex flex-col items-center gap-3'>
               <label className='font-medium'>One-time code</label>
-              <input
-                type='text'
-                inputMode='numeric'
-                pattern='[0-9]*'
+              <InputOTP
                 maxLength={6}
-                required
+                pattern={REGEXP_ONLY_DIGITS}
                 value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                placeholder='000000'
-                className='w-full mt-2 px-3 py-2 tracking-widest text-center text-lg dark:bg-gray-800 dark:text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg focus:ring-offset-2 focus:ring-offset-transparent focus:ring-1 focus:ring-fuchsia-200 focus:shadow-lg focus:shadow-fuchsia-400/50'
-              />
+                onChange={handleOtpChange}
+                disabled={isVerifying}
+                inputMode='numeric'
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} aria-invalid={!!error} autoFocus />
+                  <InputOTPSlot index={1} aria-invalid={!!error} />
+                  <InputOTPSlot index={2} aria-invalid={!!error} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} aria-invalid={!!error} />
+                  <InputOTPSlot index={4} aria-invalid={!!error} />
+                  <InputOTPSlot index={5} aria-invalid={!!error} />
+                </InputOTPGroup>
+              </InputOTP>
             </div>
-            {error && <p className='mt-2 text-sm text-red-500'>{error}</p>}
+            {error && (
+              <p className='mt-2 text-sm text-red-500 text-center'>{error}</p>
+            )}
             {resendMessage && (
               <p className='mt-2 text-sm text-green-500'>{resendMessage}</p>
             )}
