@@ -127,7 +127,7 @@ class UserProfileResponse(BaseModel):
 #### `be/schemas/projectSchema.py` — new file
 
 ```python
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -151,16 +151,18 @@ class ProjectResponse(BaseModel):
 
 #### `be/crud/user.py` — add `update_user_profile`
 
+Returns `None` if the user doesn't exist — the router raises the 404. Keeps the CRUD layer free of HTTP concerns.
+
 ```python
 async def update_user_profile(
     user_id: uuid.UUID,
     data: UpdateProfileRequest,
     db: AsyncSession,
-) -> User:
+) -> Optional[User]:
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalars().one_or_none()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        return None
     user.first_name = data.first_name
     user.last_name = data.last_name
     if data.image is not None:
@@ -172,7 +174,12 @@ async def update_user_profile(
 
 #### `be/crud/project.py` — new file
 
+Catches `IntegrityError` (slug conflict) and re-raises as `HTTPException(409)`. All other DB errors propagate naturally.
+
 ```python
+from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException
+
 async def create_project(
     data: ProjectCreate,
     user_id: uuid.UUID,
@@ -180,7 +187,11 @@ async def create_project(
 ) -> Project:
     project = Project(name=data.name, slug=data.slug, logo=data.logo)
     db.add(project)
-    await db.flush()  # get project.id before commit
+    try:
+        await db.flush()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(status_code=409, detail="Slug already taken")
     membership = ProjectUsers(
         project_id=project.id,
         user_id=user_id,
@@ -191,6 +202,8 @@ async def create_project(
     await db.refresh(project)
     return project
 ```
+
+> Note: `IntegrityError` from a slug conflict is a data-level concern so it's acceptable to raise `HTTPException` here. The router stays thin.
 
 ---
 
@@ -361,7 +374,8 @@ export const createProject = async (
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { updateProfile, createProject } from "@/lib/queries";
+import { updateProfile } from "@/lib/queries/user";
+import { createProject } from "@/lib/queries/project";
 
 export function useOnboarding(token: string) {
   const [step, setStep] = useState<1 | 2>(1);
@@ -377,7 +391,7 @@ export function useOnboarding(token: string) {
     router.push("/dashboard");
   };
 
-  return { step, setStep, submitProfile, submitProject };
+  return { step, setStep, isLoading, submitProfile, submitProject };
 }
 ```
 
@@ -385,24 +399,23 @@ export function useOnboarding(token: string) {
 
 ### Middleware Update — `frontend/middleware.ts`
 
-After the existing session auth check, add:
+Add `/onboarding` to the list of protected routes (requires session). Then add redirect logic after the existing session check:
 
 ```typescript
-// Redirect authenticated users without a profile to onboarding
-if (session?.user && !session.user.name?.includes(" ")) {
-  // Better: check first_name from a custom session field or API call
-  // For now: redirect /dashboard → /onboarding if firstName is absent
-  if (req.nextUrl.pathname.startsWith("/dashboard") && !session.user.firstName) {
-    return NextResponse.redirect(new URL("/onboarding", req.url));
-  }
+// Unauthenticated users hitting /onboarding → /signin (handled by existing protected route guard)
+
+// Authenticated users without first_name → redirect /dashboard to /onboarding
+if (req.nextUrl.pathname.startsWith("/dashboard") && !session.user.firstName) {
+  return NextResponse.redirect(new URL("/onboarding", req.url));
 }
-// Redirect completed users away from onboarding
-if (req.nextUrl.pathname.startsWith("/onboarding") && session?.user?.firstName) {
+
+// Authenticated users who completed onboarding → redirect /onboarding to /dashboard
+if (req.nextUrl.pathname.startsWith("/onboarding") && session.user.firstName) {
   return NextResponse.redirect(new URL("/dashboard", req.url));
 }
 ```
 
-> **Note:** `better-auth` may need the `firstName` field exposed in the session. If not available by default, fetch `/api/v1/users/me` inside the onboarding page on mount and redirect if already complete.
+> `session.user.firstName` requires `better-auth` to expose the field. If it isn't available in the session object by default, handle the redirect inside `onboarding/page.tsx` on mount: call `getProfile(token)` and `router.replace("/dashboard")` if `first_name` is already set.
 
 ---
 
