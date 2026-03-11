@@ -35,7 +35,7 @@ export default function SignInPage() {
   };
 
   const handleSocialSignIn = async (provider: "google" | "github") => {
-    await authClient.signIn.social({ provider, callbackURL: "/dashboard" });
+    await authClient.signIn.social({ provider, callbackURL: "/callback" });
   };
 
   return (
