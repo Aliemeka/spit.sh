@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getSessionToken } from "@/app/actions/auth";
 import { getProjectsAction } from "@/app/actions/project";
 import DashboardHomeNavbar from "@/components/DashboardHomeNavbar";
 
