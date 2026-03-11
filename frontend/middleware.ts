@@ -27,8 +27,8 @@ const getSessionCookie = (request: NextRequest) => {
 export async function middleware(request: NextRequest) {
   const slug = request.nextUrl.pathname.slice(1);
 
-  // Protect dashboard — redirect to sign-in if no session cookie
-  if (slug.startsWith("dashboard")) {
+  // Protect dashboard and onboarding — redirect to sign-in if no session cookie
+  if (slug.startsWith("dashboard") || slug.startsWith("onboarding")) {
     const sessionCookie = getSessionCookie(request);
     if (!sessionCookie) {
       return NextResponse.redirect(new URL("/signin", request.url));
@@ -48,10 +48,6 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to dashboard if user is already signed in and tries to access sign-in or verify pages
   if (slug.startsWith("signin") || slug.startsWith("verify")) {
-    const sessionCookie = getSessionCookie(request);
-    if (sessionCookie) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
     return NextResponse.next();
   }
 

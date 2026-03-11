@@ -4,12 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC, PropsWithChildren } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
+import { deleteUserCookie } from "@/app/actions/auth";
 
 const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { data: session } = useSession();
 
   const handleLogout = async () => {
-    await signOut();
+    await Promise.all([signOut(), deleteUserCookie()]);
     window.location.href = "/signin";
   };
 

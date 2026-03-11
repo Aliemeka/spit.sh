@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { emailOTP } from "better-auth/plugins";
+import { emailOTP, bearer } from "better-auth/plugins";
 import { Pool } from "pg";
 import { Resend } from "resend";
 import {
@@ -25,6 +25,7 @@ export const auth = betterAuth({
   baseURL: BETTER_AUTH_URL,
   secret: BETTER_AUTH_SECRET,
   plugins: [
+    bearer(),
     emailOTP({
       async sendVerificationOTP({ email, otp }) {
         const { data, error } = await resend.emails.send({
