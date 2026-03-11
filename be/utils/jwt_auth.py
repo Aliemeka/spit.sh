@@ -11,7 +11,6 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
 ) -> dict:
     token = credentials.credentials
-    print("Received token:", token)  # Debugging statement
     try:
         payload = jwt.decode(
             token,
