@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import UserCircle from "../icons/UserCircle";
 import ArrowRight from "../icons/ArrowRight";
+import { useSession } from "@/lib/auth-client";
+import { useEffect } from "react";
 
 interface Props {
   onSubmit: (values: {
@@ -22,11 +24,24 @@ const validationSchema = Yup.object({
 });
 
 export default function PersonalDetailsStep({ onSubmit, isLoading }: Props) {
+  const { data: session } = useSession();
+  const name = session?.user?.name || "";
+  const [first_name, last_name] = name.split(" ");
   const formik = useFormik({
-    initialValues: { first_name: "", last_name: "" },
+    initialValues: { first_name: first_name || "", last_name: last_name || "" },
     validationSchema,
     onSubmit,
   });
+
+  useEffect(() => {
+    if (session?.user?.name) {
+      const [first_name, last_name] = session.user.name.split(" ");
+      formik.setValues({
+        first_name: first_name || "",
+        last_name: last_name || "",
+      });
+    } // Run this effect whenever the session user name changes
+  }, [session?.user?.name]); // Run this effect whenever the session user name changes
 
   return (
     <div>
