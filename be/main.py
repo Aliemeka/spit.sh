@@ -38,6 +38,7 @@ app.add_middleware(
 
 
 @app.get("/")
+@limiter.limit("10/minute")
 async def main():
     return {"message": "Hello World!"}
 

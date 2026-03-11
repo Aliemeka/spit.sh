@@ -16,6 +16,7 @@ router = APIRouter(prefix="/links", tags=["short links"])
 
 
 @router.post("/", status_code=201)
+@limiter.limit("5/minute")
 async def create_new_link(
     payload: LinkCreate, session: AsyncSession = Depends(get_session)
 ) -> LinkData:
@@ -33,6 +34,7 @@ async def create_new_link(
 
 
 @router.get("/{slug}/click-count", response_model=ClickCountResponse)
+@limiter.limit("30/minute")
 async def get_click_count(slug: str, session: AsyncSession = Depends(get_session)):
     link = await get_link(slug, session)
     if not link:
