@@ -29,6 +29,7 @@ class User(SQLModel, table=True):
 
     first_name: Optional[str] = Field(nullable=True, max_length=20)
     last_name: Optional[str] = Field(nullable=True, max_length=25)
+    image: Optional[str] = Field(default=None, nullable=True)
 
     #     # Relationships
     projects: List["Project"] = Relationship(
