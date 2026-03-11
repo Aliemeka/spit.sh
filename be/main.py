@@ -4,7 +4,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from utils.limiter import limiter
 
-from routers import linkRouter
+from routers import linkRouter, userRouter, projectRouter
 
 from typing import List
 
@@ -21,7 +21,7 @@ def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
         app.include_router(router, prefix=prefix)
 
 
-configure_routes([linkRouter.router])
+configure_routes([linkRouter.router, userRouter.router, projectRouter.router])
 
 origins = [
     "*",
