@@ -16,3 +16,4 @@ class ProjectResponse(BaseModel):
     slug: str
     logo: Optional[str]
     created_at: datetime
+    links_count: int = 0

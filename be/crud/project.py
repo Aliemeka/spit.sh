@@ -1,11 +1,12 @@
 import uuid
-from typing import List
+from typing import List, Tuple
 from sqlalchemy.future import select
+from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
-from models.base import Project, ProjectUsers, ProjectRole
+from models.base import Project, ProjectUsers, ProjectRole, Link
 from schemas.projectSchema import ProjectCreate
 
 
@@ -32,10 +33,15 @@ async def create_project(
     return project
 
 
-async def get_user_projects(user_id: uuid.UUID, db: AsyncSession) -> List[Project]:
-    result = await db.execute(
-        select(Project)
+async def get_user_projects(
+    user_id: uuid.UUID, db: AsyncSession
+) -> List[Tuple[Project, int]]:
+    stmt = (
+        select(Project, func.count(Link.id).label("links_count"))
         .join(ProjectUsers, ProjectUsers.project_id == Project.id)
+        .outerjoin(Link, Link.project_id == Project.id)
         .where(ProjectUsers.user_id == user_id)
+        .group_by(Project.id)
     )
-    return result.scalars().all()
+    result = await db.execute(stmt)
+    return result.all()

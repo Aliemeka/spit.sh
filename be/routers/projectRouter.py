@@ -27,4 +27,8 @@ async def list_projects(
     session: AsyncSession = Depends(get_session),
 ):
     user_id = uuid.UUID(current_user["sub"])
-    return await get_user_projects(user_id, session)
+    rows = await get_user_projects(user_id, session)
+    return [
+        ProjectResponse(**row[0].dict(), links_count=row[1])
+        for row in rows
+    ]
