@@ -12,7 +12,6 @@ export const createProject = async (
 };
 
 export const getProjects = async (token: string) => {
-  console.log("Fetching projects with token:", token); // Debug log
   const res = await axios.get(`${API_URL}/projects/`, {
     headers: { Authorization: `Bearer ${token}` },
   });
