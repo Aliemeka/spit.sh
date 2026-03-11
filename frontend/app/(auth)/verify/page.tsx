@@ -12,6 +12,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { setUserCookie } from "@/app/actions/auth";
 
 function VerifyForm() {
   const router = useRouter();
@@ -28,13 +29,21 @@ function VerifyForm() {
     setIsVerifying(true);
     setError("");
 
-    const { error } = await authClient.signIn.emailOtp({ email, otp: code });
+    const { data, error } = await authClient.signIn.emailOtp({
+      email,
+      otp: code,
+    });
 
     setIsVerifying(false);
 
     if (error) {
       setError(error.message ?? "Invalid code. Please try again.");
       return;
+    }
+
+    const userId = data?.user?.id;
+    if (userId) {
+      await setUserCookie(userId);
     }
 
     router.push("/dashboard");

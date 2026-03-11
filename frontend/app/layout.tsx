@@ -1,5 +1,6 @@
 import { PlusJakartaSans } from "@/lib/font";
 import Provider from "@/providers/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body style={PlusJakartaSans.style}>
-        <Provider>{children}</Provider>
+        <Provider>
+          <Toaster position='top-right' richColors />
+          {children}
+        </Provider>
       </body>
     </html>
   );
