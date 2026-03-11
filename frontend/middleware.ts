@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to dashboard if user is already signed in and tries to access sign-in or verify pages
-  if (slug.startsWith("signin") || slug.startsWith("verify")) {
+  if (slug.startsWith("signin") || slug.startsWith("verify") || slug.startsWith("callback")) {
     return NextResponse.next();
   }
 
