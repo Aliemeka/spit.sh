@@ -44,5 +44,6 @@ async def main():
 
 
 @app.get("/get/{id}")
+@limiter.limit("10/minute")
 async def find(id: int):
     return {"id": id}
