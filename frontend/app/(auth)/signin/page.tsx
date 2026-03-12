@@ -40,7 +40,7 @@ export default function SignInPage() {
 
   return (
     <AuthLayout>
-      <main className='w-full h-screen dot-overlay flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
+      <main className='w-full h-screen flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
         <div className='max-w-sm w-full space-y-8'>
           <div className='text-center'>
             <Link
@@ -75,7 +75,7 @@ export default function SignInPage() {
           </form>
           <div className='relative'>
             <span className='block w-full h-px bg-gray-300'></span>
-            <p className='inline-block w-fit text-sm bg-white dark:bg-zinc-900 px-2 absolute -top-2 inset-x-0 mx-auto'>
+            <p className='inline-block w-fit text-sm bg-zinc-100 dark:bg-zinc-900 px-2 absolute -top-2 inset-x-0 mx-auto'>
               Or continue with
             </p>
           </div>

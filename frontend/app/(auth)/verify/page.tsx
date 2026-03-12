@@ -1,5 +1,4 @@
 "use client";
-
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import AuthLayout from "@/layouts/AuthLayout";
@@ -82,7 +81,7 @@ function VerifyForm() {
 
   return (
     <AuthLayout>
-      <main className='w-full h-screen dot-overlay flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
+      <main className='w-full h-screen flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
         <div className='max-w-sm w-full space-y-8'>
           <div className='text-center'>
             <Link
