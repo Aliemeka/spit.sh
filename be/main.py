@@ -23,10 +23,7 @@ def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
 
 configure_routes([linkRouter.router, userRouter.router, projectRouter.router])
 
-origins = [
-    "*",
-    "http://localhost:8000",
-]
+origins = ["http://localhost:3001", "http://localhost:8000", "https://spit.sh"]
 
 app.add_middleware(
     CORSMiddleware,
