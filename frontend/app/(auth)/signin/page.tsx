@@ -40,7 +40,7 @@ export default function SignInPage() {
 
   return (
     <AuthLayout>
-      <main className='w-full h-screen flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200'>
+      <main className='w-full h-screen flex flex-col items-center justify-center px-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 relative'>
         <div className='max-w-sm w-full space-y-8'>
           <div className='text-center'>
             <Link
@@ -139,6 +139,22 @@ export default function SignInPage() {
             </button>
           </div>
         </div>
+        <footer className='absolute bottom-8 text-center text-sm text-zinc-500 dark:text-zinc-300 w-full'>
+          By signing in, you agree to Spit.sh's{"  "}
+          <Link
+            href='/legal/terms'
+            className='font-medium underline underline-offset-4 text-zinc-600 dark:text-zinc-200 hover:text-fuchsia-500 dark:hover:text-fuchsia-400 transition-colors'
+          >
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link
+            href='/legal/privacy'
+            className='font-medium underline underline-offset-4 text-zinc-600 dark:text-zinc-200 hover:text-fuchsia-500 dark:hover:text-fuchsia-400 transition-colors'
+          >
+            Privacy Policy
+          </Link>
+        </footer>
       </main>
     </AuthLayout>
   );
