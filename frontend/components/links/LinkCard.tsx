@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
-  const { toastSuccess, toastError } = useToast();
+  const { toastSuccess, toastError, toastNeutral } = useToast();
   const [copied, setCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -45,6 +45,7 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
 
   const copyShortUrl = () => {
     navigator.clipboard.writeText(link.shortenUrl);
+    toastNeutral("Link copied to clipboard!");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
