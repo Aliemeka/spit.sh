@@ -21,5 +21,21 @@ export function useToast() {
     }
   };
 
-  return { showToast };
+  const toastError = (message: string) => {
+    toast.error(message);
+  };
+
+  const toastSuccess = (message: string) => {
+    toast.success(message);
+  };
+
+  const toastWarning = (message: string) => {
+    toast.warning(message);
+  };
+
+  const toastNeutral = (message: string) => {
+    toast(message);
+  };
+
+  return { showToast, toastError, toastSuccess, toastWarning, toastNeutral };
 }

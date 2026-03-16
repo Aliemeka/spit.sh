@@ -1,4 +1,5 @@
 import DashboardSidebar from "@/components/blocks/DashboardSidebar";
+import QueryProvider from "@/providers/QueryProvider";
 import type { Metadata } from "next/types";
 
 export const metadata: Metadata = {
@@ -25,7 +26,9 @@ export default async function DashLayout({
             Currently in beta
           </p>
         </nav>
-        <main className='p-6 md:px-10 relative'>{children}</main>
+        <main className='p-6 md:px-10 relative w-dvw md:w-full'>
+          <QueryProvider>{children}</QueryProvider>
+        </main>
       </section>
     </main>
   );
