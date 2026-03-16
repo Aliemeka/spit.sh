@@ -1,10 +1,11 @@
 import EmptyState from "@/components/blocks/EmptyState";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import React from "react";
 
-export default function DashboardPage() {
+const LinkPage = () => {
   return (
     <DashboardLayout
-      title='Home'
+      title='Links'
       SideButton={
         <button className='inline-flex items-center rounded-full bg-fuchsia-600 px-8 py-3 text-sm font-semibold text-white gap-x-1 focus:outline-none focus:ring active:bg-indigo-500'>
           <span>Create new link</span>
@@ -36,4 +37,6 @@ export default function DashboardPage() {
       </EmptyState>
     </DashboardLayout>
   );
-}
+};
+
+export default LinkPage;
