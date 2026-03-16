@@ -170,7 +170,8 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDelete}
-                  className='bg-red-600 hover:bg-red-700 text-white'
+                  disabled={deleting}
+                  className='bg-red-600 hover:bg-red-700 text-white disabled:opacity-50'
                 >
                   {deleting ? "Deleting…" : "Delete"}
                 </AlertDialogAction>
