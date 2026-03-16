@@ -1,17 +1,46 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { deleteUserCookie } from "@/app/actions/auth";
 import Image from "next/image";
 
+const activeClass =
+  "block rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200";
+const inactiveClass =
+  "block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700";
+
+const ChevronIcon = () => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    className='h-5 w-5'
+    viewBox='0 0 20 20'
+    fill='currentColor'
+  >
+    <path
+      fillRule='evenodd'
+      d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
+      clipRule='evenodd'
+    />
+  </svg>
+);
+
 const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
   const { data: session } = useSession();
+  const pathname = usePathname();
+
+  const isActive = (href: string) => pathname === href;
 
   const handleLogout = async () => {
     await Promise.all([signOut(), deleteUserCookie()]);
     window.location.href = "/signin";
   };
+
+  const linksChildren = [`/dashboard/${workspaceSlug}/links`];
+  const accountChildren: string[] = [];
+  const isLinksOpen = linksChildren.some(isActive);
+  const isAccountOpen = accountChildren.some(isActive);
 
   return (
     <aside className='absolute left-0 inset-y-0 -translate-x-96 md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
@@ -27,47 +56,35 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
           <li>
             <Link
               href={`/dashboard/${workspaceSlug}`}
-              className='block rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200'
+              className={isActive(`/dashboard/${workspaceSlug}`) ? activeClass : inactiveClass}
             >
               Home
             </Link>
           </li>
 
           <li>
-            <details className='group [&_summary::-webkit-details-marker]:hidden'>
+            <details open={isLinksOpen} className='group [&_summary::-webkit-details-marker]:hidden'>
               <summary className='flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700'>
                 <span className='text-sm font-medium'> Links </span>
-
                 <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-5 w-5'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                  >
-                    <path
-                      fillRule='evenodd'
-                      d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                      clipRule='evenodd'
-                    />
-                  </svg>
+                  <ChevronIcon />
                 </span>
               </summary>
 
               <ul className='mt-2 space-y-1 px-4'>
                 <li>
-                  <a
+                  <Link
                     href={`/dashboard/${workspaceSlug}/links`}
-                    className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                    className={isActive(`/dashboard/${workspaceSlug}/links`) ? activeClass : inactiveClass}
                   >
                     All Links
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
                   <a
                     href=''
-                    className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                    className={inactiveClass}
                   >
                     Calendar
                   </a>
@@ -79,7 +96,7 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
           <li>
             <a
               href=''
-              className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+              className={inactiveClass}
             >
               Analytics
             </a>
@@ -88,7 +105,7 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
           <li>
             <a
               href=''
-              className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+              className={inactiveClass}
             >
               Pages
             </a>
@@ -97,30 +114,18 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
           <li>
             <a
               href=''
-              className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+              className={inactiveClass}
             >
               Invoices
             </a>
           </li>
 
           <li>
-            <details className='group [&_summary::-webkit-details-marker]:hidden'>
+            <details open={isAccountOpen} className='group [&_summary::-webkit-details-marker]:hidden'>
               <summary className='flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700'>
                 <span className='text-sm font-medium'> Account </span>
-
                 <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-5 w-5'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                  >
-                    <path
-                      fillRule='evenodd'
-                      d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                      clipRule='evenodd'
-                    />
-                  </svg>
+                  <ChevronIcon />
                 </span>
               </summary>
 
@@ -128,7 +133,7 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
                 <li>
                   <a
                     href=''
-                    className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                    className={inactiveClass}
                   >
                     Settings
                   </a>
@@ -137,7 +142,7 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
                 <li>
                   <a
                     href=''
-                    className='block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                    className={inactiveClass}
                   >
                     Team
                   </a>
