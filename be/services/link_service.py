@@ -32,7 +32,7 @@ def get_device_type(user_agent: str) -> str:
 
 
 async def record_click(ip: str, link_id: str, user_agent: str, session: AsyncSession):
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     geo = await loop.run_in_executor(None, _resolve_geo, ip)
     device = get_device_type(user_agent)
     click_payload = ClickCreate(
