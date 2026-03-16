@@ -9,7 +9,7 @@ python-dotenv
 SQLAlchemy
 uvicorn
 sqlmodel==0.0.8
-ip2geotools
+geoip2==5.2.0
 alembic==1.11.1
 resend
 slowapi
