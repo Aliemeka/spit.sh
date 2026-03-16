@@ -12,6 +12,7 @@ class ClickBase(BaseModel):
 
 class ClickCreate(ClickBase):
     link_id: str
+    device: str = "unknown"
 
 
 class ClickReponse(ClickCreate):

@@ -14,6 +14,7 @@ async def create_click(payload: ClickCreate, db: AsyncSession) -> Click:
         country_code=payload.country_code,
         link_id=payload.link_id,
         ip_address=payload.ip_address,
+        device=payload.device,
     )
     db.add(click)
     await db.commit()

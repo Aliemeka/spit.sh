@@ -55,6 +55,7 @@ async def get_link_by_slug(
     if not link:
         raise HTTPException(status_code=404, detail="Link does not exist")
 
-    background_tasks.add_task(record_click, request.client.host, str(link.id), session)
+    user_agent = request.headers.get("user-agent", "")
+    background_tasks.add_task(record_click, request.client.host, str(link.id), user_agent, session)
 
     return LinkData(url=link.url, slug=link.slug, shortenUrl=link.shortenUrl)
