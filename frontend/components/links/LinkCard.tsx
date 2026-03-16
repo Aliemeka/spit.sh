@@ -2,6 +2,17 @@
 
 import React, { useState } from "react";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   ArrowsClockwiseIcon,
   CalendarBlankIcon,
   ChartBarIcon,
@@ -133,15 +144,39 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
           >
             <ChartBarIcon size={15} />
           </button>
-          <button
-            type='button'
-            onClick={handleDelete}
-            disabled={deleting}
-            className='p-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-950 hover:text-red-600 dark:hover:text-red-400 transition disabled:opacity-50'
-            title='Delete'
-          >
-            <TrashIcon size={15} />
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                type='button'
+                disabled={deleting}
+                className='p-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-950 hover:text-red-600 dark:hover:text-red-400 transition disabled:opacity-50'
+                title='Delete'
+              >
+                <TrashIcon size={15} />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className='bg-white border-zinc-200 text-zinc-900 dark:bg-white dark:border-zinc-200 dark:text-zinc-900'>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete link?</AlertDialogTitle>
+                <AlertDialogDescription className='text-zinc-500 dark:text-zinc-500'>
+                  This will permanently delete{" "}
+                  <span className='font-medium text-zinc-800 dark:text-zinc-200'>
+                    {link.shortenUrl}
+                  </span>{" "}
+                  and all its click data. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className='bg-red-600 hover:bg-red-700 text-white'
+                >
+                  {deleting ? "Deleting…" : "Delete"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 
