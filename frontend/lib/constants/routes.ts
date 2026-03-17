@@ -1,6 +1,3 @@
-import { link } from "fs";
-import { pages } from "next/dist/build/templates/app-page";
-
 export const marketingRoutes = {
   home: "/",
   pricing: "/pricing",
@@ -14,6 +11,7 @@ export const authRoutes = {
 };
 
 export const onboardingRoutes = {
+  index: "/onboarding",
   welcome: "/onboarding/welcome",
   createProject: "/onboarding/create-workspace",
 };
@@ -29,6 +27,7 @@ export const dashboardRoutes = {
 };
 
 export const linkRoutes = {
+  newLink: (slug: string) => `/dashboard/${slug}/links?action=new_link`,
   linkDetails: (projectSlug: string, linkId: string) =>
     `/dashboard/${projectSlug}/links/${linkId}`,
 };

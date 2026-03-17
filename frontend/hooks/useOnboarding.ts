@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { updateProfileAction } from "@/app/actions/user";
 import { createProjectAction } from "@/app/actions/project";
 import { useToast } from "@/hooks/useToast";
+import { dashboardRoutes } from "@/lib/constants/routes";
 
 export function useOnboarding() {
   const [step, setStep] = useState<1 | 2>(1);
@@ -36,7 +37,7 @@ export function useOnboarding() {
     try {
       await createProjectAction(values);
       showToast("Project created!", "success");
-      router.push("/dashboard");
+      router.push(dashboardRoutes.home);
     } catch (err: any) {
       if (err?.response?.status === 409) {
         showToast(

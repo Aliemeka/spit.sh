@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getProjectsAction } from "@/app/actions/project";
 import DashboardHomeNavbar from "@/components/DashboardHomeNavbar";
+import { onboardingRoutes, dashboardRoutes } from "@/lib/constants/routes";
 
 interface Project {
   id: string;
@@ -16,11 +17,11 @@ export default async function DashboardPage() {
   try {
     projects = await getProjectsAction();
   } catch {
-    redirect("/onboarding");
+    redirect(onboardingRoutes.index);
   }
 
-  if (projects.length === 0) redirect("/onboarding");
-  if (projects.length === 1) redirect(`/dashboard/${projects[0].slug}`);
+  if (projects.length === 0) redirect(onboardingRoutes.index);
+  if (projects.length === 1) redirect(dashboardRoutes.project(projects[0].slug));
 
   return (
     <div className='min-h-screen bg-zinc-950 text-zinc-100'>
@@ -34,7 +35,7 @@ export default async function DashboardPage() {
             {projects.map((project) => (
               <li key={project.id}>
                 <Link
-                  href={`/dashboard/${project.slug}`}
+                  href={dashboardRoutes.project(project.slug)}
                   className='flex flex-col justify-between border border-zinc-700 rounded-xl p-6 h-44 hover:border-fuchsia-500 hover:bg-zinc-800/30 transition-all'
                 >
                   <h2 className='text-base font-semibold text-zinc-100'>

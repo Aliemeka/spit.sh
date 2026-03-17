@@ -6,6 +6,7 @@ import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import Input from "@/components/ui/input";
+import { authRoutes, marketingRoutes } from "@/lib/constants/routes";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function SignInPage() {
       return;
     }
 
-    router.push(`/verify?email=${encodeURIComponent(email)}`);
+    router.push(`${authRoutes.verify}?email=${encodeURIComponent(email)}`);
   };
 
   const handleSocialSignIn = async (provider: "google" | "github") => {
@@ -45,7 +46,7 @@ export default function SignInPage() {
         <div className='max-w-sm w-full space-y-8'>
           <div className='text-center'>
             <Link
-              href='/'
+              href={marketingRoutes.home}
               className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-3xl md:text-4xl'
             >
               Spit.sh ✨
@@ -140,14 +141,14 @@ export default function SignInPage() {
         <footer className='absolute bottom-8 text-center text-sm text-zinc-500 dark:text-zinc-300 w-full'>
           By signing in, you agree to Spit.sh's{"  "}
           <Link
-            href='/legal/terms'
+            href={marketingRoutes.terms}
             className='font-medium underline underline-offset-4 text-zinc-600 dark:text-zinc-200 hover:text-fuchsia-500 dark:hover:text-fuchsia-400 transition-colors'
           >
             Terms of Service
           </Link>{" "}
           and{" "}
           <Link
-            href='/legal/privacy'
+            href={marketingRoutes.privacy}
             className='font-medium underline underline-offset-4 text-zinc-600 dark:text-zinc-200 hover:text-fuchsia-500 dark:hover:text-fuchsia-400 transition-colors'
           >
             Privacy Policy

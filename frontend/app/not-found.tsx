@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { marketingRoutes } from "@/lib/constants/routes";
 
 const NotFoundPage = () => {
   return (
@@ -33,7 +34,7 @@ const NotFoundPage = () => {
         </p>
         <Link
           className='inline-flex rounded-full bg-fuchsia-600 px-8 py-3 mt-4 text-sm font-semibold text-white transition hover:rotate-6 hover:scale-110 focus:outline-none focus:ring active:bg-fuchsia-500'
-          href='/'
+          href={marketingRoutes.home}
           replace
         >
           Return home

@@ -5,6 +5,7 @@ import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { authRoutes, dashboardRoutes } from "@/lib/constants/routes";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -19,7 +20,7 @@ const Navbar = () => {
           {session ? (
             <>
               <Link
-                href='/dashboard'
+                href={dashboardRoutes.home}
                 className='hidden md:flex items-center gap-x-2 dark:text-zinc-200 text-sm font-medium hover:underline underline-offset-4'
               >
                 <Image
@@ -34,7 +35,7 @@ const Navbar = () => {
                 />
                 Go to dashboard
               </Link>
-              <Link href='/dashboard' className='md:hidden'>
+              <Link href={dashboardRoutes.home} className='md:hidden'>
                 <Image
                   src={
                     session.user.image ??
@@ -49,7 +50,7 @@ const Navbar = () => {
             </>
           ) : (
             <Link
-              href='/signin'
+              href={authRoutes.signIn}
               className='duration-200 transition-colors hover:text-fuchsia-600 dark:hover:text-fuchsia-500'
             >
               Sign in
