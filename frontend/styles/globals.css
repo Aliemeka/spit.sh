@@ -32,3 +32,24 @@ body {
 .dark .dot-overlay {
   background-image: var(--dark-radial);
 }
+
+/* ── Loading shape colour animation ── */
+/* Light mode: zinc-800 → fuchsia-600 */
+@keyframes shape-color-cycle {
+  0%, 100% { color: #27272a; }
+  50%       { color: #c026d3; }
+}
+/* Dark mode: zinc-200 → fuchsia-600 */
+@keyframes shape-color-cycle-dark {
+  0%, 100% { color: #e4e4e7; }
+  50%       { color: #c026d3; }
+}
+
+.animate-shape-color {
+  animation: shape-color-cycle var(--shape-duration, 3.5s) ease-in-out infinite;
+  animation-delay: var(--shape-delay, 0s);
+}
+
+.dark .animate-shape-color {
+  animation-name: shape-color-cycle-dark;
+}
