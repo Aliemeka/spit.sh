@@ -6,9 +6,14 @@ import { getProjectLinksAction } from "@/app/actions/link";
 export function useProjectLinks(projectSlug: string) {
   const queryClient = useQueryClient();
 
-  const { data: links = [], isLoading: loading, error } = useQuery({
+  const {
+    data: links = [],
+    isLoading: loading,
+    error,
+  } = useQuery({
     queryKey: ["links", projectSlug],
     queryFn: () => getProjectLinksAction(projectSlug),
+    refetchInterval: 30000,
   });
 
   const refresh = () =>
@@ -16,3 +21,4 @@ export function useProjectLinks(projectSlug: string) {
 
   return { links, loading, error, refresh };
 }
+G;

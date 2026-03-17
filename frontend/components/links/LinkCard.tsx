@@ -155,12 +155,12 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
                 <TrashIcon size={15} />
               </button>
             </AlertDialogTrigger>
-            <AlertDialogContent className='bg-white border-zinc-200 text-zinc-900 dark:bg-white dark:border-zinc-200 dark:text-zinc-900'>
+            <AlertDialogContent className='bg-white border-zinc-200 text-zinc-900 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100'>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete link?</AlertDialogTitle>
-                <AlertDialogDescription className='text-zinc-500 dark:text-zinc-500'>
+                <AlertDialogDescription className='text-zinc-600 dark:text-zinc-400'>
                   This will permanently delete{" "}
-                  <span className='font-medium text-zinc-800 dark:text-zinc-200'>
+                  <span className='font-medium text-fuchsia-500 dark:text-fuchsia-400'>
                     {link.shortenUrl}
                   </span>{" "}
                   and all its click data. This action cannot be undone.
