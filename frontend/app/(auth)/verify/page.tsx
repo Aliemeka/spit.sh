@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { setUserCookie } from "@/app/actions/auth";
+import { authRoutes, dashboardRoutes, marketingRoutes } from "@/lib/constants/routes";
 
 function VerifyForm() {
   const router = useRouter();
@@ -45,7 +46,7 @@ function VerifyForm() {
       await setUserCookie(userId);
     }
 
-    router.push("/dashboard");
+    router.push(dashboardRoutes.home);
   };
 
   const handleVerify = async (e: React.FormEvent) => {
@@ -85,7 +86,7 @@ function VerifyForm() {
         <div className='max-w-sm w-full space-y-8'>
           <div className='text-center'>
             <Link
-              href='/'
+              href={marketingRoutes.home}
               className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-3xl md:text-4xl'
             >
               Spit.sh ✨
@@ -151,7 +152,7 @@ function VerifyForm() {
           <p className='text-center text-sm text-zinc-500 dark:text-zinc-400'>
             Wrong email?{" "}
             <Link
-              href='/signin'
+              href={authRoutes.signIn}
               className='text-fuchsia-600 dark:text-fuchsia-500 font-medium hover:underline'
             >
               Go back

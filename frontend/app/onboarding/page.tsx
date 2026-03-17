@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useOnboarding } from "@/hooks/useOnboarding";
+import { dashboardRoutes } from "@/lib/constants/routes";
 import { getProjectsAction } from "@/app/actions/project";
 import PersonalDetailsStep from "@/components/onboarding/PersonalDetailsStep";
 import NewProjectStep from "@/components/onboarding/NewProjectStep";
@@ -16,7 +17,7 @@ export default function OnboardingPage() {
     getProjectsAction()
       .then((projects) => {
         if (Array.isArray(projects) && projects.length > 0) {
-          router.replace("/dashboard");
+          router.replace(dashboardRoutes.home);
         }
       })
       .catch(() => {});

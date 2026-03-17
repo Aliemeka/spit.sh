@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { deleteUserCookie } from "@/app/actions/auth";
+import { authRoutes, dashboardRoutes } from "@/lib/constants/routes";
 
 export default function DashboardHomeNavbar() {
   const { data: session } = useSession();
@@ -23,7 +24,7 @@ export default function DashboardHomeNavbar() {
 
   const handleLogout = async () => {
     await Promise.all([signOut(), deleteUserCookie()]);
-    window.location.href = "/signin";
+    window.location.href = authRoutes.signIn;
   };
 
   const avatarSrc =
@@ -34,7 +35,7 @@ export default function DashboardHomeNavbar() {
 
   return (
     <header className="flex items-center justify-between px-8 py-4 border-b border-zinc-800">
-      <Link href="/dashboard" className="font-bold text-2xl tracking-tight text-white">
+      <Link href={dashboardRoutes.home} className="font-bold text-2xl tracking-tight text-white">
         Spit<span className="text-fuchsia-500">.sh</span>
       </Link>
 
