@@ -26,6 +26,7 @@ import {
 import { LinkResponse } from "@/lib/types/linkTypes";
 import { deleteProjectLinkAction } from "@/app/actions/link";
 import { useToast } from "@/hooks/useToast";
+import { useClipboard } from "@/hooks/useClipboard";
 
 interface Props {
   link: LinkResponse;
@@ -35,7 +36,7 @@ interface Props {
 
 export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
   const { toastSuccess, toastError, toastNeutral } = useToast();
-  const [copied, setCopied] = useState(false);
+  const { copyToClipboard, copied } = useClipboard();
   const [deleting, setDeleting] = useState(false);
 
   const hostname = (() => {
@@ -55,10 +56,7 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
   });
 
   const copyShortUrl = () => {
-    navigator.clipboard.writeText(link.shortenUrl);
-    toastNeutral("Link copied to clipboard!");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    copyToClipboard(link.shortenUrl, "Short URL copied to clipboard!");
   };
 
   const handleDelete = async () => {
