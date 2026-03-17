@@ -21,4 +21,3 @@ export function useProjectLinks(projectSlug: string) {
 
   return { links, loading, error, refresh };
 }
-G;
