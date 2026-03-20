@@ -11,7 +11,7 @@ To set up and run the Spit-sh project locally, follow these steps:
 1. Clone the Spit-sh repository:
 
    ```bash
-   git clone https://github.com/your-username/spit-sh.git
+   git clone https://github.com/Aliemeka/spit-sh.git
    ```
 
 2. Go the backend directory:
