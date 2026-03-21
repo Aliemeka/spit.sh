@@ -13,7 +13,13 @@ interface Props {
 }
 
 const OnboardingSteps = async ({ projectSlug }: Props) => {
-  const links = await getProjectLinksAction(projectSlug);
+  let links: unknown[] = [];
+  try {
+    links = await getProjectLinksAction(projectSlug);
+  } catch {
+    // If fetching links fails (e.g. missing/expired session), fall back to no links
+    links = [];
+  }
   const done = [true, true, links.length > 0, false];
 
   return (
