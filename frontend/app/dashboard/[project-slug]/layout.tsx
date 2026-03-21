@@ -26,7 +26,7 @@ export default async function DashLayout({
             Currently in beta
           </p>
         </nav>
-        <main className='p-6 md:px-10 relative w-dvw md:w-full'>
+        <main className='p-6 md:px-10 relative w-dvw md:w-full overflow-y-auto h-[calc(100dvh-64px)]'>
           <QueryProvider>{children}</QueryProvider>
         </main>
       </section>

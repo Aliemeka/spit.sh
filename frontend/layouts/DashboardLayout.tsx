@@ -4,7 +4,7 @@ const DashboardLayout: FC<
   PropsWithChildren<{ SideButton?: React.ReactNode; title: string }>
 > = ({ children, SideButton, title }) => {
   return (
-    <section>
+    <section className='min-h-full'>
       <header className='flex w-full justify-between'>
         <h1 className='text-2xl text-zinc-900 dark:text-zinc-200 mb-3 font-semibold'>
           {title}
