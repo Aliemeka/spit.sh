@@ -1,10 +1,9 @@
 "use client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import UserCircle from "../icons/UserCircle";
-import ArrowRight from "../icons/ArrowRight";
 import { useSession } from "@/lib/auth-client";
 import { useEffect } from "react";
+import { UserCircleIcon, ArrowRightIcon } from "@phosphor-icons/react";
 
 interface Props {
   onSubmit: (values: {
@@ -45,7 +44,11 @@ export default function PersonalDetailsStep({ onSubmit, isLoading }: Props) {
 
   return (
     <div>
-      <UserCircle size={56} className='text-fuchsia-500 mx-auto mb-4' />
+      <UserCircleIcon
+        weight='duotone'
+        size={56}
+        className='text-fuchsia-500 mx-auto mb-4'
+      />
       <h1 className='text-xl font-bold text-white text-center mb-1'>
         Welcome to Spit.sh
       </h1>
@@ -98,7 +101,7 @@ export default function PersonalDetailsStep({ onSubmit, isLoading }: Props) {
           className='mt-2 w-full flex items-center justify-center gap-2 bg-fuchsia-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-fuchsia-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-fuchsia-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed'
         >
           {isLoading ? "Saving…" : "Continue"}
-          {!isLoading && <ArrowRight />}
+          {!isLoading && <ArrowRightIcon size={32} weight='bold' />}
         </button>
       </form>
     </div>
