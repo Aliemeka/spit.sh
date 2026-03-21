@@ -1,21 +1,25 @@
-import EmptyState from "@/components/blocks/EmptyState";
-import DashboardLayout from "@/layouts/DashboardLayout";
-import { linkRoutes } from "@/lib/constants/routes";
+import { Suspense } from "react";
 import { PlusCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import { linkRoutes } from "@/lib/constants/routes";
+import WelcomeCard from "@/components/pageBundles/home/WelcomeCard";
+import OnboardingSteps from "@/components/pageBundles/home/OnboardingSteps";
+import RecentLinks from "@/components/pageBundles/home/RecentLinks";
 
-export default function DashboardPage({
+const DashboardHomePage = ({
   params,
 }: {
   params: { "project-slug": string };
-}) {
-  const { "project-slug": slug } = params;
+}) => {
+  const slug = params["project-slug"];
+
   return (
     <DashboardLayout
       title='Home'
       SideButton={
         <Link
-          href={`${linkRoutes.newLink(slug)}`}
+          href={linkRoutes.newLink(slug)}
           className='inline-flex items-center rounded-full bg-fuchsia-600 px-6 py-2.5 text-sm font-semibold text-white gap-x-1.5 hover:bg-fuchsia-700 focus:outline-none focus:ring active:bg-fuchsia-800 transition'
         >
           <span>Create new link</span>
@@ -23,20 +27,31 @@ export default function DashboardPage({
         </Link>
       }
     >
-      <EmptyState text='No links yet'>
-        <button className='inline-flex items-center rounded-full bg-fuchsia-600 px-8 py-3 transition hover:rotate-6 text-sm font-semibold text-white gap-x-1 focus:outline-none focus:ring active:bg-indigo-500 mt-4'>
-          <span>Create new link</span>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='24'
-            height='24'
-            fill='currentColor'
-            viewBox='0 0 256 256'
-          >
-            <path d='M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z'></path>
-          </svg>
-        </button>
-      </EmptyState>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6 md:gap-y-10 mt-4'>
+        <WelcomeCard />
+
+        <Suspense
+          fallback={
+            <div className='rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 animate-pulse'>
+              <div className='h-3 w-24 rounded-full bg-zinc-200 dark:bg-zinc-700 mb-4' />
+              <div className='space-y-3'>
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className='flex items-center gap-3'>
+                    <div className='h-4 w-4 rounded-full bg-zinc-200 dark:bg-zinc-700 shrink-0' />
+                    <div className='h-3 rounded-full bg-zinc-200 dark:bg-zinc-700 w-3/5' />
+                  </div>
+                ))}
+              </div>
+            </div>
+          }
+        >
+          <OnboardingSteps projectSlug={slug} />
+        </Suspense>
+
+        <RecentLinks projectSlug={slug} />
+      </div>
     </DashboardLayout>
   );
-}
+};
+
+export default DashboardHomePage;
