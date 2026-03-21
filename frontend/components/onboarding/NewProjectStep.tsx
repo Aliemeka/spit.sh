@@ -2,10 +2,8 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import FolderIcon from "../icons/FolderIcon";
-import PencilIcon from "../icons/PencilIcon";
 import ImageSquareIcon from "../icons/ImageSquareIcon";
-import ArrowRight from "../icons/ArrowRight";
+import { ArrowRightIcon, FolderIcon, PencilIcon } from "@phosphor-icons/react";
 
 interface Props {
   onSubmit: (values: {
@@ -69,7 +67,11 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
 
   return (
     <div>
-      <FolderIcon size={56} className='text-fuchsia-500 mx-auto mb-4' />
+      <FolderIcon
+        size={56}
+        weight='duotone'
+        className='text-fuchsia-500 mx-auto mb-4'
+      />
       <h1 className='text-xl font-bold text-white text-center mb-1'>
         Create your first project
       </h1>
@@ -122,6 +124,7 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
             >
               <PencilIcon
                 size={16}
+                weight={slugLocked ? "bold" : "duotone"}
                 className={slugLocked ? "" : "text-fuchsia-400"}
               />
             </button>
@@ -173,7 +176,7 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
           className='mt-2 w-full flex items-center justify-center gap-2 bg-fuchsia-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-fuchsia-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-fuchsia-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed'
         >
           {isLoading ? "Creating…" : "Create Project"}
-          {!isLoading && <ArrowRight />}
+          {!isLoading && <ArrowRightIcon size={32} />}
         </button>
 
         <button
