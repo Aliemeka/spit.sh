@@ -35,7 +35,7 @@ interface Props {
 }
 
 export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
-  const { toastSuccess, toastError, toastNeutral } = useToast();
+  const { toastSuccess, toastError } = useToast();
   const { copyToClipboard, copied } = useClipboard();
   const [deleting, setDeleting] = useState(false);
 
