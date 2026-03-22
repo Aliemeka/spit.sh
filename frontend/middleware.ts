@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { API_URL } from "@/lib/config/public_env";
+import {
+  confirmUserSession,
+  confirmJWTSession,
+  deleteSessionCookies,
+} from "./lib/auth-check";
 
 const fetchSlug = async (slug: string, retryTimes = 3) => {
   const response = await fetch(`${API_URL}/links/${slug}`, { method: "GET" });
@@ -14,24 +19,21 @@ const fetchSlug = async (slug: string, retryTimes = 3) => {
   return data.url as string;
 };
 
-const getSessionCookie = (request: NextRequest) => {
-  const isLocalhost = (process.env.BETTER_AUTH_URL || "").startsWith(
-    "http://localhost",
-  );
-  const cookieName = isLocalhost
-    ? "better-auth.session_token"
-    : "__Secure-better-auth.session_token";
-  return request.cookies.get(cookieName);
-};
-
 export async function middleware(request: NextRequest) {
   const slug = request.nextUrl.pathname.slice(1);
 
   // Protect dashboard and onboarding — redirect to sign-in if no session cookie
   if (slug.startsWith("dashboard") || slug.startsWith("onboarding")) {
-    const sessionCookie = getSessionCookie(request);
-    if (!sessionCookie) {
-      return NextResponse.redirect(new URL("/signin", request.url));
+    const [sessionValid, jwtValid] = await Promise.all([
+      confirmUserSession(request),
+      confirmJWTSession(request),
+    ]);
+    if (!sessionValid || !jwtValid) {
+      const redirectResponse = NextResponse.redirect(
+        new URL("/signin", request.url),
+      );
+      deleteSessionCookies(redirectResponse);
+      return redirectResponse;
     }
     return NextResponse.next();
   }
@@ -47,7 +49,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to dashboard if user is already signed in and tries to access sign-in or verify pages
-  if (slug.startsWith("signin") || slug.startsWith("verify") || slug.startsWith("callback")) {
+  if (
+    slug.startsWith("signin") ||
+    slug.startsWith("verify") ||
+    slug.startsWith("callback")
+  ) {
     return NextResponse.next();
   }
 
