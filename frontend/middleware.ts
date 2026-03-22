@@ -55,13 +55,6 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to dashboard if user is already signed in and tries to access sign-in or verify pages
   if (slug.startsWith("signin") || slug.startsWith("verify")) {
-    const [sessionValid, jwtValid] = await Promise.all([
-      confirmUserSession(request),
-      confirmJWTSession(request),
-    ]);
-    if (sessionValid && jwtValid) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
     return NextResponse.next();
   }
 
