@@ -101,7 +101,7 @@ export default function PersonalDetailsStep({ onSubmit, isLoading }: Props) {
           className='mt-2 w-full flex items-center justify-center gap-2 bg-fuchsia-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-fuchsia-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-fuchsia-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed'
         >
           {isLoading ? "Saving…" : "Continue"}
-          {!isLoading && <ArrowRightIcon size={32} weight='bold' />}
+          {!isLoading && <ArrowRightIcon size={24} />}
         </button>
       </form>
     </div>
