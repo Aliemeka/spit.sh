@@ -14,6 +14,8 @@ const cookieName = isLocalhost
 
 const secret = new TextEncoder().encode(BETTER_AUTH_SECRET);
 
+const jwt_cookie_name = "spit_session";
+
 const getSessionCookie = (request: NextRequest) => {
   return request.cookies.get(cookieName);
 };
@@ -24,7 +26,7 @@ export const confirmUserSession = (request: NextRequest) => {
 };
 
 export const confirmJWTSession = async (request: NextRequest) => {
-  const sessionToken = request.cookies.get("spit_session")?.value;
+  const sessionToken = request.cookies.get(jwt_cookie_name)?.value;
   if (!sessionToken) return false;
   try {
     jwtVerify(sessionToken, secret);
@@ -36,5 +38,5 @@ export const confirmJWTSession = async (request: NextRequest) => {
 
 export const deleteSessionCookies = (response: NextResponse) => {
   response.cookies.delete(cookieName);
-  response.cookies.delete("spit_session");
+  response.cookies.delete(jwt_cookie_name);
 };
