@@ -6,6 +6,9 @@ import {
   confirmJWTSession,
   deleteSessionCookies,
 } from "./lib/auth-check";
+import { marketingRoutes } from "./lib/constants/routes";
+
+const marketingLinks = Object.values(marketingRoutes);
 
 const fetchSlug = async (slug: string, retryTimes = 3) => {
   const response = await fetch(`${API_URL}/links/${slug}`, { method: "GET" });
@@ -43,17 +46,22 @@ export async function middleware(request: NextRequest) {
     slug === "" ||
     slug === "sw.js" ||
     slug.startsWith("_next") ||
+    marketingLinks.includes(slug) ||
+    slug.startsWith("callback") ||
     slug.startsWith("api/")
   ) {
     return NextResponse.next();
   }
 
   // Redirect to dashboard if user is already signed in and tries to access sign-in or verify pages
-  if (
-    slug.startsWith("signin") ||
-    slug.startsWith("verify") ||
-    slug.startsWith("callback")
-  ) {
+  if (slug.startsWith("signin") || slug.startsWith("verify")) {
+    const [sessionValid, jwtValid] = await Promise.all([
+      confirmUserSession(request),
+      confirmJWTSession(request),
+    ]);
+    if (sessionValid && jwtValid) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
     return NextResponse.next();
   }
 
@@ -63,7 +71,7 @@ export async function middleware(request: NextRequest) {
     if (!url) {
       return NextResponse.next();
     }
-    return NextResponse.redirect(new URL(url));
+    return NextResponse.redirect(new URL(url, request.url));
   } catch (error) {
     return NextResponse.next();
   }

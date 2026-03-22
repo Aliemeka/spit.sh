@@ -1,5 +1,6 @@
 export const marketingRoutes = {
   home: "/",
+  about: "/about",
   pricing: "/pricing",
   terms: "/legal/terms",
   privacy: "/legal/privacy",
