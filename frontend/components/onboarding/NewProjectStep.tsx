@@ -176,7 +176,7 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
           className='mt-2 w-full flex items-center justify-center gap-2 bg-fuchsia-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-fuchsia-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-fuchsia-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed'
         >
           {isLoading ? "Creating…" : "Create Project"}
-          {!isLoading && <ArrowRightIcon size={32} />}
+          {!isLoading && <ArrowRightIcon size={24} />}
         </button>
 
         <button
