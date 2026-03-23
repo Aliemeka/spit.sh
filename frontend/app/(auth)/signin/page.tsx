@@ -14,7 +14,7 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const session = useSession();
+  const { data: session } = useSession();
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
