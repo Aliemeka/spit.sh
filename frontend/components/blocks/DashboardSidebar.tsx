@@ -10,6 +10,8 @@ import {
   marketingRoutes,
   dashboardRoutes,
 } from "@/lib/constants/routes";
+import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
 
 const activeClass =
   "block rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200";
@@ -31,7 +33,15 @@ const ChevronIcon = () => (
   </svg>
 );
 
-const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
+const DashboardSidebar = ({
+  workspaceSlug,
+  showSidebar,
+  setShowSidebar,
+}: {
+  workspaceSlug: string;
+  showSidebar: boolean;
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
@@ -48,14 +58,32 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
   const isAccountOpen = accountChildren.some(isActive);
 
   return (
-    <aside className='absolute left-0 inset-y-0 overflow-y-scroll -translate-x-96 md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
+    <aside
+      className={cn(
+        "absolute left-0 inset-y-0 overflow-y-scroll md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72",
+        "transition-transform duration-300 ease-in-out",
+        showSidebar ? "translate-x-0" : "-translate-x-96",
+      )}
+    >
       <div className='px-4 py-6'>
-        <Link
-          href={marketingRoutes.home}
-          className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl ml-2 mb-3'
-        >
-          Spit.sh ✨
-        </Link>
+        <div className='flex items-center gap-4 ml-2 mb-3'>
+          <button onClick={() => setShowSidebar((prev) => !prev)}>
+            <SidebarIcon
+              className={cn(
+                "h-6 w-6 md:hidden text-zinc-900 dark:text-zinc-200",
+                !showSidebar
+                  ? "text-zinc-900 dark:text-zinc-200 fixed left-4 top-4"
+                  : "shadow-sm shadow-fuchsia-300/50 dark:shadow-fuchsia-900/50",
+              )}
+            />
+          </button>
+          <Link
+            href={marketingRoutes.home}
+            className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl'
+          >
+            Spit.sh ✨
+          </Link>
+        </div>
 
         <ul className='mt-6 space-y-1'>
           <li>
