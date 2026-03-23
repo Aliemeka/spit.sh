@@ -29,7 +29,7 @@ function VerifyForm() {
   const [error, setError] = useState("");
   const [resendMessage, setResendMessage] = useState("");
 
-  const session = useSession();
+  const { data: session } = useSession();
 
   const verify = async (code: string) => {
     setIsVerifying(true);
