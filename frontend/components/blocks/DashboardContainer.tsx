@@ -1,8 +1,9 @@
 "use client";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 import QueryProvider from "@/providers/QueryProvider";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
+import { usePathname } from "next/navigation";
 
 const DashboardContainer = ({
   workspaceSlug,
@@ -12,6 +13,11 @@ const DashboardContainer = ({
   children: ReactNode;
 }) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setShowSidebar(false);
+  }, [pathname]);
 
   return (
     <>
