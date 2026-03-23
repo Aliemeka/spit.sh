@@ -3,7 +3,7 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import {
   InputOTP,
   InputOTPGroup,
@@ -12,7 +12,11 @@ import {
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { setUserCookie } from "@/app/actions/auth";
-import { authRoutes, dashboardRoutes, marketingRoutes } from "@/lib/constants/routes";
+import {
+  authRoutes,
+  dashboardRoutes,
+  marketingRoutes,
+} from "@/lib/constants/routes";
 
 function VerifyForm() {
   const router = useRouter();
@@ -24,6 +28,8 @@ function VerifyForm() {
   const [isResending, setIsResending] = useState(false);
   const [error, setError] = useState("");
   const [resendMessage, setResendMessage] = useState("");
+
+  const session = useSession();
 
   const verify = async (code: string) => {
     setIsVerifying(true);
@@ -79,6 +85,11 @@ function VerifyForm() {
 
     setResendMessage("A new code has been sent to your email.");
   };
+
+  if (session) {
+    router.push("/dashboard");
+    return null;
+  }
 
   return (
     <AuthLayout>
