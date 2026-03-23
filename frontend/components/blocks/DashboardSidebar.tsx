@@ -5,7 +5,11 @@ import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { deleteUserCookie } from "@/app/actions/auth";
 import Image from "next/image";
-import { authRoutes, marketingRoutes, dashboardRoutes } from "@/lib/constants/routes";
+import {
+  authRoutes,
+  marketingRoutes,
+  dashboardRoutes,
+} from "@/lib/constants/routes";
 
 const activeClass =
   "block rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200";
@@ -44,7 +48,7 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
   const isAccountOpen = accountChildren.some(isActive);
 
   return (
-    <aside className='absolute left-0 inset-y-0 -translate-x-96 md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
+    <aside className='absolute left-0 inset-y-0 overflow-y-scroll -translate-x-96 md:translate-x-0 md:relative z-20 flex h-screen flex-col justify-between border-e bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 w-72'>
       <div className='px-4 py-6'>
         <Link
           href={marketingRoutes.home}
@@ -57,14 +61,21 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
           <li>
             <Link
               href={dashboardRoutes.project(workspaceSlug)}
-              className={isActive(dashboardRoutes.project(workspaceSlug)) ? activeClass : inactiveClass}
+              className={
+                isActive(dashboardRoutes.project(workspaceSlug))
+                  ? activeClass
+                  : inactiveClass
+              }
             >
               Home
             </Link>
           </li>
 
           <li>
-            <details open={isLinksOpen} className='group [&_summary::-webkit-details-marker]:hidden'>
+            <details
+              open={isLinksOpen}
+              className='group [&_summary::-webkit-details-marker]:hidden'
+            >
               <summary className='flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700'>
                 <span className='text-sm font-medium'> Links </span>
                 <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
@@ -76,17 +87,18 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
                 <li>
                   <Link
                     href={dashboardRoutes.links(workspaceSlug)}
-                    className={isActive(dashboardRoutes.links(workspaceSlug)) ? activeClass : inactiveClass}
+                    className={
+                      isActive(dashboardRoutes.links(workspaceSlug))
+                        ? activeClass
+                        : inactiveClass
+                    }
                   >
                     All Links
                   </Link>
                 </li>
 
                 <li>
-                  <a
-                    href=''
-                    className={inactiveClass}
-                  >
+                  <a href='' className={inactiveClass}>
                     Calendar
                   </a>
                 </li>
@@ -95,34 +107,28 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
           </li>
 
           <li>
-            <a
-              href=''
-              className={inactiveClass}
-            >
+            <a href='' className={inactiveClass}>
               Analytics
             </a>
           </li>
 
           <li>
-            <a
-              href=''
-              className={inactiveClass}
-            >
+            <a href='' className={inactiveClass}>
               Pages
             </a>
           </li>
 
           <li>
-            <a
-              href=''
-              className={inactiveClass}
-            >
+            <a href='' className={inactiveClass}>
               Invoices
             </a>
           </li>
 
           <li>
-            <details open={isAccountOpen} className='group [&_summary::-webkit-details-marker]:hidden'>
+            <details
+              open={isAccountOpen}
+              className='group [&_summary::-webkit-details-marker]:hidden'
+            >
               <summary className='flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700'>
                 <span className='text-sm font-medium'> Account </span>
                 <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
@@ -132,19 +138,13 @@ const DashboardSidebar = ({ workspaceSlug }: { workspaceSlug: string }) => {
 
               <ul className='mt-2 space-y-1 px-4'>
                 <li>
-                  <a
-                    href=''
-                    className={inactiveClass}
-                  >
+                  <a href='' className={inactiveClass}>
                     Settings
                   </a>
                 </li>
 
                 <li>
-                  <a
-                    href=''
-                    className={inactiveClass}
-                  >
+                  <a href='' className={inactiveClass}>
                     Team
                   </a>
                 </li>
