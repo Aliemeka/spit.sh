@@ -6,7 +6,11 @@ import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
 import { authClient, useSession } from "@/lib/auth-client";
 import Input from "@/components/ui/input";
-import { authRoutes, marketingRoutes } from "@/lib/constants/routes";
+import {
+  authRoutes,
+  dashboardRoutes,
+  marketingRoutes,
+} from "@/lib/constants/routes";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -43,7 +47,7 @@ export default function SignInPage() {
   };
 
   if (session) {
-    router.push("/dashboard");
+    router.push(dashboardRoutes.home);
     return null;
   }
 
