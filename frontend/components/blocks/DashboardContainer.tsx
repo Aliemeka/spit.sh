@@ -20,6 +20,12 @@ const DashboardContainer = ({
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
       />
+      {showSidebar && (
+        <div
+          className='fixed inset-0 z-10 bg-black/50 md:hidden'
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
       <section className='flex-1 h-screen relative'>
         <nav className='py-5 px-6 border-b bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-700 flex w-full justify-between items-center relative'>
           <div className='flex gap-x-3 items-center'>
