@@ -87,7 +87,7 @@ function VerifyForm() {
   };
 
   if (session) {
-    router.push("/dashboard");
+    router.push(dashboardRoutes.home);
     return null;
   }
 
