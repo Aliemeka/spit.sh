@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { Metadata } from "next/types";
 import { getProjectsAction } from "@/app/actions/project";
 import DashboardHomeNavbar from "@/components/DashboardHomeNavbar";
 import { onboardingRoutes, dashboardRoutes } from "@/lib/constants/routes";
@@ -21,7 +22,8 @@ export default async function DashboardPage() {
   }
 
   if (projects.length === 0) redirect(onboardingRoutes.index);
-  if (projects.length === 1) redirect(dashboardRoutes.project(projects[0].slug));
+  if (projects.length === 1)
+    redirect(dashboardRoutes.project(projects[0].slug));
 
   return (
     <div className='min-h-screen bg-zinc-950 text-zinc-100'>
