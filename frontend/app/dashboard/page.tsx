@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Metadata } from "next/types";
 import { getProjectsAction } from "@/app/actions/project";
 import DashboardHomeNavbar from "@/components/DashboardHomeNavbar";
 import { onboardingRoutes, dashboardRoutes } from "@/lib/constants/routes";
