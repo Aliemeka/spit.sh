@@ -40,6 +40,7 @@ const DashboardContainer = ({
                 onClick={() => setShowSidebar(true)}
                 type='button'
                 className='md:hidden active:text-fuchsia-200'
+                aria-label='Open sidebar'
               >
                 <SidebarIcon className='h-6 w-6 text-zinc-900 dark:text-zinc-200' />
               </button>
