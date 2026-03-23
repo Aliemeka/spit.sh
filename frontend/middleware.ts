@@ -53,7 +53,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Redirect to dashboard if user is already signed in and tries to access sign-in or verify pages
+  // Allow sign-in and verify pages to pass through middleware unmodified
   if (slug.startsWith("signin") || slug.startsWith("verify")) {
     return NextResponse.next();
   }
