@@ -74,9 +74,8 @@ const DashboardSidebar = ({
             <SidebarIcon
               className={cn(
                 "h-6 w-6 text-zinc-900 dark:text-zinc-200",
-                !showSidebar
-                  ? "text-zinc-900 dark:text-zinc-200 fixed left-4 top-4"
-                  : "shadow-sm shadow-fuchsia-300/50 dark:shadow-fuchsia-900/50",
+                showSidebar &&
+                  "shadow-sm shadow-fuchsia-300/50 dark:shadow-fuchsia-900/50",
               )}
             />
           </button>
