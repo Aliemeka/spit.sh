@@ -69,6 +69,8 @@ const DashboardSidebar = ({
         <div className='flex items-center gap-4 ml-2 mb-3'>
           <button
             className='md:hidden'
+            type='button'
+            aria-label='Toggle sidebar'
             onClick={() => setShowSidebar((prev) => !prev)}
           >
             <SidebarIcon
