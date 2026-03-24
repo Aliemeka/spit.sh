@@ -1,10 +1,12 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { getProjectLinksAction } from "@/app/actions/link";
 
 export function useProjectLinks(projectSlug: string) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     data: links = [],
@@ -16,8 +18,10 @@ export function useProjectLinks(projectSlug: string) {
     refetchInterval: 30000,
   });
 
-  const refresh = () =>
+  const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ["links", projectSlug] });
+    router.refresh();
+  };
 
   return { links, loading, error, refresh };
 }

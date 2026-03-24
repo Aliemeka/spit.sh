@@ -50,7 +50,7 @@ const DashboardContainer = ({
             Currently in beta
           </p>
         </nav>
-        <main className='p-6 md:px-10 relative w-dvw md:w-full overflow-y-auto h-[calc(100dvh-64px)]'></main>
+        <main className='p-6 md:px-10 relative w-dvw md:w-full overflow-y-auto h-[calc(100dvh-64px)]'>{children}</main>
       </section>
     </>
   );
