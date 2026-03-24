@@ -71,6 +71,7 @@ export default function SignInPage() {
               type='email'
               value={email}
               required
+              autoFocus
               onChange={(e) => setEmail(e.target.value)}
               label='Email'
             />

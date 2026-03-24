@@ -120,6 +120,7 @@ function VerifyForm() {
                 onChange={handleOtpChange}
                 disabled={isVerifying}
                 inputMode='numeric'
+                autoFocus
               >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} aria-invalid={!!error} autoFocus />

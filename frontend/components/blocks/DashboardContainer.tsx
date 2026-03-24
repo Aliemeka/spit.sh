@@ -1,7 +1,6 @@
 "use client";
 import { useState, ReactNode, useEffect } from "react";
 import DashboardSidebar from "./DashboardSidebar";
-import QueryProvider from "@/providers/QueryProvider";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 
@@ -51,9 +50,7 @@ const DashboardContainer = ({
             Currently in beta
           </p>
         </nav>
-        <main className='p-6 md:px-10 relative w-dvw md:w-full overflow-y-auto h-[calc(100dvh-64px)]'>
-          <QueryProvider>{children}</QueryProvider>
-        </main>
+        <main className='p-6 md:px-10 relative w-dvw md:w-full overflow-y-auto h-[calc(100dvh-64px)]'></main>
       </section>
     </>
   );
