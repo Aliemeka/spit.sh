@@ -1,24 +1,17 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
-import { authClient, useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import Input from "@/components/ui/input";
-import {
-  authRoutes,
-  dashboardRoutes,
-  marketingRoutes,
-} from "@/lib/constants/routes";
+import { authRoutes, marketingRoutes } from "@/lib/constants/routes";
 
 export default function SignInPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const { data: session } = useSession();
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,11 +38,6 @@ export default function SignInPage() {
   const handleSocialSignIn = async (provider: "google" | "github") => {
     await authClient.signIn.social({ provider, callbackURL: "/callback" });
   };
-
-  if (session) {
-    router.push(dashboardRoutes.home);
-    return null;
-  }
 
   return (
     <AuthLayout>
