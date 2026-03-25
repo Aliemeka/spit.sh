@@ -3,7 +3,7 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
-import { authClient, useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import {
   InputOTP,
   InputOTPGroup,
@@ -28,8 +28,6 @@ function VerifyForm() {
   const [isResending, setIsResending] = useState(false);
   const [error, setError] = useState("");
   const [resendMessage, setResendMessage] = useState("");
-
-  const { data: session } = useSession();
 
   const verify = async (code: string) => {
     setIsVerifying(true);
@@ -85,11 +83,6 @@ function VerifyForm() {
 
     setResendMessage("A new code has been sent to your email.");
   };
-
-  if (session) {
-    router.push(dashboardRoutes.home);
-    return null;
-  }
 
   return (
     <AuthLayout>
