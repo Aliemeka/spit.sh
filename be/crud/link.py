@@ -94,7 +94,7 @@ async def get_project_links(
 ) -> List[LinkResponse]:
     stmt = (
         select(Link, func.count(Click.id).label("click_count"))
-        .filter(Link.tags.any(tag) if tag else True)
+        .filter(Link.tags.any(LinkTag.tag == tag) if tag else True)
         .outerjoin(Click, Click.link_id == Link.id)
         .where(Link.project_id == project_id)
         .group_by(Link.id)
