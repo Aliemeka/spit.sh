@@ -4,12 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { getProjectLinksAction } from "@/app/actions/link";
 import { revalidateCurrentPath } from "@/app/actions/revalidatePath";
-
-interface LinkQueryParams {
-  tag: string;
-  limit: number;
-  offset: number;
-}
+import { LinkQueryParams } from "@/lib/types/linkTypes";
 
 export function useProjectLinks(
   projectSlug: string,
