@@ -23,3 +23,9 @@ export interface LinkResponse {
   click_count: number;
   created_at: string;
 }
+
+export interface LinkQueryParams {
+  tag: string;
+  limit: number;
+  offset: number;
+}

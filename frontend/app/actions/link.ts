@@ -3,18 +3,16 @@
 import axios from "axios";
 import { API_URL } from "@/lib/config/public_env";
 import { getSessionToken } from "./auth";
-import { LinkPayload, LinkResponse } from "@/lib/types/linkTypes";
+import {
+  LinkPayload,
+  LinkQueryParams,
+  LinkResponse,
+} from "@/lib/types/linkTypes";
 
 async function getToken() {
   const token = await getSessionToken();
   if (!token) throw new Error("Unauthorized");
   return token;
-}
-
-interface LinkQueryParams {
-  tag: string;
-  limit: number;
-  offset: number;
 }
 
 export async function getProjectLinksAction(
