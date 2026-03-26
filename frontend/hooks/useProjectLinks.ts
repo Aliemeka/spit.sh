@@ -1,8 +1,9 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getProjectLinksAction } from "@/app/actions/link";
+import { revalidateCurrentPath } from "@/app/actions/revalidatePath";
 
 interface LinkQueryParams {
   tag: string;
@@ -16,6 +17,7 @@ export function useProjectLinks(
 ) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const pathname = usePathname();
 
   const {
     data: links = [],
@@ -32,6 +34,7 @@ export function useProjectLinks(
       queryKey: ["links", projectSlug, filters],
     });
     router.refresh();
+    revalidateCurrentPath(pathname);
   };
 
   return { links, loading, error, refresh };
