@@ -17,7 +17,9 @@ const LinkPage = () => {
   const projectSlug = params["project-slug"] as string;
   const showModal = searchParams.get("action") === "new_link";
 
-  const { links, loading, refresh } = useProjectLinks(projectSlug);
+  const { links, loading, refresh } = useProjectLinks(projectSlug, {
+    limit: 5,
+  });
 
   const openModal = () => {
     router.push(`?action=new_link`);
