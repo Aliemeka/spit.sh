@@ -11,10 +11,20 @@ async function getToken() {
   return token;
 }
 
-export async function getProjectLinksAction(projectSlug: string): Promise<LinkResponse[]> {
+interface LinkQueryParams {
+  tag: string;
+  limit: number;
+  offset: number;
+}
+
+export async function getProjectLinksAction(
+  projectSlug: string,
+  filters?: Partial<LinkQueryParams>,
+): Promise<LinkResponse[]> {
   const token = await getToken();
   const res = await axios.get(`${API_URL}/projects/${projectSlug}/links`, {
     headers: { Authorization: `Bearer ${token}` },
+    params: filters,
   });
   return res.data.links;
 }
@@ -24,9 +34,13 @@ export async function createProjectLinkAction(
   data: LinkPayload,
 ): Promise<LinkResponse> {
   const token = await getToken();
-  const res = await axios.post(`${API_URL}/projects/${projectSlug}/links`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await axios.post(
+    `${API_URL}/projects/${projectSlug}/links`,
+    data,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
   return res.data;
 }
 
@@ -36,9 +50,13 @@ export async function updateProjectLinkAction(
   data: Partial<LinkPayload>,
 ): Promise<LinkResponse> {
   const token = await getToken();
-  const res = await axios.patch(`${API_URL}/projects/${projectSlug}/links/${linkId}`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await axios.patch(
+    `${API_URL}/projects/${projectSlug}/links/${linkId}`,
+    data,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
   return res.data;
 }
 
