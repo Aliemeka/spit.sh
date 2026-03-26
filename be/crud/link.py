@@ -20,13 +20,15 @@ async def get_link(slug: str, db: AsyncSession) -> Link | None:
 
 def _build_utm_url(url: str, data: LinkCreate) -> str:
     utm_params = {
-        k: v for k, v in {
+        k: v
+        for k, v in {
             "utm_source": data.utm_source,
             "utm_medium": data.utm_medium,
             "utm_campaign": data.utm_campaign,
             "utm_term": data.utm_term,
             "utm_content": data.utm_content,
-        }.items() if v
+        }.items()
+        if v
     }
     if not utm_params:
         return url
@@ -65,7 +67,7 @@ async def create_link_with_user(
     db.add(link)
     await db.flush()
 
-    for tag in (linkData.tags or []):
+    for tag in linkData.tags or []:
         db.add(LinkTag(link_id=link.id, tag=tag))
 
     await db.commit()
@@ -87,12 +89,18 @@ async def create_link_with_user(
     )
 
 
-async def get_project_links(project_id: UUID, db: AsyncSession) -> List[LinkResponse]:
+async def get_project_links(
+    project_id: UUID, db: AsyncSession, tag: str | None = None, limit=20, offset=0
+) -> List[LinkResponse]:
     stmt = (
         select(Link, func.count(Click.id).label("click_count"))
+        .filter(Link.tags.any(tag) if tag else True)
         .outerjoin(Click, Click.link_id == Link.id)
         .where(Link.project_id == project_id)
         .group_by(Link.id)
+        .order_by(Link.created_at.desc())
+        .limit(limit)
+        .offset(offset)
     )
     rows = await db.execute(stmt)
     results = []
@@ -101,20 +109,22 @@ async def get_project_links(project_id: UUID, db: AsyncSession) -> List[LinkResp
             select(LinkTag.tag).where(LinkTag.link_id == link.id)
         )
         tags = [row[0] for row in tag_rows.all()]
-        results.append(LinkResponse(
-            id=link.id,
-            url=link.url,
-            slug=link.slug,
-            shortenUrl=link.shortenUrl,
-            tags=tags,
-            utm_source=link.utm_source,
-            utm_medium=link.utm_medium,
-            utm_campaign=link.utm_campaign,
-            utm_term=link.utm_term,
-            utm_content=link.utm_content,
-            click_count=click_count,
-            created_at=link.created_at,
-        ))
+        results.append(
+            LinkResponse(
+                id=link.id,
+                url=link.url,
+                slug=link.slug,
+                shortenUrl=link.shortenUrl,
+                tags=tags,
+                utm_source=link.utm_source,
+                utm_medium=link.utm_medium,
+                utm_campaign=link.utm_campaign,
+                utm_term=link.utm_term,
+                utm_content=link.utm_content,
+                click_count=click_count,
+                created_at=link.created_at,
+            )
+        )
     return results
 
 

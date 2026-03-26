@@ -1,14 +1,25 @@
 import uuid
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from database import get_session
 from utils.jwt_auth import get_current_user
 from utils.generate import generate_slug
-from crud.project import create_project, get_user_projects, get_project_by_slug, is_project_member
-from crud.link import create_link_with_user, get_project_links, update_link, delete_link, get_link
+from crud.project import (
+    create_project,
+    get_user_projects,
+    get_project_by_slug,
+    is_project_member,
+)
+from crud.link import (
+    create_link_with_user,
+    get_project_links,
+    update_link,
+    delete_link,
+    get_link,
+)
 from schemas.projectSchema import ProjectCreate, ProjectResponse
 from schemas.linkSchema import LinkCreate, LinkUpdate, LinkResponse, ProjectLinks
 from config.environment import ROOT_DOMAIN
@@ -17,12 +28,16 @@ from models.base import LinkTag
 router = APIRouter(prefix="/projects", tags=["projects"])
 
 
-async def _get_project_or_403(project_slug: str, user_id: uuid.UUID, session: AsyncSession):
+async def _get_project_or_403(
+    project_slug: str, user_id: uuid.UUID, session: AsyncSession
+):
     project = await get_project_by_slug(project_slug, session)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     if not await is_project_member(project.id, user_id, session):
-        raise HTTPException(status_code=403, detail="You do not have access to this project")
+        raise HTTPException(
+            status_code=403, detail="You do not have access to this project"
+        )
     return project
 
 
@@ -43,10 +58,7 @@ async def list_projects(
 ):
     user_id = uuid.UUID(current_user["sub"])
     rows = await get_user_projects(user_id, session)
-    return [
-        ProjectResponse(**row[0].dict(), links_count=row[1])
-        for row in rows
-    ]
+    return [ProjectResponse(**row[0].dict(), links_count=row[1]) for row in rows]
 
 
 @router.post("/{project_slug}/links", response_model=LinkResponse, status_code=201)
@@ -73,13 +85,16 @@ async def create_project_link(
 @router.get("/{project_slug}/links", response_model=ProjectLinks)
 async def list_project_links(
     project_slug: str,
+    tag: str | None = Query(default=None, description="Filter links by tag."),
+    limit: int = Query(default=20, description="Limit the number of results."),
+    offset: int = Query(default=0, description="Offset for pagination."),
     current_user: dict = Depends(get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
     user_id = uuid.UUID(current_user["sub"])
     project = await _get_project_or_403(project_slug, user_id, session)
 
-    links = await get_project_links(project.id, session)
+    links = await get_project_links(project.id, session, tag, limit, offset)
     return ProjectLinks(project_id=project.id, links=links)
 
 
@@ -98,7 +113,9 @@ async def update_project_link(
     if not link:
         raise HTTPException(status_code=404, detail="Link not found")
 
-    tag_rows = await session.execute(select(LinkTag.tag).where(LinkTag.link_id == link.id))
+    tag_rows = await session.execute(
+        select(LinkTag.tag).where(LinkTag.link_id == link.id)
+    )
     tags = [row[0] for row in tag_rows.all()]
 
     return LinkResponse(
