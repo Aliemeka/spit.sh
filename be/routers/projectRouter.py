@@ -86,8 +86,17 @@ async def create_project_link(
 async def list_project_links(
     project_slug: str,
     tag: str | None = Query(default=None, description="Filter links by tag."),
-    limit: int = Query(default=20, description="Limit the number of results."),
-    offset: int = Query(default=0, description="Offset for pagination."),
+    limit: int = Query(
+        default=20,
+        ge=1,
+        le=100,
+        description="Limit the number of results (1-100).",
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0,
+        description="Offset for pagination (must be >= 0).",
+    ),
     current_user: dict = Depends(get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
