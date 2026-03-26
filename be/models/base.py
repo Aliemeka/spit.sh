@@ -14,7 +14,9 @@ class ProjectRole(enum.Enum):
 
 class ProjectUsers(SQLModel, table=True):
     role: ProjectRole = ProjectRole.Member
-    joined_at: datetime = Field(default=datetime.now(timezone.utc), nullable=False)
+    joined_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc), nullable=False
+    )
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc), nullable=False
     )
@@ -27,7 +29,9 @@ class User(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     email: str = Field(unique=True)
     username: Optional[str] = Field(nullable=True, unique=True)
-    joined_at: datetime = Field(default=datetime.utcnow(), nullable=False)
+    joined_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc), nullable=False
+    )
 
     first_name: Optional[str] = Field(nullable=True, max_length=20)
     last_name: Optional[str] = Field(nullable=True, max_length=25)
@@ -43,7 +47,9 @@ class Project(SQLModel, table=True):
     name: str = Field(max_length=20)
     slug: str = Field(unique=True, index=True)
     logo: Optional[str] = Field(default=None)
-    created_at: datetime = Field(default=datetime.now(timezone.utc), nullable=False)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc), nullable=False
+    )
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc), nullable=False
     )
@@ -56,7 +62,9 @@ class Link(LinkBase, SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     slug: str = Field(unique=True)
     shortenUrl: str
-    created_at: datetime = Field(default=datetime.now(timezone.utc), nullable=False)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc), nullable=False
+    )
     last_edited: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc), nullable=False
     )
@@ -88,7 +96,9 @@ class Click(ClickInfo, table=True):
     country_code: str
     device: str = Field(default="unknown")
 
-    created_at: datetime = Field(default=datetime.utcnow(), nullable=False)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc), nullable=False
+    )
 
     link_id: Optional[uuid.UUID] = Field(default=None, foreign_key="link.id")
     link: Optional[Link] = Relationship(back_populates="clicks")
