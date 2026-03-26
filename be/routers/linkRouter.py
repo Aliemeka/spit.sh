@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from schemas.linkSchema import LinkCreate, LinkData
@@ -56,6 +56,8 @@ async def get_link_by_slug(
         raise HTTPException(status_code=404, detail="Link does not exist")
 
     user_agent = request.headers.get("user-agent", "")
-    background_tasks.add_task(record_click, request.client.host, str(link.id), user_agent, session)
+    background_tasks.add_task(
+        record_click, request.client.host, str(link.id), user_agent, session
+    )
 
     return LinkData(url=link.url, slug=link.slug, shortenUrl=link.shortenUrl)
