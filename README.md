@@ -15,6 +15,7 @@ To set up and run the Spit-sh project locally, follow these steps:
    ```
 
 2. Go the backend directory:
+
    ```bash
    cd be
    ```
@@ -83,13 +84,11 @@ Once you have both the backend and frontend servers running, you can access the 
 2. You will see the Spit-sh homepage with the list of shortened links and an option to shorten a new URL.
 
 3. To shorten a URL:
-
    - Enter the original URL in the input field.
    - Click the "Shorten" button.
    - The shortened URL will be displayed below with an associated QR code.
 
 4. To track clicks:
-
    - Click on a shortened URL from the list.
    - You will be redirected to the details page for that URL.
    - The details page will show the number of clicks and a list of all the clicks with timestamps.
@@ -101,7 +100,3 @@ Once you have both the backend and frontend servers running, you can access the 
 ## Conclusion
 
 Congratulations! You have successfully set up the Spit-sh URL shortener project. You can now start using the application to shorten URLs, track clicks, and generate QR codes. Feel free to explore and customize the project according to your requirements. If you have any questions or issues, refer to the project's documentation or seek assistance from the Spit-sh community. Happy URL shortening!
-
-## Building in Public
-
-I'm using [Buildshare](https://www.buildshare.io/ "Buildshare") to build in public
