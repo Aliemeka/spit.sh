@@ -12,9 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -28,7 +26,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "module": "esnext"
   },
   "include": [
     "next-env.d.ts",
