@@ -12,6 +12,7 @@ import {
   GITHUB_CLIENT_SECRET,
   RESEND_API_KEY,
 } from "./config/environment";
+import { getLocalDate, getLocalTime } from "./utils";
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -27,11 +28,14 @@ export const auth = betterAuth({
   plugins: [
     bearer(),
     emailOTP({
-      async sendVerificationOTP({ email, otp }) {
+      async sendVerificationOTP({ email, otp }, ctx) {
+        const tz = ctx?.headers?.get("x-timezone") || "UTC";
+        const localTime = getLocalTime(tz);
+        const localDate = getLocalDate(tz);
         const { data, error } = await resend.emails.send({
           from: "Spit.sh <noreply@spit.sh>",
           to: email,
-          subject: `Your sign-in code | ${new Date().toLocaleDateString("en-GB")} - ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`,
+          subject: `Your sign-in code | ${localDate} - ${localTime}`,
           text: `Your one-time sign-in code is: ${otp}\n\nThis code expires in 10 minutes.`,
         });
 

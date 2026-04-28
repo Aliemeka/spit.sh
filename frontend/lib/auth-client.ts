@@ -13,6 +13,14 @@ if (!baseURL) {
 export const authClient = createAuthClient({
   baseURL,
   plugins: [emailOTPClient()],
+  fetchOptions: {
+    headers: {
+      "X-Timezone":
+        typeof window !== "undefined"
+          ? Intl.DateTimeFormat().resolvedOptions().timeZone
+          : "UTC",
+    },
+  },
 });
 
 export const { signIn, signOut, useSession } = authClient;
