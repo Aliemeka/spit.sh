@@ -74,11 +74,6 @@ export async function middleware(request: NextRequest) {
       "x-forwarded-for": ip,
       "x-real-ip": ip,
       "user-agent": request.headers.get("user-agent") ?? "",
-      // Vercel populates these on the edge — pass them through if present
-      "x-vercel-ip-country": request.headers.get("x-vercel-ip-country") ?? "",
-      "x-vercel-ip-city": request.headers.get("x-vercel-ip-city") ?? "",
-      "x-vercel-ip-country-region":
-        request.headers.get("x-vercel-ip-country-region") ?? "",
     });
 
     if (!url) {
