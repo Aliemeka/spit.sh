@@ -10,13 +10,20 @@ import { marketingRoutes } from "./lib/constants/routes";
 
 const marketingLinks = Object.values(marketingRoutes);
 
-const fetchSlug = async (slug: string, retryTimes = 3) => {
-  const response = await fetch(`${API_URL}/links/${slug}`, { method: "GET" });
+const fetchSlug = async (
+  slug: string,
+  forwardHeaders: HeadersInit,
+  retryTimes = 3,
+) => {
+  const response = await fetch(`${API_URL}/links/${slug}`, {
+    method: "GET",
+    headers: forwardHeaders,
+  });
   if (!response.ok) {
     if (retryTimes <= 0) {
       return null;
     }
-    return fetchSlug(slug, retryTimes - 1);
+    return fetchSlug(slug, forwardHeaders, retryTimes - 1);
   }
   const data = await response.json();
   return data.url as string;
@@ -59,7 +66,20 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const url = await fetchSlug(slug);
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+      request.ip ??
+      "";
+    const url = await fetchSlug(slug, {
+      "x-forwarded-for": ip,
+      "x-real-ip": ip,
+      "user-agent": request.headers.get("user-agent") ?? "",
+      // Vercel populates these on the edge — pass them through if present
+      "x-vercel-ip-country": request.headers.get("x-vercel-ip-country") ?? "",
+      "x-vercel-ip-city": request.headers.get("x-vercel-ip-city") ?? "",
+      "x-vercel-ip-country-region":
+        request.headers.get("x-vercel-ip-country-region") ?? "",
+    });
 
     if (!url) {
       return NextResponse.next();
