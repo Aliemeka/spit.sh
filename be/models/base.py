@@ -86,3 +86,14 @@ class Click(ClickInfo, table=True):
 
     link_id: Optional[uuid.UUID] = Field(default=None, foreign_key="link.id")
     link: Optional[Link] = Relationship(back_populates="clicks")
+
+
+# class Page(SQLModel, table=True):
+#     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
+#     name: str
+#     slug: str = Field(unique=True)
+#     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+#     updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+
+#     project_id: Optional[uuid.UUID] = Field(default=None, foreign_key="project.id")
+#     project: Optional[Project] = Relationship(back_populates="pages")
