@@ -66,6 +66,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
+    // Get the actual ip address of the visitor
     const ip =
       request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
       request.ip ??
