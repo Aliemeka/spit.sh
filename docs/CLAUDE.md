@@ -46,7 +46,7 @@ spit-sh/
 
 ### Python version & dependencies
 
-- Python 3.10, Pydantic **v1** (`pydantic==1.10.8`) — use `BaseSettings` from `pydantic`, not `pydantic_settings`
+- Python 3.12, Pydantic **v1** (`pydantic==1.10.8`) — use `BaseSettings` from `pydantic`, not `pydantic_settings`
 - All dependencies go in `requirements.txt`
 - Virtual env lives at `be/env/` — never commit it
 
