@@ -1,0 +1,25 @@
+[project]
+name = "be"
+version = "0.1.0"
+description = "FastAPI backend for Spit.sh URL shortener"
+readme = "README.md"
+requires-python = ">=3.12.9"
+dependencies = [
+    "aiosqlite==0.19.0",
+    "alembic==1.11.1",
+    "asyncpg==0.30.0",
+    "fastapi==0.95.2",
+    "geoip2==5.2.0",
+    "greenlet>=3.5.0",
+    "gunicorn>=25.3.0",
+    "httpx==0.28.1",
+    "psycopg2==2.9.9",
+    "pydantic==1.10.17",
+    "python-dotenv>=1.2.2",
+    "python-jose[cryptography]>=3.5.0",
+    "resend>=2.29.0",
+    "slowapi>=0.1.9",
+    "sqlalchemy>=1.4.41",
+    "sqlmodel==0.0.8",
+    "uvicorn>=0.46.0",
+]
