@@ -24,7 +24,8 @@ spit-sh/
 │   ├── utils/            # Shared utilities (generate.py, limiter.py)
 │   ├── database.py       # Async engine + get_session dependency
 │   ├── main.py           # App entry point, middleware, route registration
-│   └── requirements.txt
+│   ├── pyproject.toml    # Project metadata + dependencies (managed by uv)
+│   └── uv.lock           # Resolved lockfile — commit this
 ├── frontend/             # Next.js app
 │   ├── app/              # App Router pages and layouts
 │   ├── components/       # Reusable UI components
@@ -46,9 +47,10 @@ spit-sh/
 
 ### Python version & dependencies
 
-- Python 3.12, Pydantic **v1** (`pydantic==1.10.8`) — use `BaseSettings` from `pydantic`, not `pydantic_settings`
-- All dependencies go in `requirements.txt`
-- Virtual env lives at `be/env/` — never commit it
+- Python 3.12 (pinned in `.python-version`), Pydantic **v1** (`pydantic==1.10.17`) — use `BaseSettings` from `pydantic`, not `pydantic_settings`
+- Dependencies are managed with **uv**. Declare them in `pyproject.toml` under `[project.dependencies]` and commit `uv.lock`
+- Add a dependency: `uv add <pkg>` (or `uv add --dev <pkg>` for dev-only). Sync the venv with `uv sync`. Run commands with `uv run <cmd>` (no manual activate needed)
+- Virtual env lives at `be/.venv/` — never commit it
 
 ### Imports
 
@@ -140,7 +142,7 @@ spit-sh/
 ## General Rules
 
 - Do not commit `.env` files or secrets
-- Do not commit `be/env/` (Python venv) or `frontend/node_modules/`
+- Do not commit `be/.venv/` (Python venv) or `frontend/node_modules/`
 - Keep routers readable — if a function is more than a few lines of logic, move it to a service
 - Prefer editing existing files over creating new ones
 - Do not add comments unless the logic is non-obvious
