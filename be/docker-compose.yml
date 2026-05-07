@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: dockerfile
     restart: unless-stopped
+    expose:
+      - 8555
     ports:
       - "8555:8555"
     volumes:
