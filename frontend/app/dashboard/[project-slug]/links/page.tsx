@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { PlusCircleIcon } from "@phosphor-icons/react";
 import DashboardLayout from "@/layouts/DashboardLayout";
@@ -8,6 +8,8 @@ import EmptyState from "@/components/blocks/EmptyState";
 import NewLinkModal from "@/components/links/NewLinkModal";
 import LinksList from "@/components/links/LinksList";
 import { useProjectLinks } from "@/hooks/useProjectLinks";
+import PrimaryButton from "@/components/ui/primary-button";
+import { Kbd } from "@/components/ui/kbd";
 
 const LinkPage = () => {
   const params = useParams();
@@ -26,14 +28,33 @@ const LinkPage = () => {
   };
 
   const CreateButton = (
-    <button
+    <PrimaryButton
       onClick={openModal}
-      className='inline-flex items-center rounded-full bg-fuchsia-600 px-6 py-2.5 text-sm font-semibold text-white gap-x-1.5 hover:bg-fuchsia-700 focus:outline-none focus:ring active:bg-fuchsia-800 transition'
+      icon={
+        <span className='flex items-center gap-0.5'>
+          <Kbd>N</Kbd>
+          <PlusCircleIcon size={16} weight='bold' />
+        </span>
+      }
     >
       <span>Create new link</span>
-      <PlusCircleIcon size={16} weight='bold' />
-    </button>
+    </PrimaryButton>
   );
+
+  useEffect(() => {
+    const keyboardEventHandler = (e: KeyboardEvent) => {
+      if (e.key === "n" || e.key === "N") {
+        e.preventDefault();
+        openModal();
+      }
+    };
+
+    window.addEventListener("keydown", keyboardEventHandler);
+
+    return () => {
+      window.removeEventListener("keydown", keyboardEventHandler);
+    };
+  }, []);
 
   return (
     <DashboardLayout title='Links' SideButton={CreateButton}>

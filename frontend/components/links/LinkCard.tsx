@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +28,7 @@ import { LinkResponse } from "@/lib/types/linkTypes";
 import { deleteProjectLinkAction } from "@/app/actions/link";
 import { useToast } from "@/hooks/useToast";
 import { useClipboard } from "@/hooks/useClipboard";
+import { dashboardRoutes } from "@/lib/constants/routes";
 
 interface Props {
   link: LinkResponse;
@@ -123,9 +125,10 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
         <div className='flex items-center gap-1 shrink-0 text-zinc-400'>
           <button
             type='button'
-            className='p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition'
+            className='p-1.5 rounded-md hover:bg-green-50 dark:hover:bg-green-950 hover:text-green-600 dark:hover:text-green-400 transition'
             title='Edit'
           >
+            <span className='sr-only'>Edit link</span>
             <PencilSimpleIcon size={15} />
           </button>
           <button
@@ -133,15 +136,17 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
             className='p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition'
             title='Share'
           >
+            <span className='sr-only'>Share link</span>
             <ShareNetworkIcon size={15} />
           </button>
-          <button
-            type='button'
-            className='p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition'
-            title='Analytics'
+          <Link
+            href={dashboardRoutes.analytics(projectSlug, link.id)}
+            title='View analytics'
+            className='p-1.5 rounded-md hover:bg-fuchsia-50 dark:hover:bg-fuchsia-950 hover:text-fuchsia-600 dark:hover:text-fuchsia-400 transition'
           >
+            <span className='sr-only'>View analytics</span>
             <ChartBarIcon size={15} />
-          </button>
+          </Link>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <button
@@ -150,6 +155,7 @@ export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
                 className='p-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-950 hover:text-red-600 dark:hover:text-red-400 transition disabled:opacity-50'
                 title='Delete'
               >
+                <span className='sr-only'>Delete link</span>
                 <TrashIcon size={15} />
               </button>
             </AlertDialogTrigger>
