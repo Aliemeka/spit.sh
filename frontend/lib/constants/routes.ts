@@ -22,7 +22,8 @@ export const dashboardRoutes = {
   project: (slug: string) => `/dashboard/${slug}`,
   links: (slug: string) => `/dashboard/${slug}/links`,
   domains: (slug: string) => `/dashboard/${slug}/domains`,
-  analytics: (slug: string) => `/dashboard/${slug}/analytics`,
+  analytics: (slug: string, linkId?: string) =>
+    `/dashboard/${slug}/analytics${linkId ? `?linkId=${linkId}` : ""}`,
   pages: (slug: string) => `/dashboard/${slug}/pages`,
   settings: (slug: string) => `/dashboard/${slug}/settings`,
 };
