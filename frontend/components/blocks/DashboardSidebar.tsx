@@ -131,7 +131,7 @@ const DashboardSidebar = ({
 
                 <li>
                   <a href='' className={inactiveClass}>
-                    Calendar
+                    Folders
                   </a>
                 </li>
               </ul>
@@ -139,9 +139,12 @@ const DashboardSidebar = ({
           </li>
 
           <li>
-            <a href='' className={inactiveClass}>
+            <Link
+              href={dashboardRoutes.analytics(workspaceSlug)}
+              className={inactiveClass}
+            >
               Analytics
-            </a>
+            </Link>
           </li>
 
           <li>
