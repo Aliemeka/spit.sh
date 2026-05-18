@@ -1,4 +1,5 @@
 "use client";
+import EmptyState from "@/components/blocks/EmptyState";
 import { Kbd } from "@/components/ui/kbd";
 import PrimaryButton from "@/components/ui/primary-button";
 import DashboardLayout from "@/layouts/DashboardLayout";
@@ -15,7 +16,11 @@ const AnalyticsPage = () => {
         </PrimaryButton>
       }
     >
-      Anayltics coming soon...
+      <EmptyState text='Analytics coming soon'>
+        <p className='text-sm'>
+          We are working hard to bring analytics to you. Stay tuned!
+        </p>
+      </EmptyState>
     </DashboardLayout>
   );
 };

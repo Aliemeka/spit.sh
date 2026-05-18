@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -61,10 +61,19 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
     router.replace("?");
   };
 
-  const fetchOG = useCallback(async (url: string) => {
+  const isUrlValid = (url: string) => {
     try {
       new URL(url);
+      return true;
     } catch {
+      return false;
+    }
+  };
+
+  const fetchOG = useCallback(async (url: string) => {
+    if (!isUrlValid(url)) {
+      setOGData(null);
+      console.log("Invalid URL, skipping OG fetch");
       return;
     }
     setOGLoading(true);
@@ -110,11 +119,15 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
           url: values.url,
           slug: values.slug || undefined,
           tags: values.tags,
-          utm_source: showUTM && values.utm_source ? values.utm_source : undefined,
-          utm_medium: showUTM && values.utm_medium ? values.utm_medium : undefined,
-          utm_campaign: showUTM && values.utm_campaign ? values.utm_campaign : undefined,
+          utm_source:
+            showUTM && values.utm_source ? values.utm_source : undefined,
+          utm_medium:
+            showUTM && values.utm_medium ? values.utm_medium : undefined,
+          utm_campaign:
+            showUTM && values.utm_campaign ? values.utm_campaign : undefined,
           utm_term: showUTM && values.utm_term ? values.utm_term : undefined,
-          utm_content: showUTM && values.utm_content ? values.utm_content : undefined,
+          utm_content:
+            showUTM && values.utm_content ? values.utm_content : undefined,
         });
         toastSuccess("Link created");
         onSuccess();
@@ -127,6 +140,11 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
     },
   });
 
+  const previewUrl = useMemo(() => {
+    if (!isUrlValid(formik.values.url)) return null;
+    return new URL(formik.values.url).hostname;
+  }, [formik.values.url]);
+
   const toggleTag = (tag: string) => {
     const current = formik.values.tags;
     formik.setFieldValue(
@@ -138,13 +156,13 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
   };
 
   const inputClass =
-    "w-full mt-1 px-3 py-2 dark:bg-zinc-900 dark:text-white bg-transparent outline-none border border-zinc-200 dark:border-zinc-700 rounded-lg focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-300 focus:shadow-sm text-sm";
+    "w-full mt-1 px-3 py-2 dark:bg-zinc-900 dark:text-white bg-transparent outline-none border border-zinc-400 dark:border-zinc-700 rounded-lg focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-300 focus:shadow-sm text-sm";
   const labelClass = "text-sm font-medium text-zinc-700 dark:text-zinc-300";
 
   return (
     <Dialog open onOpenChange={(open) => !open && close()}>
-      <DialogContent className='max-w-4xl w-full p-0 bg-zinc-100/85 dark:bg-zinc-900/85 backdrop-blur-sm overflow-hidden'>
-        <DialogHeader className='px-6 pt-5 pb-4 border-b border-zinc-300 dark:border-zinc-800'>
+      <DialogContent className='max-w-4xl w-full p-0 bg-zinc-100/95 dark:bg-zinc-900/85 backdrop-blur-sm overflow-hidden'>
+        <DialogHeader className='px-6 pt-5 pb-4 border-b border-zinc-400/60 dark:border-zinc-800'>
           <DialogTitle className='flex items-center gap-2 text-base font-semibold'>
             <LinkIcon size={18} weight='bold' />
             New link
@@ -154,7 +172,7 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
         <form onSubmit={formik.handleSubmit}>
           <div className='grid grid-cols-1 md:grid-cols-5 min-h-[480px]'>
             {/* Left panel */}
-            <div className='md:col-span-3 px-6 py-5 space-y-5 border-b border-zinc-100 dark:border-zinc-800 md:border-b-0 md:border-r overflow-y-auto'>
+            <div className='md:col-span-3 px-6 py-5 space-y-5 border-b border-zinc-400/60 dark:border-zinc-800 md:border-b-0 md:border-r overflow-y-auto'>
               {/* Destination URL */}
               <div>
                 <label className={labelClass}>Destination URL</label>
@@ -221,7 +239,7 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
                       className={`px-2.5 py-1 rounded-full text-xs font-medium border transition ${
                         formik.values.tags.includes(tag)
                           ? "bg-fuchsia-600 border-fuchsia-600 text-white"
-                          : "bg-transparent border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-fuchsia-400 hover:text-fuchsia-600"
+                          : "bg-transparent border-zinc-400 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-fuchsia-400 hover:text-fuchsia-600"
                       }`}
                     >
                       {tag}
@@ -328,13 +346,13 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
               <p className={`${labelClass} mb-3`}>Preview</p>
               {ogLoading ? (
                 <div className='flex-1 space-y-3'>
-                  <div className='w-full h-40 bg-zinc-100 dark:bg-zinc-800 rounded-lg animate-pulse' />
-                  <div className='h-4 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse w-3/4' />
-                  <div className='h-3 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse w-full' />
-                  <div className='h-3 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse w-2/3' />
+                  <div className='w-full h-40 bg-zinc-400/40 dark:bg-zinc-800 rounded-lg animate-pulse' />
+                  <div className='h-4 bg-zinc-400/40 dark:bg-zinc-800 rounded animate-pulse w-3/4' />
+                  <div className='h-3 bg-zinc-400/40 dark:bg-zinc-800 rounded animate-pulse w-full' />
+                  <div className='h-3 bg-zinc-400/40 dark:bg-zinc-800 rounded animate-pulse w-2/3' />
                 </div>
               ) : ogData ? (
-                <div className='border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden flex-1'>
+                <div className='border border-zinc-400/60 dark:border-zinc-700 rounded-lg overflow-hidden flex-1'>
                   {ogData.image && (
                     <img
                       src={ogData.image}
@@ -353,26 +371,30 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
                         {ogData.description}
                       </p>
                     )}
-                    {formik.values.url && (
+                    {previewUrl && (
                       <a
-                        href={formik.values.url}
+                        href={
+                          previewUrl.startsWith("http")
+                            ? previewUrl
+                            : `https://${previewUrl}`
+                        }
                         target='_blank'
                         rel='noopener noreferrer'
                         className='flex items-center gap-1 text-xs text-fuchsia-600 dark:text-fuchsia-400 mt-1 hover:underline'
                       >
                         <ArrowSquareOutIcon size={12} />
-                        {new URL(formik.values.url).hostname}
+                        {previewUrl}
                       </a>
                     )}
                   </div>
                 </div>
               ) : (
-                <div className='flex-1 border-2 border-dashed border-zinc-200 dark:border-zinc-700 rounded-lg flex flex-col items-center justify-center text-center p-4'>
+                <div className='flex-1 border-2 border-dashed border-zinc-400/60 dark:border-zinc-700 rounded-lg flex flex-col items-center justify-center text-center p-4'>
                   <LinkIcon
                     size={28}
-                    className='text-zinc-300 dark:text-zinc-600 mb-2'
+                    className='text-zinc-600 dark:text-zinc-500 mb-2'
                   />
-                  <p className='text-xs text-zinc-400 dark:text-zinc-500'>
+                  <p className='text-xs text-zinc-600 dark:text-zinc-500'>
                     Enter a destination URL to see a preview
                   </p>
                 </div>
@@ -381,11 +403,11 @@ export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
           </div>
 
           {/* Footer */}
-          <div className='flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-100 dark:border-zinc-800'>
+          <div className='flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-400/60 dark:border-zinc-800'>
             <button
               type='button'
               onClick={close}
-              className='px-5 py-2 rounded-full text-sm font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 transition'
+              className='px-5 py-2 rounded-full text-sm font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-400 dark:border-zinc-700 hover:border-zinc-400 transition'
             >
               Cancel
             </button>

@@ -23,7 +23,7 @@ export default function LinksList({
         {[...Array(3)].map((_, i) => (
           <div
             key={i}
-            className='h-20 rounded-xl bg-zinc-100 dark:bg-zinc-800 animate-pulse'
+            className='h-24 rounded-xl bg-zinc-300/60 dark:bg-zinc-800 animate-pulse'
           />
         ))}
       </div>
