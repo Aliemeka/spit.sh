@@ -148,9 +148,12 @@ const DashboardSidebar = ({
           </li>
 
           <li>
-            <a href='' className={inactiveClass}>
+            <Link
+              href={dashboardRoutes.pages(workspaceSlug)}
+              className={inactiveClass}
+            >
               Pages
-            </a>
+            </Link>
           </li>
 
           <li>

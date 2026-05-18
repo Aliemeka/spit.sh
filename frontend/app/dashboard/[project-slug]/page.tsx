@@ -6,6 +6,8 @@ import { linkRoutes } from "@/lib/constants/routes";
 import WelcomeCard from "@/components/pageBundles/home/WelcomeCard";
 import OnboardingSteps from "@/components/pageBundles/home/OnboardingSteps";
 import RecentLinks from "@/components/pageBundles/home/RecentLinks";
+import { Kbd } from "@/components/ui/kbd";
+import { useRouter } from "next/navigation";
 
 const DashboardHomePage = ({
   params,
@@ -23,7 +25,10 @@ const DashboardHomePage = ({
           className='inline-flex items-center rounded-full bg-fuchsia-600 px-6 py-2.5 text-sm font-semibold text-white gap-x-1.5 hover:bg-fuchsia-700 focus:outline-none focus:ring active:bg-fuchsia-800 transition'
         >
           <span>Create new link</span>
-          <PlusCircleIcon size={16} weight='bold' />
+          <span className='flex items-center gap-0.5'>
+            <Kbd>N</Kbd>
+            <PlusCircleIcon size={16} weight='bold' />
+          </span>
         </Link>
       }
     >
