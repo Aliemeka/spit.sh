@@ -1,9 +1,12 @@
 import re
 import asyncio
+from urllib.parse import urlparse
 from sqlalchemy.ext.asyncio import AsyncSession
+from user_agents import parse as parse_ua
 
 from schemas.clickSchema import ClickCreate
 from crud.click import create_click
+from models.base import Link
 from config.environment import GEOIP_DB_PATH
 
 
@@ -31,16 +34,53 @@ def get_device_type(user_agent: str) -> str:
     return "desktop"
 
 
-async def record_click(ip: str, link_id: str, user_agent: str, session: AsyncSession):
+def parse_browser_os(user_agent: str) -> tuple[str, str]:
+    try:
+        parsed = parse_ua(user_agent)
+        browser = parsed.browser.family or "unknown"
+        os = parsed.os.family or "unknown"
+        return browser, os
+    except Exception:
+        return "unknown", "unknown"
+
+
+def extract_referer_host(referer: str | None) -> str:
+    if not referer:
+        return "(direct)"
+    try:
+        host = urlparse(referer).hostname
+        return host or "(direct)"
+    except Exception:
+        return "(direct)"
+
+
+async def record_click(
+    ip: str,
+    link: Link,
+    user_agent: str,
+    referer: str | None,
+    session: AsyncSession,
+):
     loop = asyncio.get_running_loop()
     geo = await loop.run_in_executor(None, _resolve_geo, ip)
     device = get_device_type(user_agent)
+    browser, os_name = parse_browser_os(user_agent)
+    referer_host = extract_referer_host(referer)
+
     click_payload = ClickCreate(
         ip_address=ip,
         country=geo["country"],
         city=geo["city"],
         country_code=geo["country_code"],
         device=device,
-        link_id=link_id,
+        browser=browser,
+        os=os_name,
+        referer=referer_host,
+        link_id=str(link.id),
+        utm_source=link.utm_source,
+        utm_medium=link.utm_medium,
+        utm_campaign=link.utm_campaign,
+        utm_term=link.utm_term,
+        utm_content=link.utm_content,
     )
     await create_click(click_payload, session)

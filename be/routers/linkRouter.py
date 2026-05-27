@@ -56,13 +56,14 @@ async def get_link_by_slug(
         raise HTTPException(status_code=404, detail="Link does not exist")
 
     user_agent = request.headers.get("user-agent", "")
+    referer = request.headers.get("referer")
     client_ip = (
         request.headers.get("x-forwarded-for", "").split(",")[0].strip()
         or request.headers.get("x-real-ip")
         or request.client.host
     )
     background_tasks.add_task(
-        record_click, client_ip, str(link.id), user_agent, session
+        record_click, client_ip, link, user_agent, referer, session
     )
 
     return LinkData(url=link.url, slug=link.slug, shortenUrl=link.shortenUrl)

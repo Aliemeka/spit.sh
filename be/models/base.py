@@ -1,6 +1,7 @@
 from datetime import datetime
 import enum
 from typing import Optional, List
+import sqlalchemy as sa
 from sqlmodel import Field, SQLModel, Relationship
 import uuid
 from schemas.linkSchema import ClickInfo
@@ -75,12 +76,28 @@ class LinkTag(SQLModel, table=True):
 
 
 class Click(ClickInfo, table=True):
+    __table_args__ = (
+        sa.Index("ix_click_link_created", "link_id", "created_at"),
+        sa.Index("ix_click_country", "country_code", "created_at"),
+        sa.Index("ix_click_device", "device", "created_at"),
+        sa.Index("ix_click_referer", "referer", "created_at"),
+    )
+
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     ip_address: str
     country: str
     city: str
     country_code: str
     device: str = Field(default="unknown")
+    browser: str = Field(default="unknown", max_length=64)
+    os: str = Field(default="unknown", max_length=64)
+    referer: str = Field(default="(direct)", max_length=255)
+
+    utm_source: Optional[str] = Field(default=None, nullable=True, max_length=255)
+    utm_medium: Optional[str] = Field(default=None, nullable=True, max_length=255)
+    utm_campaign: Optional[str] = Field(default=None, nullable=True, max_length=255)
+    utm_term: Optional[str] = Field(default=None, nullable=True, max_length=255)
+    utm_content: Optional[str] = Field(default=None, nullable=True, max_length=255)
 
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 

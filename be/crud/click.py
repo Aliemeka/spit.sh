@@ -15,6 +15,14 @@ async def create_click(payload: ClickCreate, db: AsyncSession) -> Click:
         link_id=payload.link_id,
         ip_address=payload.ip_address,
         device=payload.device,
+        browser=payload.browser,
+        os=payload.os,
+        referer=payload.referer,
+        utm_source=payload.utm_source,
+        utm_medium=payload.utm_medium,
+        utm_campaign=payload.utm_campaign,
+        utm_term=payload.utm_term,
+        utm_content=payload.utm_content,
     )
     db.add(click)
     await db.commit()
