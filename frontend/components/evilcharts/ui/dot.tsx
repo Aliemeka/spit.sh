@@ -112,7 +112,7 @@ const PrimaryBorderDot = React.memo(
     const r = 6;
     const strokeWidth = 5;
     return (
-      <g className={cn(className, "text-oklch(1 0 0) dark:text-oklch(0.141 0.005 285.823)")} mask={maskId ? `url(#${maskId})` : undefined}>
+      <g className={cn(className, "text-white dark:text-zinc-950")} mask={maskId ? `url(#${maskId})` : undefined}>
         <defs>
           <clipPath id={`dot-clip-${dotId}`}>
             <circle cx={cx} cy={cy} r={r} />
@@ -147,7 +147,7 @@ const ColoredBorderDot = React.memo(
     const r = 3;
     const strokeWidth = 1;
     return (
-      <g className={cn(className, "text-oklch(1 0 0) dark:text-oklch(0.141 0.005 285.823)")} mask={maskId ? `url(#${maskId})` : undefined}>
+      <g className={cn(className, "text-white dark:text-zinc-950")} mask={maskId ? `url(#${maskId})` : undefined}>
         <defs>
           <clipPath id={`dot-clip-${dotId}`}>
             <circle cx={cx} cy={cy} r={r + strokeWidth / 2} />

@@ -368,18 +368,18 @@ function EvilBrush({
 
       {/* Dim overlay – left */}
       <motion.div
-        className="bg-oklch(1 0 0)/70 pointer-events-none absolute inset-y-0 left-0 rounded-l-md backdrop-blur-[2px] dark:bg-oklch(0.141 0.005 285.823)/70"
+        className="bg-white/70 pointer-events-none absolute inset-y-0 left-0 rounded-l-md backdrop-blur-[2px] dark:bg-zinc-950/70"
         style={{ width: leftOverlayWidth }}
       />
       {/* Dim overlay – right */}
       <motion.div
-        className="bg-oklch(1 0 0)/70 pointer-events-none absolute inset-y-0 right-0 rounded-r-md backdrop-blur-[2px] dark:bg-oklch(0.141 0.005 285.823)/70"
+        className="bg-white/70 pointer-events-none absolute inset-y-0 right-0 rounded-r-md backdrop-blur-[2px] dark:bg-zinc-950/70"
         style={{ width: rightOverlayWidth }}
       />
 
       {/* Selected region – draggable to pan */}
       <motion.div
-        className="absolute inset-y-0 cursor-grab touch-none rounded-sm border border-oklch(0.92 0.004 286.32) active:cursor-grabbing dark:border-oklch(1 0 0 / 10%)"
+        className="absolute inset-y-0 cursor-grab touch-none rounded-sm border border-zinc-200 active:cursor-grabbing dark:border-white/10"
         style={{ left: leftPosition, width: selectedWidth }}
         {...bind("middle")}
       />
@@ -433,14 +433,14 @@ function BrushHandle({
       >
         <div
           className={cn(
-            "bg-oklch(0.552 0.016 285.938) group-hover:bg-oklch(0.141 0.005 285.823) relative flex h-4 w-1.5 items-center justify-center rounded-md transition-colors dark:bg-oklch(0.705 0.015 286.067) dark:group-hover:bg-oklch(0.985 0 0)",
+            "bg-zinc-500 group-hover:bg-zinc-950 relative flex h-4 w-1.5 items-center justify-center rounded-md transition-colors dark:bg-zinc-400 dark:group-hover:bg-zinc-50",
             isLeft ? "-left-[5.5px]" : "-right-[5.5px]",
           )}
         >
           <div className="flex flex-col gap-[2px]">
-            <div className="bg-oklch(1 0 0)/70 h-[2px] w-[2px] rounded-full dark:bg-oklch(0.141 0.005 285.823)/70" />
-            <div className="bg-oklch(1 0 0)/70 h-[2px] w-[2px] rounded-full dark:bg-oklch(0.141 0.005 285.823)/70" />
-            <div className="bg-oklch(1 0 0)/70 h-[2px] w-[2px] rounded-full dark:bg-oklch(0.141 0.005 285.823)/70" />
+            <div className="bg-white/70 h-[2px] w-[2px] rounded-full dark:bg-zinc-950/70" />
+            <div className="bg-white/70 h-[2px] w-[2px] rounded-full dark:bg-zinc-950/70" />
+            <div className="bg-white/70 h-[2px] w-[2px] rounded-full dark:bg-zinc-950/70" />
           </div>
         </div>
       </div>
@@ -448,7 +448,7 @@ function BrushHandle({
       {label && (
         <div
           className={cn(
-            "bg-oklch(0.141 0.005 285.823) text-oklch(1 0 0) pointer-events-none absolute -bottom-3 -translate-y-1/2 rounded-[3px] px-1 py-px text-[8px] leading-tight font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 dark:bg-oklch(0.985 0 0) dark:text-oklch(0.141 0.005 285.823)",
+            "bg-zinc-950 text-white pointer-events-none absolute -bottom-3 -translate-y-1/2 rounded-[3px] px-1 py-px text-[8px] leading-tight font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 dark:bg-zinc-50 dark:text-zinc-950",
             isLeft ? "left-1.5" : "right-1.5",
           )}
         >
