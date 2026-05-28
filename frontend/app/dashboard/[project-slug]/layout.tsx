@@ -6,7 +6,7 @@ export default async function DashLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { "project-slug": string };
+  params: Promise<{ "project-slug": string }>;
 }) {
   const { "project-slug": workspaceSlug } = await params;
 
