@@ -39,7 +39,7 @@ const AnalyticsContent = ({ projectSlug }: { projectSlug: string }) => {
 const AnalyticsPage = async ({
   params,
 }: {
-  params: { "project-slug": string };
+  params: Promise<{ "project-slug": string }>;
 }) => {
   const { "project-slug": projectSlug } = await params;
 
