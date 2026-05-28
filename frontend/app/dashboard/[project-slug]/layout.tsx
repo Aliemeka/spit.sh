@@ -8,7 +8,8 @@ export default async function DashLayout({
   children: React.ReactNode;
   params: { "project-slug": string };
 }) {
-  const { "project-slug": workspaceSlug } = params;
+  const { "project-slug": workspaceSlug } = await params;
+  console.log("workspaceSlug", workspaceSlug);
 
   return (
     <QueryProvider>
