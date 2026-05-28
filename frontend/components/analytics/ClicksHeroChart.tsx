@@ -7,8 +7,11 @@ import {
   XAxis,
   YAxis,
   Grid,
-  Tooltip,
 } from "@/components/evilcharts/charts/area-chart";
+import {
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/evilcharts/ui/tooltip";
 import WidgetCard from "./WidgetCard";
 import WidgetSkeleton from "./WidgetSkeleton";
 import {
@@ -17,7 +20,10 @@ import {
 } from "@/hooks/useAnalytics";
 import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 import { clicksAreaConfig } from "@/lib/analytics/chartConfigs";
-import { formatBucketStart } from "@/lib/analytics/intervals";
+import {
+  formatBucketStart,
+  formatTooltipLabel,
+} from "@/lib/analytics/intervals";
 
 interface Props {
   projectSlug: string;
@@ -67,7 +73,16 @@ const ClicksHeroChart: FC<Props> = ({ projectSlug }) => {
               tickFormatter={(v: string) => formatBucketStart(v, interval)}
             />
             <YAxis dataKey='clicks' />
-            <Tooltip />
+            <ChartTooltip
+              cursor={{ strokeDasharray: "3" }}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) =>
+                    formatTooltipLabel(String(value), interval)
+                  }
+                />
+              }
+            />
             <Area
               dataKey='clicks'
               variant='gradient'
