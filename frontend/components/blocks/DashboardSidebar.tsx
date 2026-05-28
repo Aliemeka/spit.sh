@@ -175,11 +175,11 @@ const DashboardSidebar = ({
                   </a>
                 </li>
 
-                <li>
+                {/* <li>
                   <a href='' className={inactiveClass}>
                     Team
                   </a>
-                </li>
+                </li> */}
 
                 <li>
                   <button
