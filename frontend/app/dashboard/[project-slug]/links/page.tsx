@@ -43,7 +43,7 @@ const LinkPage = () => {
 
   useEffect(() => {
     const keyboardEventHandler = (e: KeyboardEvent) => {
-      if (e.key === "n" || e.key === "N") {
+      if ((e.key === "n" || e.key === "N") && !showModal) {
         e.preventDefault();
         openModal();
       }
@@ -54,7 +54,7 @@ const LinkPage = () => {
     return () => {
       window.removeEventListener("keydown", keyboardEventHandler);
     };
-  }, []);
+  }, [showModal]);
 
   return (
     <DashboardLayout title='Links' SideButton={CreateButton}>
