@@ -124,5 +124,6 @@ async def get_analytics(
         GroupBy.utm_sources: analytics_crud.get_utm_sources,
         GroupBy.utm_mediums: analytics_crud.get_utm_mediums,
         GroupBy.utm_campaigns: analytics_crud.get_utm_campaigns,
+        GroupBy.top_links: analytics_crud.get_top_links,
     }
     return await dispatch[group_by](db, filters)
