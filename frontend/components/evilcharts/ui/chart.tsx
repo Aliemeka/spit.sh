@@ -135,8 +135,8 @@ function LoadingIndicator({ isLoading }: { isLoading: boolean }) {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-      <div className="text-oklch(0.21 0.006 285.885) bg-oklch(1 0 0) flex items-center justify-center gap-2 rounded-md border border-oklch(0.92 0.004 286.32) px-2 py-0.5 text-sm dark:text-oklch(0.92 0.004 286.32) dark:bg-oklch(0.141 0.005 285.823) dark:border-oklch(1 0 0 / 10%)">
-        <div className="border-oklch(0.92 0.004 286.32) border-t-primary h-3 w-3 animate-spin rounded-full border dark:border-oklch(1 0 0 / 10%)" />
+      <div className="text-zinc-900 bg-white flex items-center justify-center gap-2 rounded-md border border-zinc-200 px-2 py-0.5 text-sm dark:text-zinc-200 dark:bg-zinc-950 dark:border-white/10">
+        <div className="border-zinc-200 border-t-primary h-3 w-3 animate-spin rounded-full border dark:border-white/10" />
         <span>Loading</span>
       </div>
     </div>

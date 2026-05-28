@@ -15,8 +15,8 @@ const roundnessMap: Record<TooltipRoundness, string> = {
 };
 
 const variantMap: Record<TooltipVariant, string> = {
-  default: "bg-oklch(1 0 0) dark:bg-oklch(0.141 0.005 285.823)",
-  "frosted-glass": "bg-oklch(1 0 0)/70 backdrop-blur-sm dark:bg-oklch(0.141 0.005 285.823)/70",
+  default: "bg-white dark:bg-zinc-950",
+  "frosted-glass": "bg-white/70 backdrop-blur-sm dark:bg-zinc-950/70",
 };
 
 function ChartTooltipContent({
@@ -85,7 +85,7 @@ function ChartTooltipContent({
   return (
     <div
       className={cn(
-        "border-oklch(0.92 0.004 286.32)/50 grid min-w-32 items-start gap-1.5 border border-oklch(0.92 0.004 286.32) px-2.5 py-1.5 text-xs shadow-xl dark:border-oklch(1 0 0 / 10%)/50 dark:border-oklch(1 0 0 / 10%)",
+        "border-zinc-200/50 grid min-w-32 items-start gap-1.5 border border-zinc-200 px-2.5 py-1.5 text-xs shadow-xl dark:border-white/10/50 dark:border-white/10",
         roundnessMap[roundness],
         variantMap[variant],
         className,
@@ -113,7 +113,7 @@ function ChartTooltipContent({
               <div
                 key={index}
                 className={cn(
-                  "[&>svg]:text-oklch(0.552 0.016 285.938) flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 dark:[&>svg]:text-oklch(0.705 0.015 286.067)",
+                  "[&>svg]:text-zinc-500 flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 dark:[&>svg]:text-zinc-400",
                   indicator === "dot" && "items-center",
                   selected != null && selected !== item.dataKey && "opacity-30",
                 )}
@@ -146,12 +146,12 @@ function ChartTooltipContent({
                     >
                       <div className="grid gap-1.5">
                         {nestLabel ? tooltipLabel : null}
-                        <span className="text-oklch(0.552 0.016 285.938) dark:text-oklch(0.705 0.015 286.067)">
+                        <span className="text-zinc-500 dark:text-zinc-400">
                           {itemConfig?.label ?? item.name}
                         </span>
                       </div>
                       {item.value != null && (
-                        <span className="text-oklch(0.141 0.005 285.823) font-mono font-medium tabular-nums dark:text-oklch(0.985 0 0)">
+                        <span className="text-zinc-950 font-mono font-medium tabular-nums dark:text-zinc-50">
                           {typeof item.value === "number"
                             ? item.value.toLocaleString()
                             : String(item.value)}
