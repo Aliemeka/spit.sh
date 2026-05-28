@@ -11,7 +11,7 @@ import { Kbd } from "@/components/ui/kbd";
 const DashboardHomePage = async ({
   params,
 }: {
-  params: { "project-slug": string };
+  params: Promise<{ "project-slug": string }>;
 }) => {
   const { "project-slug": slug } = await params;
 
