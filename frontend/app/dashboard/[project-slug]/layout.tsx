@@ -9,7 +9,6 @@ export default async function DashLayout({
   params: { "project-slug": string };
 }) {
   const { "project-slug": workspaceSlug } = await params;
-  console.log("workspaceSlug", workspaceSlug);
 
   return (
     <QueryProvider>
