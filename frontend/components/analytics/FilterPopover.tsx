@@ -171,7 +171,7 @@ const LinkPicker: FC<{
               }
             >
               <span className='font-medium text-zinc-800 dark:text-zinc-100 truncate'>
-                /{link.shortenUrl}
+                {link.shortenUrl}
               </span>
             </CommandItem>
           ))}
