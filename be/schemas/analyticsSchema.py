@@ -24,6 +24,7 @@ class GroupBy(str, Enum):
     utm_sources = "utm_sources"
     utm_mediums = "utm_mediums"
     utm_campaigns = "utm_campaigns"
+    top_links = "top_links"
 
 
 class Device(str, Enum):
@@ -89,6 +90,14 @@ class UtmCampaignBreakdown(BaseModel):
     clicks: int
 
 
+class TopLinkBreakdown(BaseModel):
+    id: str
+    slug: str
+    url: str
+    shortenUrl: str
+    clicks: int
+
+
 AnalyticsResponse = Union[
     CountResponse,
     List[TimeseriesBucket],
@@ -101,4 +110,5 @@ AnalyticsResponse = Union[
     List[UtmSourceBreakdown],
     List[UtmMediumBreakdown],
     List[UtmCampaignBreakdown],
+    List[TopLinkBreakdown],
 ]

@@ -15,6 +15,7 @@ from schemas.analyticsSchema import (
     UtmSourceBreakdown,
     UtmMediumBreakdown,
     UtmCampaignBreakdown,
+    TopLinkBreakdown,
 )
 
 
@@ -211,6 +212,35 @@ async def get_utm_campaigns(
     rows = await _get_utm_breakdown(db, f, Click.utm_campaign)
     return [
         UtmCampaignBreakdown(utm_campaign=name, clicks=clicks) for name, clicks in rows
+    ]
+
+
+async def get_top_links(
+    db: AsyncSession, f: AnalyticsFilters, limit: int = 20
+) -> List[TopLinkBreakdown]:
+    stmt = (
+        _base_select(
+            Link.id,
+            Link.slug,
+            Link.url,
+            Link.shortenUrl,
+            func.count(Click.id).label("clicks"),
+        )
+        .where(and_(*_where_clauses(f)))
+        .group_by(Link.id, Link.slug, Link.url, Link.shortenUrl)
+        .order_by(func.count(Click.id).desc())
+        .limit(limit)
+    )
+    result = await db.execute(stmt)
+    return [
+        TopLinkBreakdown(
+            id=str(row[0]),
+            slug=row[1],
+            url=row[2],
+            shortenUrl=row[3],
+            clicks=row[4],
+        )
+        for row in result.all()
     ]
 
 
