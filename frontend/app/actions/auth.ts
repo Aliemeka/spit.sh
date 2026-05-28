@@ -14,7 +14,8 @@ export async function setUserCookie(userId: string) {
     .setExpirationTime("30d")
     .sign(secret);
 
-  cookies().set(COOKIE_NAME, token, {
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -24,11 +25,13 @@ export async function setUserCookie(userId: string) {
 }
 
 export async function deleteUserCookie() {
-  cookies().delete(COOKIE_NAME);
+  const cookieStore = await cookies();
+  cookieStore.delete(COOKIE_NAME);
 }
 
 export async function getSessionToken(): Promise<string | null> {
-  const cookie = cookies().get(COOKIE_NAME);
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get(COOKIE_NAME);
   if (!cookie) return null;
   try {
     await jwtVerify(cookie.value, secret);

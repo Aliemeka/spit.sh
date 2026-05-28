@@ -10,8 +10,12 @@
     "cssVariables": false,
     "prefix": ""
   },
+  "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils"
+  },
+  "registries": {
+    "@evilcharts": "https://evilcharts.com/r/{name}.json"
   }
 }

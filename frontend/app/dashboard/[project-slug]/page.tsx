@@ -7,14 +7,13 @@ import WelcomeCard from "@/components/pageBundles/home/WelcomeCard";
 import OnboardingSteps from "@/components/pageBundles/home/OnboardingSteps";
 import RecentLinks from "@/components/pageBundles/home/RecentLinks";
 import { Kbd } from "@/components/ui/kbd";
-import { useRouter } from "next/navigation";
 
-const DashboardHomePage = ({
+const DashboardHomePage = async ({
   params,
 }: {
   params: { "project-slug": string };
 }) => {
-  const slug = params["project-slug"];
+  const { "project-slug": slug } = await params;
 
   return (
     <DashboardLayout

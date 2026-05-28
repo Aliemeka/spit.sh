@@ -1,26 +1,53 @@
-"use client";
-import EmptyState from "@/components/blocks/EmptyState";
-import { Kbd } from "@/components/ui/kbd";
-import PrimaryButton from "@/components/ui/primary-button";
+import { Suspense } from "react";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { FileTextIcon } from "@phosphor-icons/react";
-import React from "react";
+import FilterBar from "@/components/analytics/FilterBar";
+import ClicksHeroChart from "@/components/analytics/ClicksHeroChart";
+import TopLinksWidget from "@/components/analytics/TopLinksWidget";
+import TopReferersWidget from "@/components/analytics/TopReferersWidget";
+import TopCountriesWidget from "@/components/analytics/TopCountriesWidget";
+import TopCitiesWidget from "@/components/analytics/TopCitiesWidget";
+import DonutTabbedWidget from "@/components/analytics/DonutTabbedWidget";
+import UtmTabbedWidget from "@/components/analytics/UtmTabbedWidget";
 
-const AnalyticsPage = () => {
+const AnalyticsContent = ({ projectSlug }: { projectSlug: string }) => {
   return (
-    <DashboardLayout
-      title='Analytics'
-      SideButton={
-        <PrimaryButton icon={<Kbd>D</Kbd>}>
-          <span>Generate Report</span>
-        </PrimaryButton>
-      }
-    >
-      <EmptyState text='Analytics coming soon'>
-        <p className='text-sm'>
-          We are working hard to bring analytics to you. Stay tuned!
-        </p>
-      </EmptyState>
+    <>
+      <FilterBar projectSlug={projectSlug} />
+      <ClicksHeroChart projectSlug={projectSlug} />
+
+      <div className='grid gap-5 md:grid-cols-2 mb-5'>
+        <TopLinksWidget projectSlug={projectSlug} />
+        <TopReferersWidget projectSlug={projectSlug} />
+      </div>
+
+      <div className='grid gap-5 md:grid-cols-2 mb-5'>
+        <TopCountriesWidget projectSlug={projectSlug} />
+        <TopCitiesWidget projectSlug={projectSlug} />
+      </div>
+
+      <div className='grid gap-5 mb-5'>
+        <DonutTabbedWidget projectSlug={projectSlug} />
+      </div>
+
+      <div className='grid gap-5'>
+        <UtmTabbedWidget projectSlug={projectSlug} />
+      </div>
+    </>
+  );
+};
+
+const AnalyticsPage = async ({
+  params,
+}: {
+  params: { "project-slug": string };
+}) => {
+  const { "project-slug": projectSlug } = await params;
+
+  return (
+    <DashboardLayout title='Analytics'>
+      <Suspense fallback={null}>
+        <AnalyticsContent projectSlug={projectSlug} />
+      </Suspense>
     </DashboardLayout>
   );
 };
