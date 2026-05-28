@@ -157,12 +157,6 @@ const DashboardSidebar = ({
           </li>
 
           <li>
-            <a href='' className={inactiveClass}>
-              Invoices
-            </a>
-          </li>
-
-          <li>
             <details
               open={isAccountOpen}
               className='group [&_summary::-webkit-details-marker]:hidden'
