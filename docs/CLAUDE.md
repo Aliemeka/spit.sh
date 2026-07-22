@@ -47,7 +47,7 @@ spit-sh/
 
 ### Python version & dependencies
 
-- Python 3.12 (pinned in `.python-version`), Pydantic **v1** (`pydantic==1.10.17`) — use `BaseSettings` from `pydantic`, not `pydantic_settings`
+- Python 3.12 (pinned in `.python-version`), Pydantic **v2** (`pydantic>=2.9`) with **`pydantic-settings`** — import `BaseSettings`/`SettingsConfigDict` from `pydantic_settings`, not `pydantic`.
 - Dependencies are managed with **uv**. Declare them in `pyproject.toml` under `[project.dependencies]` and commit `uv.lock`
 - Add a dependency: `uv add <pkg>` (or `uv add --dev <pkg>` for dev-only). Sync the venv with `uv sync`. Run commands with `uv run <cmd>` (no manual activate needed)
 - Virtual env lives at `be/.venv/` — never commit it

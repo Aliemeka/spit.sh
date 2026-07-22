@@ -58,7 +58,7 @@ async def list_projects(
 ):
     user_id = uuid.UUID(current_user["sub"])
     rows = await get_user_projects(user_id, session)
-    return [ProjectResponse(**row[0].dict(), links_count=row[1]) for row in rows]
+    return [ProjectResponse(**row[0].model_dump(), links_count=row[1]) for row in rows]
 
 
 @router.post("/{project_slug}/links", response_model=LinkResponse, status_code=201)
