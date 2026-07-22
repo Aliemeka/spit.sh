@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List
 
 from sqlmodel import SQLModel
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class LinkBase(BaseModel):
@@ -33,6 +33,8 @@ class LinkUpdate(BaseModel):
 
 
 class LinkData(LinkBase):
+    model_config = ConfigDict(from_attributes=True)
+
     slug: str
     shortenUrl: str
 
