@@ -12,7 +12,7 @@ class UserCreate(UserBase):
     username: str | None = None
 
 
-class UserDetials(UserCreate):
+class UserDetails(UserCreate):
     id: uuid.UUID
     first_name: str | None = None
     last_name: str | None = None
