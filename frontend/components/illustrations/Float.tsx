@@ -10,7 +10,7 @@ const Float = () => {
       strokeWidth='1'
       viewBox='0 0 1024 768'
     >
-      <g id='Illustrations/float' fill='none' fill-rule='evenodd'>
+      <g id='Illustrations/float' fill='none' fillRule='evenodd'>
         <path
           fill='#c026d3'
           id='Accent'
