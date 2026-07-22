@@ -1,9 +1,9 @@
 import { type ChartConfig } from "@/components/evilcharts/ui/chart";
 
-export const FUCHSIA_LIGHT = "#c026d3";
-export const FUCHSIA_DARK = "#e879f9";
+const FUCHSIA_LIGHT = "#c026d3";
+const FUCHSIA_DARK = "#e879f9";
 
-export const DONUT_PALETTE: { light: string; dark: string }[] = [
+const DONUT_PALETTE: { light: string; dark: string }[] = [
   { light: "#3b82f6", dark: "#60a5fa" },
   { light: "#10b981", dark: "#34d399" },
   { light: "#f59e0b", dark: "#fbbf24" },
