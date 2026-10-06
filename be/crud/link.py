@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import col
 
 from schemas.linkSchema import LinkCreate, LinkData, LinkResponse, LinkUpdate
-from models.base import Link, LinkTag, Click
+from models.link import Link, LinkTag, Click
 
 
 async def get_link(slug: str, db: AsyncSession) -> Link | None:

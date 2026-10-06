@@ -10,7 +10,7 @@ from schemas.clickSchema import ClickCreate
 from schemas.linkSchema import LinkCreate, LinkData, LinkPayload, LinkResponse
 from crud.click import create_click
 from crud.link import create_link, create_link_with_user
-from models.base import Link
+from models.link import Link
 from config.environment import GEOIP_DB_PATH, ROOT_DOMAIN
 from utils.generate import generate_slug
 

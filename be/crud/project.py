@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
-from models.base import Project, ProjectUsers, ProjectRole, Link
+from models.project import Project, ProjectUsers, ProjectRole
+from models.link import Link
 from schemas.projectSchema import ProjectCreate
 
 

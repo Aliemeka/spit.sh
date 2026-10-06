@@ -10,7 +10,7 @@ from sqlmodel import SQLModel
 
 from alembic import context
 
-from models.base import (
+from models import (
     User,
     Link,
     Click,

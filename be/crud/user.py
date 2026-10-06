@@ -2,7 +2,7 @@ import uuid
 from typing import Optional
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.base import User
+from models.user import User
 from schemas.userSchema import UpdateProfileRequest
 
 
