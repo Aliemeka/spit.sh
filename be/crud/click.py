@@ -1,7 +1,7 @@
 import uuid
+from sqlalchemy import func
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List
 
 from models.base import Click
 from schemas.clickSchema import ClickCreate
@@ -30,7 +30,8 @@ async def create_click(payload: ClickCreate, db: AsyncSession) -> Click:
     return click
 
 
-async def get_link_clicks(link_id: uuid.UUID, db: AsyncSession) -> List[Click]:
-    results = await db.execute(select(Click).where(Click.link_id == link_id))
-    clicks: List[Click] = results.scalars().all()
-    return clicks
+async def count_link_clicks(link_id: uuid.UUID, db: AsyncSession) -> int:
+    result = await db.execute(
+        select(func.count(Click.id)).where(Click.link_id == link_id)
+    )
+    return result.scalar_one()

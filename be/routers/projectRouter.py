@@ -6,7 +6,6 @@ from sqlalchemy.future import select
 
 from database import get_session
 from utils.jwt_auth import get_current_user
-from utils.generate import generate_slug
 from crud.project import (
     create_project,
     get_user_projects,
@@ -14,15 +13,13 @@ from crud.project import (
     is_project_member,
 )
 from crud.link import (
-    create_link_with_user,
     get_project_links,
     update_link,
     delete_link,
-    get_link,
 )
 from schemas.projectSchema import ProjectCreate, ProjectResponse
-from schemas.linkSchema import LinkCreate, LinkUpdate, LinkResponse, ProjectLinks
-from config.environment import ROOT_DOMAIN
+from schemas.linkSchema import LinkPayload, LinkUpdate, LinkResponse, ProjectLinks
+from services.link_service import SlugTakenError, create_link_for_project
 from models.base import LinkTag
 
 router = APIRouter(prefix="/projects", tags=["projects"])
@@ -64,22 +61,17 @@ async def list_projects(
 @router.post("/{project_slug}/links", response_model=LinkResponse, status_code=201)
 async def create_project_link(
     project_slug: str,
-    payload: LinkCreate,
+    payload: LinkPayload,
     current_user: dict = Depends(get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
     user_id = uuid.UUID(current_user["sub"])
     project = await _get_project_or_403(project_slug, user_id, session)
 
-    if payload.slug and payload.slug != "":
-        existing = await get_link(payload.slug, session)
-        if existing:
-            raise HTTPException(status_code=409, detail="Slug already exists")
-    else:
-        payload.slug = generate_slug()
-
-    short_link = ROOT_DOMAIN + payload.slug
-    return await create_link_with_user(payload, short_link, project.id, session)
+    try:
+        return await create_link_for_project(payload, project.id, session)
+    except SlugTakenError:
+        raise HTTPException(status_code=409, detail="Slug already exists")
 
 
 @router.get("/{project_slug}/links", response_model=ProjectLinks)
