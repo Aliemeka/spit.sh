@@ -1,51 +1,13 @@
 from datetime import datetime
-import enum
+import uuid
+from typing import TYPE_CHECKING, Optional
 import sqlalchemy as sa
 from sqlmodel import Field, SQLModel, Relationship
-import uuid
-from schemas.linkSchema import ClickInfo
-from schemas.linkSchema import LinkBase
 
+from schemas.linkSchema import ClickInfo, LinkBase
 
-class ProjectRole(enum.Enum):
-    Onwer = "Onwer"
-    Member = "Member"
-
-
-class ProjectUsers(SQLModel, table=True):
-    role: ProjectRole = ProjectRole.Member
-    joined_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-
-    project_id: uuid.UUID = Field(foreign_key="project.id", primary_key=True)
-    user_id: uuid.UUID = Field(foreign_key="user.id", primary_key=True)
-
-
-class User(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    email: str = Field(unique=True)
-    username: str | None = Field(nullable=True, unique=True)
-    joined_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-
-    first_name: str | None = Field(nullable=True, max_length=20)
-    last_name: str | None = Field(nullable=True, max_length=25)
-    image: str | None = Field(default=None, nullable=True)
-
-    projects: list["Project"] = Relationship(
-        back_populates="users", link_model=ProjectUsers
-    )
-
-
-class Project(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    name: str = Field(max_length=20)
-    slug: str = Field(unique=True, index=True)
-    logo: str | None = Field(default=None)
-    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-
-    links: list["Link"] = Relationship(back_populates="project")
-    users: list[User] = Relationship(back_populates="projects", link_model=ProjectUsers)
+if TYPE_CHECKING:
+    from models.project import Project
 
 
 class Link(LinkBase, SQLModel, table=True):
@@ -64,7 +26,7 @@ class Link(LinkBase, SQLModel, table=True):
     clicks: list["Click"] = Relationship(back_populates="link")
     tags: list["LinkTag"] = Relationship(back_populates="link")
     project_id: uuid.UUID | None = Field(default=None, foreign_key="project.id")
-    project: Project | None = Relationship(back_populates="links")
+    project: Optional["Project"] = Relationship(back_populates="links")
 
 
 class LinkTag(SQLModel, table=True):
@@ -102,14 +64,3 @@ class Click(ClickInfo, table=True):
 
     link_id: uuid.UUID | None = Field(default=None, foreign_key="link.id")
     link: Link | None = Relationship(back_populates="clicks")
-
-
-# class Page(SQLModel, table=True):
-#     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-#     name: str
-#     slug: str = Field(unique=True)
-#     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-#     updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-
-#     project_id: Optional[uuid.UUID] = Field(default=None, foreign_key="project.id")
-#     project: Optional[Project] = Relationship(back_populates="pages")

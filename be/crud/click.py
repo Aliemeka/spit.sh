@@ -3,7 +3,7 @@ from sqlalchemy import func
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.base import Click
+from models.link import Click
 from schemas.clickSchema import ClickCreate
 
 

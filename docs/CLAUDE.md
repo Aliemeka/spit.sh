@@ -17,7 +17,7 @@ spit-sh/
 │   ├── config/           # App settings (environment.py, authentication.py)
 │   ├── crud/             # DB read/write operations only — no business logic
 │   ├── migrations/       # Alembic migrations
-│   ├── models/           # SQLModel table definitions (base.py)
+│   ├── models/           # SQLModel tables: link.py, user.py, project.py
 │   ├── routers/          # FastAPI route handlers — thin, no compute logic
 │   ├── schemas/          # Pydantic request/response models
 │   ├── services/         # Business logic and heavier compute (e.g. geo lookup)

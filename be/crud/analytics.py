@@ -4,7 +4,7 @@ from typing import Optional, List, Tuple, Any
 from sqlalchemy import func, and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.base import Click, Link
+from models.link import Click, Link
 from schemas.analyticsSchema import (
     CountryBreakdown,
     CityBreakdown,

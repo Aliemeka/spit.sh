@@ -20,7 +20,7 @@ from crud.link import (
 from schemas.projectSchema import ProjectCreate, ProjectResponse
 from schemas.linkSchema import LinkPayload, LinkUpdate, LinkResponse, ProjectLinks
 from services.link_service import SlugTakenError, create_link_for_project
-from models.base import LinkTag
+from models.link import LinkTag
 
 router = APIRouter(prefix="/projects", tags=["projects"])
 
