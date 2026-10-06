@@ -1,13 +1,48 @@
 import re
 import asyncio
 from urllib.parse import urlparse
+from uuid import UUID
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from user_agents import parse as parse_ua
 
 from schemas.clickSchema import ClickCreate
+from schemas.linkSchema import LinkCreate, LinkData, LinkPayload, LinkResponse
 from crud.click import create_click
+from crud.link import create_link, create_link_with_user
 from models.base import Link
-from config.environment import GEOIP_DB_PATH
+from config.environment import GEOIP_DB_PATH, ROOT_DOMAIN
+from utils.generate import generate_slug
+
+
+class SlugTakenError(Exception):
+    pass
+
+
+def _resolve_slug(payload: LinkPayload) -> tuple[LinkCreate, str]:
+    slug = payload.slug or generate_slug()
+    data = LinkCreate(**payload.model_dump(exclude={"slug"}), slug=slug)
+    return data, ROOT_DOMAIN + slug
+
+
+async def create_public_link(payload: LinkPayload, session: AsyncSession) -> LinkData:
+    data, short_link = _resolve_slug(payload)
+    try:
+        return await create_link(data, short_link, session)
+    except IntegrityError:
+        await session.rollback()
+        raise SlugTakenError
+
+
+async def create_link_for_project(
+    payload: LinkPayload, project_id: UUID, session: AsyncSession
+) -> LinkResponse:
+    data, short_link = _resolve_slug(payload)
+    try:
+        return await create_link_with_user(data, short_link, project_id, session)
+    except IntegrityError:
+        await session.rollback()
+        raise SlugTakenError
 
 
 def _resolve_geo(ip: str) -> dict:
@@ -76,7 +111,7 @@ async def record_click(
         browser=browser,
         os=os_name,
         referer=referer_host,
-        link_id=str(link.id),
+        link_id=link.id,
         utm_source=link.utm_source,
         utm_medium=link.utm_medium,
         utm_campaign=link.utm_campaign,

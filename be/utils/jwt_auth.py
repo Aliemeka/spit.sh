@@ -1,3 +1,5 @@
+from typing import Any
+
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -6,10 +8,12 @@ from config.environment import settings
 
 bearer_scheme = HTTPBearer()
 
+BearerCredentials = Depends(bearer_scheme)
+
 
 async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-) -> dict:
+    credentials: HTTPAuthorizationCredentials = BearerCredentials,
+) -> dict[str, Any]:
     token = credentials.credentials
     try:
         payload = jwt.decode(

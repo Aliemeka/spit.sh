@@ -12,7 +12,7 @@ class ClickBase(BaseModel):
 
 
 class ClickCreate(ClickBase):
-    link_id: str
+    link_id: UUID
     device: str = "unknown"
     browser: str = "unknown"
     os: str = "unknown"

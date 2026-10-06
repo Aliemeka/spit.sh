@@ -1,19 +1,17 @@
 from uuid import UUID
 from datetime import datetime
-from typing import List
 
 from sqlmodel import SQLModel
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class LinkBase(BaseModel):
     url: str
 
 
-class LinkCreate(LinkBase):
-    slug: str | None = None
+class LinkFields(LinkBase):
     project_id: UUID | None = None
-    tags: List[str] = []
+    tags: list[str] = Field(default_factory=list)
     utm_source: str | None = None
     utm_medium: str | None = None
     utm_campaign: str | None = None
@@ -21,10 +19,18 @@ class LinkCreate(LinkBase):
     utm_content: str | None = None
 
 
+class LinkCreate(LinkFields):
+    slug: str
+
+
+class LinkPayload(LinkFields):
+    slug: str | None = None
+
+
 class LinkUpdate(BaseModel):
     url: str | None = None
     slug: str | None = None
-    tags: List[str] | None = None
+    tags: list[str] | None = None
     utm_source: str | None = None
     utm_medium: str | None = None
     utm_campaign: str | None = None
@@ -41,7 +47,7 @@ class LinkData(LinkBase):
 
 class LinkResponse(LinkData):
     id: UUID
-    tags: List[str] = []
+    tags: list[str] = []
     utm_source: str | None = None
     utm_medium: str | None = None
     utm_campaign: str | None = None
@@ -53,7 +59,7 @@ class LinkResponse(LinkData):
 
 class ProjectLinks(BaseModel):
     project_id: UUID
-    links: List[LinkResponse]
+    links: list[LinkResponse]
 
 
 class LinkInfo(LinkData):

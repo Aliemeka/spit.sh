@@ -5,6 +5,7 @@ from typing import List
 from sqlalchemy import delete, func
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import col
 
 from schemas.linkSchema import LinkCreate, LinkData, LinkResponse, LinkUpdate
 from models.base import Link, LinkTag, Click
@@ -94,7 +95,7 @@ async def get_project_links(
 ) -> List[LinkResponse]:
     stmt = (
         select(Link, func.count(Click.id).label("click_count"))
-        .filter(Link.tags.any(LinkTag.tag == tag) if tag else True)
+        .filter(col(Link.tags).any(col(LinkTag.tag) == tag) if tag else True)
         .outerjoin(Click, Click.link_id == Link.id)
         .where(Link.project_id == project_id)
         .group_by(Link.id)
