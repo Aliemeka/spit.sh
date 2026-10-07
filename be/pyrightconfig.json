@@ -1,0 +1,7 @@
+{
+  "typeCheckingMode": "standard",
+  "exclude": ["**/__pycache__", ".venv"],
+  "reportAny": false,
+  "reportUnknownMemberType": false,
+  "reportMissingTypeStubs": false
+}

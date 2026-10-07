@@ -1,0 +1,30 @@
+{
+  "languages": {
+    "Python": {
+      "language_servers": ["basedpyright", "ruff", "!ty", "!pyright"],
+      "format_on_save": "on",
+      "code_actions_on_format": {
+        "source.organizeImports.ruff": true
+      },
+      "formatter": {
+        "language_server": {
+          "name": "ruff"
+        }
+      }
+    }
+  },
+  "lsp": {
+    "basedpyright": {
+      "settings": {
+        "basedpyright.analysis": {
+          "diagnosticMode": "openFilesOnly",
+          "inlayHints": {
+            "callArgumentNames": false,
+            "variableTypes": false,
+            "functionReturnTypes": false
+          }
+        }
+      }
+    }
+  }
+}
