@@ -235,7 +235,9 @@ const Features = () => {
             <h2
               className={`${heading} max-w-3xl text-balance text-4xl font-bold leading-[1.05] md:text-6xl`}
             >
-              More magic you&apos;ll use every day
+              More{" "}
+              <i className='text-fuchsia-600 dark:text-fuchsia-400'>magic</i>{" "}
+              you&apos;ll use every day
             </h2>
           </div>
 
