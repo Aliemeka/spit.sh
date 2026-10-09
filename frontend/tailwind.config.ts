@@ -33,10 +33,26 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "bounce-soft": {
+          "0%, 100%": {
+            transform: "translateY(0)",
+            animationTimingFunction: "cubic-bezier(0.5, 0, 0.5, 1)",
+          },
+          "50%": {
+            transform: "translateY(-14px)",
+            animationTimingFunction: "cubic-bezier(0.5, 0, 0.5, 1)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 40s linear infinite",
+        "bounce-soft": "bounce-soft 2.4s infinite",
       },
     },
   },
