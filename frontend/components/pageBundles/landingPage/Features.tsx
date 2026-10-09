@@ -231,7 +231,7 @@ const Features = () => {
 
         <div className='mt-10 flex flex-col gap-16 md:mt-16 md:gap-24'>
           <div className='flex flex-col items-center gap-5 text-center'>
-            <p className={sectionLabel}>The details</p>
+            <p className={sectionLabel}>/The details</p>
             <h2
               className={`${heading} max-w-3xl text-balance text-4xl font-bold leading-[1.05] md:text-6xl`}
             >
