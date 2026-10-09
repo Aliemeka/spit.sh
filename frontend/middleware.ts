@@ -53,7 +53,7 @@ export async function middleware(request: NextRequest) {
     slug === "" ||
     slug === "sw.js" ||
     slug.startsWith("_next") ||
-    marketingLinks.includes(slug) ||
+    marketingLinks.includes(request.nextUrl.pathname) ||
     slug.startsWith("callback") ||
     slug.startsWith("api/")
   ) {
