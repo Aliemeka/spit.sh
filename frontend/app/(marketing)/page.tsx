@@ -1,9 +1,9 @@
-import Features from "@/components/pageBundles/landingOne/Features";
-import Footer from "@/components/pageBundles/landingOne/Footer";
-import Hero from "@/components/pageBundles/landingOne/Hero";
-import HowItWorks from "@/components/pageBundles/landingOne/HowItWorks";
-import Navbar from "@/components/pageBundles/landingOne/Navbar";
-import Pricing from "@/components/pageBundles/landingOne/Pricing";
+import Features from "@/components/pageBundles/landingPage/Features";
+import Footer from "@/components/pageBundles/landingPage/Footer";
+import Hero from "@/components/pageBundles/landingPage/Hero";
+import HowItWorks from "@/components/pageBundles/landingPage/HowItWorks";
+import Navbar from "@/components/pageBundles/landingPage/Navbar";
+import Pricing from "@/components/pageBundles/landingPage/Pricing";
 
 export default function Home() {
   return (
