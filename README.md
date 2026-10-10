@@ -1,108 +1,116 @@
-# Spit-sh
+# Spit.sh ✨
 
-Spit-sh is an open-source URL shortener project that provides the ability to shorten URLs, track clicks, and generate QR codes for the links. It consists of a FastAPI backend and a Next.js frontend.
+**Shorter URLs with extra magic.** Spit.sh is an open-source URL shortener with click analytics, built with a Next.js frontend and a FastAPI backend.
 
-## Getting Started
+🌐 [spit.sh](https://spit.sh)
 
-To set up and run the Spit-sh project locally, follow these steps:
+## Features
 
-### Backend
+- **Short links**: shorten any URL, with an optional custom slug (`spit.sh/launch`). Visitors can shorten a link from the homepage without an account.
+- **Projects**: organise links into projects (workspaces) after signing in.
+- **Tags and UTM parameters**: tag links by purpose and attach `utm_source`, `utm_medium`, `utm_campaign`, `utm_term` and `utm_content`.
+- **Click analytics**: every redirect is recorded in the background with country, city, device, browser, OS, referrer and UTM values, then shown on per-project dashboards.
+- **Link previews**: the create-link modal shows the destination's Open Graph title, image and description.
 
-1. Clone the Spit-sh repository:
+### On the roadmap
 
-   ```bash
-   git clone https://github.com/Aliemeka/spit-sh.git
-   ```
+Custom domains, QR codes, dynamic links (different destinations by device or country), Pages (link-in-bio pages) and paid plans. See [`docs/prd/`](docs/prd/) for the specs.
 
-2. Go the backend directory:
+## Tech stack
 
-   ```bash
-   cd be
-   ```
+| Part                   | Stack                                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Frontend (`frontend/`) | Next.js (App Router), React, TypeScript, Tailwind CSS, shadcn/ui, Phosphor Icons, TanStack Query, Formik + Yup       |
+| Auth                   | [Better Auth](https://www.better-auth.com/) in the Next.js app, with [Resend](https://resend.com) for one-time codes |
+| Backend (`be/`)        | FastAPI, SQLModel, SQLAlchemy (async), Alembic, Pydantic v2, slowapi                                                 |
+| Database               | PostgreSQL (SQLite works for quick local backend runs)                                                               |
+| Geolocation            | MaxMind GeoLite2 City database via `geoip2`                                                                          |
 
-3. Set up the backend:
+## Getting started
 
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+### Prerequisites
 
-4. Install the dependencies using Yarn:
+- [Node.js](https://nodejs.org/) 20+ and [pnpm](https://pnpm.io/)
+- Python 3.12 and [uv](https://docs.astral.sh/uv/)
+- PostgreSQL
+- Optional: a [MaxMind GeoLite2 City](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data) `.mmdb` file for click locations. Without it, locations are recorded as `unknown`.
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 1. Clone the repository
 
-5. Start the backend server:
+```bash
+git clone https://github.com/Aliemeka/spit.sh.git
+cd spit.sh
+```
 
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+### 2. Backend
 
-#### Backend dependencies
+```bash
+cd be
+uv sync
+```
 
-[FastAPI](https://fastapi.tiangolo.com "FastAPI") for api server<br>
-[Uvicorn](https://www.uvicorn.org/ "uvicorn") - Python ASGI web server<br>
-[SQLmodel](https://sqlmodel.tiangolo.com/ "sqlmodel") ORM platform built on SQLAlchemy<br>
-[asyncpg](https://sqlmodel.tiangolo.com/ "asyncpg") Async driver for Postgres<br>
-[Ip2geotools](https://pypi.org/project/ip2geotools/ "Ip2geotools") for geolocationing<br>
-[Resend Python SDK](https://resend.com/docs/send-with-python "resend") for sending emails<br>
-[python-dotenv](https://pypi.org/project/python-dotenv/ "python-dotenv") for parsing envvironment variables<br>
-[Alembic](https://alembic.sqlalchemy.org/en/latest/ "alembic") for database migrations<br>
-[fastapi-login](https://fastapi-login.readthedocs.io "fastapi-login") - Auth manager
+Create `be/.env`:
 
-### Frontend
+| Variable             | Description                                               |
+| -------------------- | --------------------------------------------------------- |
+| `DATABASE_URL`       | Async database URL. Defaults to a local SQLite file.      |
+| `BETTER_AUTH_SECRET` | Must match the frontend's `BETTER_AUTH_SECRET`.           |
+| `ROOT_DOMAIN`        | Base URL for short links. Defaults to `https://spit.sh/`. |
+| `GEOIP_DB_PATH`      | Path to the GeoLite2 City `.mmdb` file (optional).        |
 
-1. Open a new terminal window/tab.
+Run the migrations and start the API:
 
-2. Navigate to the frontend directory:
+```bash
+uv run alembic upgrade head
+uv run uvicorn main:app --reload
+```
 
-   ```bash
-   cd spit-sh/frontend
-   ```
+The API runs at `http://localhost:8000/api/v1`, with interactive docs at `http://localhost:8000/docs`.
 
-3. Install the dependencies using Yarn:
+### 3. Frontend
 
-   ```bash
-   yarn
-   ```
+```bash
+cd frontend
+pnpm install
+```
 
-4. Start the frontend development server:
+Create `frontend/.env`:
 
-   ```bash
-   yarn dev
-   ```
+| Variable                                   | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `NEXT_PUBLIC_API_URL`                      | Backend API URL. Defaults to `http://localhost:8000/api/v1`. |
+| `DATABASE_URL`                             | PostgreSQL connection string Better Auth uses.               |
+| `BETTER_AUTH_SECRET`                       | A long random string. Must match the backend's.              |
+| `BETTER_AUTH_URL`                          | The app's URL, e.g. `http://localhost:3001`.                 |
+| `NEXT_PUBLIC_BETTER_AUTH_URL`              | Same as `BETTER_AUTH_URL`.                                   |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth credentials.                                    |
+| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | GitHub OAuth credentials.                                    |
+| `RESEND_API_KEY`                           | Resend API key for sending sign-in codes.                    |
 
-   This will start the Next.js development server and automatically open the Spit-sh application in your default browser.
+Create Better Auth's tables (sessions, accounts and verification codes), then start the app:
 
-## Usage
+```bash
+pnpm dlx @better-auth/cli migrate
+pnpm dev
+```
 
-Once you have both the backend and frontend servers running, you can access the Spit-sh URL shortener application in your browser.
+Open [http://localhost:3001](http://localhost:3001).
 
-1. Open your web browser and navigate to `http://localhost:3000` if it doesn't open automatically.
+## Running the backend with Docker
 
-2. You will see the Spit-sh homepage with the list of shortened links and an option to shorten a new URL.
+`be/docker-compose.yml` builds the API image, runs the migrations and serves it on port `8555`. It reads `DATABASE_URL`, `BETTER_AUTH_SECRET`, `ROOT_DOMAIN` and `GEOIP_DB_PATH` from your environment, and mounts `GEOIP_HOST_DIR` (default `./data`) at `/app/data` for the GeoIP database.
 
-3. To shorten a URL:
-   - Enter the original URL in the input field.
-   - Click the "Shorten" button.
-   - The shortened URL will be displayed below with an associated QR code.
+```bash
+cd be
+docker compose up --build
+```
 
-4. To track clicks:
-   - Click on a shortened URL from the list.
-   - You will be redirected to the details page for that URL.
-   - The details page will show the number of clicks and a list of all the clicks with timestamps.
+## Contributing
 
-5. To generate a QR code:
-   - Click on the QR code icon next to a shortened URL.
-   - A modal will appear with the QR code for that URL.
-
-## Conclusion
-
-Congratulations! You have successfully set up the Spit-sh URL shortener project. You can now start using the application to shorten URLs, track clicks, and generate QR codes. Feel free to explore and customize the project according to your requirements. If you have any questions or issues, refer to the project's documentation or seek assistance from the Spit-sh community. Happy URL shortening!
+Issues and pull requests are welcome. Please read [`docs/CLAUDE.md`](docs/CLAUDE.md) for the project's conventions (layer responsibilities, imports, package managers) before opening a pull request.
 
 ## License
 
-Spit-sh is licensed under the [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
+Spit.sh is licensed under the [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
 
-You can use, modify and self-host Spit-sh freely. If you run a modified version as a network service, you must make your modified source code available to its users under the same license.
+You can use, modify and self-host Spit.sh freely. If you run a modified version as a network service, you must make your modified source code available to its users under the same license.
