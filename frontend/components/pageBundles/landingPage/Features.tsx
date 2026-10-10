@@ -233,7 +233,7 @@ const Features = () => {
           <div className='flex flex-col items-center gap-5 text-center'>
             <p className={sectionLabel}>/The details</p>
             <h2
-              className={`${heading} max-w-3xl text-balance text-4xl font-bold leading-[1.05] md:text-6xl`}
+              className={`${heading} max-w-3xl text-balance text-3xl font-bold leading-[1.05] md:text-5xl`}
             >
               More{" "}
               <i className='text-fuchsia-600 dark:text-fuchsia-400'>magic</i>{" "}
