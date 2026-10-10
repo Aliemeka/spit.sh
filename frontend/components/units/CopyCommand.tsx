@@ -11,7 +11,7 @@ interface CopyCommandProps {
 
 const CopyCommand = ({ command, className }: CopyCommandProps) => {
   const { copied, copyToClipboard } = useClipboard({
-    resetAfter: 5000,
+    resetAfter: 2000,
     showToast: false,
   });
 
@@ -41,7 +41,9 @@ const CopyCommand = ({ command, className }: CopyCommandProps) => {
       <span
         aria-hidden
         className={`col-start-1 row-start-1 flex items-center justify-center gap-1.5 text-fuchsia-300 transition duration-300 ease-out ${
-          copied ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"
+          copied
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-2 opacity-0"
         }`}
       >
         <CheckIcon size={16} weight='bold' />
