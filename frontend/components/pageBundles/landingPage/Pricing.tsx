@@ -1,6 +1,5 @@
 import AuthCta from "@/components/units/AuthCta";
 import { CaretDownIcon, CheckIcon } from "@phosphor-icons/react/dist/ssr";
-import React from "react";
 import {
   band,
   body,
@@ -101,7 +100,7 @@ const Pricing = () => {
               className={`${heading} text-balance text-3xl font-bold leading-tight md:text-5xl`}
             >
               Pick your level of{" "}
-              <i className='text-fuchsia-600 dark:text-fuchsia-500'>magic</i>
+              <i className='text-fuchsia-600 dark:text-fuchsia-500'>magic</i>👌🏽
             </h2>
             <p className={`${body} text-lg`}>
               Billed per project. Pay in USD or NGN. Cancel any time.
@@ -167,7 +166,9 @@ const Pricing = () => {
       </section>
 
       <section id='faq' className='scroll-mt-20 py-24 md:py-28'>
-        <div className={`${container} grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-20`}>
+        <div
+          className={`${container} grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-20`}
+        >
           <div className='flex flex-col gap-4'>
             <p className={sectionLabel}>/FAQ</p>
             <h2
@@ -187,7 +188,9 @@ const Pricing = () => {
               .
             </p>
           </div>
-          <div className={`${card} divide-y divide-zinc-900/10 dark:divide-white/10`}>
+          <div
+            className={`${card} divide-y divide-zinc-900/10 dark:divide-white/10`}
+          >
             {faqs.map((faq) => (
               <details key={faq.q} className='group p-6'>
                 <summary className='flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-zinc-900 dark:text-zinc-50 [&::-webkit-details-marker]:hidden'>
@@ -197,7 +200,9 @@ const Pricing = () => {
                     className='shrink-0 text-zinc-500 transition group-open:rotate-180'
                   />
                 </summary>
-                <p className={`${body} mt-3 text-sm leading-relaxed`}>{faq.a}</p>
+                <p className={`${body} mt-3 text-sm leading-relaxed`}>
+                  {faq.a}
+                </p>
               </details>
             ))}
           </div>

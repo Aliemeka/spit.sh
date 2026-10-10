@@ -1,3 +1,4 @@
+import Cta from "@/components/pageBundles/landingPage/Cta";
 import Features from "@/components/pageBundles/landingPage/Features";
 import Hero from "@/components/pageBundles/landingPage/Hero";
 import HowItWorks from "@/components/pageBundles/landingPage/HowItWorks";
@@ -10,6 +11,7 @@ export default function Home() {
       <Features />
       <HowItWorks />
       <Pricing />
+      <Cta />
     </>
   );
 }

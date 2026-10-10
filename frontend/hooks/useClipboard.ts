@@ -3,7 +3,15 @@
 import React from "react";
 import { useToast } from "./useToast";
 
-export const useClipboard = () => {
+interface UseClipboardOptions {
+  resetAfter?: number;
+  showToast?: boolean;
+}
+
+export const useClipboard = ({
+  resetAfter = 2000,
+  showToast = true,
+}: UseClipboardOptions = {}) => {
   const [copied, setCopied] = React.useState(false);
   const timeoutIdRef = React.useRef<number | null>(null);
   const { toastNeutral } = useToast();
@@ -16,7 +24,9 @@ export const useClipboard = () => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toastNeutral(message || `${text} copied to clipboard!`);
+      if (showToast) {
+        toastNeutral(message || `${text} copied to clipboard!`);
+      }
 
       if (timeoutIdRef.current !== null) {
         clearTimeout(timeoutIdRef.current);
@@ -25,7 +35,7 @@ export const useClipboard = () => {
       timeoutIdRef.current = window.setTimeout(() => {
         setCopied(false);
         timeoutIdRef.current = null;
-      }, 2000);
+      }, resetAfter);
     } catch {
       // Silently ignore clipboard errors to avoid misleading UI state.
     }
