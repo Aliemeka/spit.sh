@@ -106,8 +106,8 @@ const HowItWorks = () => {
             </h2>
           </div>
 
-          <div className='grid gap-4 lg:grid-cols-2'>
-            <article className={`${card} flex flex-col gap-8 p-6 md:p-8`}>
+          <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+            <article className={`${card} flex min-w-0 flex-col gap-8 p-6 md:p-8`}>
               <div className='flex items-center gap-3'>
                 <span className='grid h-11 w-11 place-items-center rounded-2xl bg-fuchsia-50 text-fuchsia-600 dark:bg-fuchsia-500/10 dark:text-fuchsia-400'>
                   <ArrowsSplitIcon size={20} />
@@ -125,17 +125,17 @@ const HowItWorks = () => {
                 {routes.map(({ icon: Icon, when, to }) => (
                   <li
                     key={when}
-                    className='flex items-center gap-3 rounded-xl bg-zinc-50 px-4 py-3 text-sm dark:bg-zinc-950'
+                    className='flex min-w-0 items-center gap-2 rounded-xl bg-zinc-50 px-3 py-3 text-sm dark:bg-zinc-950 sm:gap-3 sm:px-4'
                   >
                     <Icon size={18} className='shrink-0 text-zinc-500' />
-                    <span className='w-28 shrink-0 font-medium text-zinc-800 dark:text-zinc-200'>
+                    <span className='w-24 shrink-0 font-medium text-zinc-800 dark:text-zinc-200 sm:w-28'>
                       {when}
                     </span>
                     <ArrowRightIcon
                       size={14}
                       className='shrink-0 text-fuchsia-500'
                     />
-                    <span className='truncate font-mono text-xs text-zinc-500'>
+                    <span className='min-w-0 flex-1 truncate font-mono text-xs text-zinc-500'>
                       {to}
                     </span>
                   </li>
@@ -144,7 +144,7 @@ const HowItWorks = () => {
             </article>
 
             <article
-              className={`${card} flex flex-col gap-8 overflow-hidden p-6 md:p-8`}
+              className={`${card} flex min-w-0 flex-col gap-8 overflow-hidden p-6 md:p-8`}
             >
               <div className='flex items-center gap-3'>
                 <span className='grid h-11 w-11 place-items-center rounded-2xl bg-fuchsia-50 text-fuchsia-600 dark:bg-fuchsia-500/10 dark:text-fuchsia-400'>
