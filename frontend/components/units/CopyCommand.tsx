@@ -2,7 +2,8 @@
 import { useClipboard } from "@/hooks/useClipboard";
 import { cn } from "@/lib/utils";
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
-import React from "react";
+
+const RESET_AFTER = 2000; // Reset the copied state after 2 seconds
 
 interface CopyCommandProps {
   command: string;
@@ -11,7 +12,7 @@ interface CopyCommandProps {
 
 const CopyCommand = ({ command, className }: CopyCommandProps) => {
   const { copied, copyToClipboard } = useClipboard({
-    resetAfter: 2000,
+    resetAfter: RESET_AFTER,
     showToast: false,
   });
 
