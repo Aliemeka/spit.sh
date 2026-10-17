@@ -20,7 +20,7 @@ const fetchSlug = async (
     headers: forwardHeaders,
   });
   if (!response.ok) {
-    if (retryTimes <= 0) {
+    if (response.status < 500 || retryTimes <= 0) {
       return null;
     }
     return fetchSlug(slug, forwardHeaders, retryTimes - 1);
@@ -48,9 +48,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (request.nextUrl.pathname === "/") {
+    const [sessionValid, jwtValid] = await Promise.all([
+      confirmUserSession(request),
+      confirmJWTSession(request),
+    ]);
+    if (sessionValid && jwtValid) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    const nextResponse = NextResponse.next();
+    deleteSessionCookies(nextResponse);
+    return nextResponse;
+  }
+
   // Skip middleware for specific paths
   if (
-    slug === "" ||
     slug === "sw.js" ||
     slug.startsWith("_next") ||
     marketingLinks.includes(request.nextUrl.pathname) ||

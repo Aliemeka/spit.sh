@@ -27,7 +27,7 @@ export const confirmJWTSession = async (request: NextRequest) => {
   const sessionToken = request.cookies.get(jwt_cookie_name)?.value;
   if (!sessionToken) return false;
   try {
-    jwtVerify(sessionToken, secret);
+    await jwtVerify(sessionToken, secret);
     return true;
   } catch (error) {
     return false;
