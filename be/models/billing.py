@@ -6,21 +6,21 @@ from sqlmodel import Field, SQLModel
 
 
 class BillingProvider(str, enum.Enum):
-    bachs = "bachs"
+    Bachs = "bachs"
 
 
 class PlanTier(str, enum.Enum):
-    free = "free"
-    pro = "pro"
+    Free = "free"
+    Pro = "pro"
 
 
 class SubscriptionStatus(str, enum.Enum):
-    trialing = "trialing"
-    active = "active"
-    past_due = "past_due"
-    unpaid = "unpaid"
-    canceled = "canceled"
-    paused = "paused"
+    Trialing = "trialing"
+    Active = "active"
+    Past_due = "past_due"
+    Unpaid = "unpaid"
+    Canceled = "canceled"
+    Paused = "paused"
 
 
 # Stored as VARCHAR (not a native Postgres enum) so adding a provider, tier or
