@@ -171,6 +171,11 @@ const DashboardSidebar = ({
               <ul className='mt-2 space-y-1 px-4'>
                 <li>
                   <a href='' className={inactiveClass}>
+                    Billing
+                  </a>
+                </li>
+                <li>
+                  <a href='' className={inactiveClass}>
                     Settings
                   </a>
                 </li>
