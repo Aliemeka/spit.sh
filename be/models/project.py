@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class ProjectRole(enum.Enum):
-    Onwer = "Onwer"
+    Owner = "Owner"
     Member = "Member"
 
 
