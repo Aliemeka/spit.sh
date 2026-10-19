@@ -18,6 +18,7 @@ class User(SQLModel, table=True):
     first_name: str | None = Field(nullable=True, max_length=20)
     last_name: str | None = Field(nullable=True, max_length=25)
     image: str | None = Field(default=None, nullable=True)
+    trial_used_at: datetime | None = Field(default=None, nullable=True)
 
     projects: list["Project"] = Relationship(
         back_populates="users", link_model=ProjectUsers
