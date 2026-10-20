@@ -20,6 +20,7 @@ from crud.link import (
 from schemas.projectSchema import ProjectCreate, ProjectResponse
 from schemas.linkSchema import LinkPayload, LinkUpdate, LinkResponse, ProjectLinks
 from services.link_service import SlugTakenError, create_link_for_project
+from services.entitlements import PlanLimitReached
 from models.link import LinkTag
 
 router = APIRouter(prefix="/projects", tags=["projects"])
@@ -72,6 +73,8 @@ async def create_project_link(
         return await create_link_for_project(payload, project.id, session)
     except SlugTakenError:
         raise HTTPException(status_code=409, detail="Slug already exists")
+    except PlanLimitReached as exc:
+        raise HTTPException(status_code=402, detail=exc.detail)
 
 
 @router.get("/{project_slug}/links", response_model=ProjectLinks)
