@@ -20,13 +20,17 @@ class SubscriptionStatus(str, enum.Enum):
     Past_due = "past_due"
     Unpaid = "unpaid"
     Canceled = "canceled"
-    Paused = "paused"
 
 
 # Stored as VARCHAR (not a native Postgres enum) so adding a provider, tier or
 # status doesn't need an ALTER TYPE migration.
 def _enum_column(enum_cls: type[enum.Enum]) -> sa.Enum:
-    return sa.Enum(enum_cls, native_enum=False, length=32)
+    return sa.Enum(
+        enum_cls,
+        native_enum=False,
+        length=32,
+        values_callable=lambda e: [member.value for member in e],
+    )
 
 
 class BillingCustomer(SQLModel, table=True):
