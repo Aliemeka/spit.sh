@@ -110,7 +110,7 @@ Both Pro products map to `PlanTier.pro`. Two products are needed because Bachs s
 | Plan state | Period |
 |---|---|
 | Free (no subscription, or subscription fell back to Free) | Calendar month, UTC: 1st 00:00 → next 1st 00:00 |
-| Paid (`trialing`, `active`, `past_due` during grace) | Bachs `current_period_start` → `current_period_end` |
+| Paid (`trialing`, `active`, `past_due`) | Bachs `current_period_start` → `current_period_end` |
 
 When a Free project upgrades in the middle of a month, a new usage period starts at the subscription's `current_period_start`, so usage resets. When a paid project falls back to Free, the calendar-month period applies from then on.
 
@@ -167,7 +167,7 @@ All plan errors use HTTP `402 Payment Required` so the frontend can catch them i
 
 ### Downgrades: lock, never delete
 
-When a project's effective tier drops (cancellation, failed payment after grace, or a Business → Pro change later):
+When a project's effective tier drops (cancellation, `unpaid` after payment recovery fails, or a Business → Pro change later):
 
 - **Links:** all stay and keep redirecting. New links are blocked once over the new quota.
 - **Members:** everyone over the seat limit stays, but no new members can be added until the count is under the limit.
@@ -181,17 +181,20 @@ When a project's effective tier drops (cancellation, failed payment after grace,
 
 ### Status → effective tier
 
-| Bachs `status` | Effective tier | Notes |
-|---|---|---|
-| `trialing` | Subscribed tier | |
-| `active` | Subscribed tier | Includes `cancel_at_period_end = true` until the period ends |
-| `past_due` | Subscribed tier **for 7 days** from `past_due_since`, then Free | Bachs payment recovery runs during this window |
-| `unpaid` | Free | |
-| `paused` | Free | |
-| `canceled` | Free | |
-| *(no subscription row)* | Free | |
+| `status` | Effective tier | Meaning | Owner can |
+|---|---|---|---|
+| `trialing` | Subscribed tier | In the 14-day trial | Manage billing |
+| `active` | Subscribed tier | Paid. Includes `cancel_at_period_end = true` until the period ends | Manage billing |
+| `past_due` | Subscribed tier | Renewal failed and Bachs is retrying (3 retries over about 9 days) | Update card in the portal |
+| `unpaid` | **Free** | Every retry failed. The subscription is on hold with an outstanding invoice | **Pay now** or **Switch to Free**. Upgrade is blocked |
+| `canceled` | Free | Cancelled by the owner, or switched to Free from `unpaid` | Upgrade (new checkout) |
+| *(no subscription row)* | Free | Never subscribed | Upgrade |
 
-The tier is worked out on every read (`get_plan(project)`), not stored as a separate "effective tier" column, so the grace period ends without a cron job.
+- **Grace period = Bachs's retry window.** We don't run our own timer. The project keeps its paid tier while Bachs reports `past_due`, and drops to Free when Bachs moves the subscription to `unpaid`.
+- `SubscriptionStatus` is our own enum, not Bachs's. The Bachs adapter maps any status it doesn't recognise (e.g. `paused`, which we don't use) to `canceled` and logs a warning, so a new status can't break webhook handling.
+- The tier is worked out on every read (`get_plan(project)`), not stored as a separate "effective tier" column.
+
+**Bachs account setting:** after recovery fails, subscriptions must go to **"Mark unpaid"**, not the default "Cancel". Without this setting we never receive `unpaid`.
 
 ### Flows
 
@@ -207,7 +210,14 @@ The `success_url` page polls `GET /billing` (every 2s, giving up after 30s) unti
 Through the Bachs customer portal. Bachs sends `customer.subscription.updated` with `cancel_at_period_end = true`. The project keeps Pro until `current_period_end`, then `customer.subscription.deleted` drops it to Free.
 
 **Failed renewal**
-`invoice.payment_failed` → set `past_due_since` (if it's empty) → billing banner. Bachs payment recovery retries. If that works: `invoice.paid` / `subscription.updated` → `active`, and `past_due_since` is cleared. If it doesn't: the status becomes `unpaid` or `canceled` → Free.
+`invoice.payment_failed` → status `past_due`, set `past_due_since` (if it's empty) → "payment failed" banner; the project keeps its paid tier. Bachs retries 3 times over about 9 days. If a retry works: `invoice.paid` / `subscription.updated` → `active`, and `past_due_since` is cleared. If every retry fails: `subscription.updated` → `unpaid` → Free.
+
+**Unpaid (on hold)**
+The project is on Free with an "on hold" banner offering two actions:
+- **Pay now:** opens the Bachs customer portal, where the owner pays the outstanding invoice or updates their card. On success Bachs sends `subscription.updated` → `active`, and the project returns to its paid tier on the **same subscription**.
+- **Switch to Free:** `POST /billing/switch-to-free` cancels the subscription immediately in Bachs. `subscription.deleted` → `canceled`, and the banner goes away.
+
+While the status is `unpaid`, **Upgrade is blocked**: checkout returns `409 outstanding_payment`. The owner has to pay or switch to Free first.
 
 **Plan change (later, once Business exists)**
 `POST /billing/change-plan` → `PATCH /v1/subscriptions/{id}` with `{ product_id, proration_behavior }`:
@@ -237,8 +247,8 @@ Bachs delivers at least once. Insert `event.id` into `BillingEvent`; if it's alr
 
 | Event | Action |
 |---|---|
-| `customer.subscription.created` | Read `metadata.project_id`, upsert `ProjectSubscription`, set `User.bachs_customer_id` if empty, set `User.trial_used_at` if `status = trialing` and it's empty |
-| `customer.subscription.updated` | Upsert status, product → tier, period dates, `cancel_at_period_end`, `trial_end`. Clear `past_due_since` if the status is `active` |
+| `customer.subscription.created` | Read `metadata.project_id`, upsert `ProjectSubscription`, insert a `BillingCustomer` row for the payer if missing, set `User.trial_used_at` if `status = trialing` and it's empty |
+| `customer.subscription.updated` | Upsert status (unrecognised → `canceled`), product → tier, period dates, `cancel_at_period_end`, `trial_end`. Clear `past_due_since` if the status is `active` |
 | `customer.subscription.deleted` | Set status to `canceled` |
 | `invoice.payment_failed` | Set `past_due_since` if it's empty |
 | `invoice.paid` | Clear `past_due_since` |
@@ -305,11 +315,13 @@ Response `200`:
 { "checkout_url": "https://checkout.bachs.io/..." }
 ```
 
-`409` if the project already has a `trialing`, `active` or `past_due` subscription; use the portal or change-plan instead.
+Errors:
+- `409`, `code: subscription_exists` if the project has a `trialing`, `active` or `past_due` subscription; use the portal or change-plan instead.
+- `409`, `code: outstanding_payment` if the project's subscription is `unpaid`; the owner must pay or switch to Free first.
 
 Server side:
 - Pick the trial or no-trial product from `User.trial_used_at`.
-- `customer`: `{ "customer_id": user.bachs_customer_id }` if it's set, otherwise `{ "email", "name" }`.
+- `customer`: `{ "customer_id": <owner's BillingCustomer.provider_customer_id> }` if a row exists for Bachs, otherwise `{ "email", "name" }`.
 - `success_url`: `{FRONTEND_URL}/dashboard/{slug}/settings/billing?checkout=success`
 - `cancel_url`: `{FRONTEND_URL}/dashboard/{slug}/settings/billing`
 - `metadata`: `{ project_id, owner_user_id }`
@@ -323,7 +335,16 @@ Response `200`:
 { "portal_url": "https://..." }
 ```
 
-`404` if the owner has no `bachs_customer_id`.
+`404` if the owner has no `BillingCustomer` row for Bachs.
+
+### Switch to Free
+`POST /api/v1/projects/{project_slug}/billing/switch-to-free`
+
+Only allowed when the subscription is `unpaid`. It cancels the subscription in Bachs immediately (`DELETE /v1/subscriptions/{id}` with `cancel_at_period_end: false`).
+
+Response `200`: the billing state, with `status: "canceled"` and `tier: "free"`. The webhook confirms it afterwards.
+
+`409`, `code: not_unpaid` for any other status. Owners on `active` or `trialing` cancel through the portal, which cancels at the end of the period.
 
 ### Change plan *(later, with Business)*
 `POST /api/v1/projects/{project_slug}/billing/change-plan`
@@ -342,12 +363,22 @@ Response `200`: the billing state as above, from the PATCH response. The webhook
 
 ## Data Model Changes
 
+Billing tables are **provider-neutral**: provider ids live in `provider_*` columns next to a `provider` column, so moving away from Bachs later means new rows, not new columns. Enum columns are stored as `VARCHAR(32)` holding the enum **values** (`"pro"`, `"past_due"`), not native Postgres enums, so adding a provider, tier or status needs no migration.
+
 ### `User` (additions)
 
 | Column | Type | Notes |
 |---|---|---|
-| `bachs_customer_id` | `VARCHAR` nullable, unique | `cust_...`, set from the first subscription webhook |
-| `trial_used_at` | `TIMESTAMP` nullable | Set when the first `trialing` subscription is created |
+| `trial_used_at` | `TIMESTAMP` nullable | Set when the owner's first `trialing` subscription is created. Kept on `User` because trial eligibility doesn't depend on the provider |
+
+### `BillingCustomer` (new)
+
+| Column | Type | Notes |
+|---|---|---|
+| `user_id` | `UUID` FK → `user.id` | composite PK |
+| `provider` | `BillingProvider` | composite PK |
+| `provider_customer_id` | `VARCHAR` | `cust_...` for Bachs; unique per provider |
+| `created_at` | `TIMESTAMP` | |
 
 ### `ProjectSubscription` (new)
 
@@ -357,20 +388,21 @@ One row per project that has ever subscribed. No row means Free.
 |---|---|---|
 | `project_id` | `UUID` PK, FK → `project.id` | |
 | `payer_user_id` | `UUID` FK → `user.id` | The owner who paid |
-| `bachs_subscription_id` | `VARCHAR` unique | `sub_...` |
-| `bachs_product_id` | `VARCHAR` | `prod_...` |
-| `tier` | `PlanTier` enum | Mapped from the product id |
-| `status` | `SubscriptionStatus` enum | `trialing`, `active`, `past_due`, `unpaid`, `canceled`, `paused` |
+| `provider` | `BillingProvider` | |
+| `provider_subscription_id` | `VARCHAR` | `sub_...`; unique per provider |
+| `provider_product_id` | `VARCHAR` | `prod_...` |
+| `tier` | `PlanTier` | Mapped from the product id |
+| `status` | `SubscriptionStatus` | `trialing`, `active`, `past_due`, `unpaid`, `canceled` |
 | `currency` | `VARCHAR(3)` | `NGN` / `USD` |
 | `current_period_start` | `TIMESTAMP` | |
 | `current_period_end` | `TIMESTAMP` | |
 | `trial_end` | `TIMESTAMP` nullable | |
 | `cancel_at_period_end` | `BOOLEAN` | default `false` |
-| `past_due_since` | `TIMESTAMP` nullable | Start of the 7-day grace period |
+| `past_due_since` | `TIMESTAMP` nullable | When the first renewal failed; shown in the banner |
 | `last_event_at` | `TIMESTAMP` | `created_at` of the last applied webhook, used to guard ordering |
 | `created_at` / `updated_at` | `TIMESTAMP` | |
 
-If a project subscribes again after cancelling, the same row is overwritten with the new `bachs_subscription_id`. Bachs keeps the full history.
+If a project subscribes again after cancelling, the same row is overwritten with the new `provider_subscription_id`. Bachs keeps the full history.
 
 ### `ProjectUsage` (new)
 
@@ -388,30 +420,33 @@ If a project subscribes again after cancelling, the same row is overwritten with
 
 | Column | Type | Notes |
 |---|---|---|
-| `id` | `VARCHAR` PK | Bachs `evt_...` |
+| `provider` | `BillingProvider` | composite PK |
+| `id` | `VARCHAR` | composite PK; Bachs `evt_...` |
 | `type` | `VARCHAR` | |
 | `received_at` | `TIMESTAMP` | |
 
-### Enums
+### Enums (`be/models/billing.py`)
 
 ```python
+class BillingProvider(str, enum.Enum):
+    Bachs = "bachs"
+
 class PlanTier(str, enum.Enum):
-    free = "free"
-    pro = "pro"
-    # business = "business"
+    Free = "free"
+    Pro = "pro"
+    # Business = "business"
 
 class SubscriptionStatus(str, enum.Enum):
-    trialing = "trialing"
-    active = "active"
-    past_due = "past_due"
-    unpaid = "unpaid"
-    canceled = "canceled"
-    paused = "paused"
+    Trialing = "trialing"
+    Active = "active"
+    Past_due = "past_due"
+    Unpaid = "unpaid"
+    Canceled = "canceled"
 ```
 
-### Prerequisite fix
+### Prerequisite fix (done)
 
-`ProjectRole.Onwer` in `be/models/project.py` is misspelled. Rename it to `Owner` (with a data migration) before the billing owner checks depend on it.
+`ProjectRole.Onwer` was renamed to `Owner`. The migration runs `ALTER TYPE projectrole RENAME VALUE 'Onwer' TO 'Owner'`.
 
 ---
 
@@ -419,12 +454,12 @@ class SubscriptionStatus(str, enum.Enum):
 
 | File | Responsibility |
 |---|---|
-| `config/plans.py` | `PlanTier`, `PlanLimits`, `PLANS` dict, product id → tier map |
+| `config/plans.py` | `PlanLimits`, `PLANS` dict, product id → tier map (`PlanTier` itself lives in `models/billing.py`) |
 | `config/environment.py` | New settings: `bachs_api_key`, `bachs_api_base_url`, `bachs_webhook_secret`, `bachs_pro_product_id`, `bachs_pro_trial_product_id`, `frontend_url` |
-| `models/billing.py` | `ProjectSubscription`, `ProjectUsage`, `BillingEvent`, `SubscriptionStatus` |
+| `models/billing.py` | `BillingCustomer`, `ProjectSubscription`, `ProjectUsage`, `BillingEvent`, and the `BillingProvider` / `PlanTier` / `SubscriptionStatus` enums |
 | `schemas/billingSchema.py` | Request/response models above |
 | `crud/billing.py` | Subscription upsert, usage upsert and atomic increments, event dedupe insert |
-| `services/bachs_client.py` | Thin async `httpx` wrapper: `create_checkout_session`, `create_portal_session`, `update_subscription`, `verify_webhook` |
+| `services/bachs_client.py` | Thin async `httpx` wrapper: `create_checkout_session`, `create_portal_session`, `update_subscription`, `cancel_subscription`, `verify_webhook`; maps Bachs statuses to `SubscriptionStatus` |
 | `services/billing_service.py` | Webhook dispatch, checkout and portal orchestration, status → tier |
 | `services/entitlements.py` | `get_plan(project)`, `get_current_usage(project)`, `check_limit(...)`, `require_feature(...)`, raising the `402` errors |
 | `routers/billingRouter.py` | Routes above; thin |
@@ -444,16 +479,17 @@ class SubscriptionStatus(str, enum.Enum):
 | File | Purpose |
 |---|---|
 | `app/dashboard/[slug]/settings/billing/page.tsx` | Billing page |
-| `lib/billing.ts` | `getBilling`, `startCheckout`, `openPortal` (axios) |
+| `lib/billing.ts` | `getBilling`, `startCheckout`, `openPortal`, `switchToFree` (axios) |
 | `hooks/usePlan.ts` | Fetches billing state; exposes `tier`, `entitlements`, `usage`, `can(feature)` |
 | `components/billing/PlanCard.tsx` | Free and Pro cards with price in the local currency and an Upgrade / Current plan / Manage button |
 | `components/billing/UsageMeter.tsx` | Progress bar per limit; amber at 80%, red at 100% |
 | `components/billing/UpgradeDialog.tsx` | Opened by the global `402` handler |
-| `components/billing/BillingBanner.tsx` | Dashboard banner for trial ending, past due, or tracking paused |
+| `components/billing/BillingBanner.tsx` | Dashboard banner for trial ending, past due, on hold (unpaid), or tracking paused |
 
 ### Billing page
 
-- **Header:** current tier badge and status (e.g. "Pro · Trial ends Oct 22", "Pro · Payment failed: update card", "Pro · Cancels Nov 8").
+- **Header:** current tier badge and status (e.g. "Pro · Trial ends Oct 22", "Pro · Payment failed: update card", "Pro · Cancels Nov 8", "Free · Pro on hold: payment outstanding").
+- **Unpaid:** the Pro card's Upgrade button is replaced by **Pay now** (opens the portal) and **Switch to Free** (asks for confirmation, then calls `switchToFree`).
 - **Usage:** three `UsageMeter`s (links, events, seats) with "resets on <date>".
 - **Plans:** Free and Pro cards. The Pro button reads "Start 14-day free trial" if `trial_eligible`, otherwise "Upgrade to Pro". Members who aren't the owner see the button disabled with the note "Only the project owner can change the plan".
 - **Manage billing:** owner only, opens the portal URL.
@@ -487,7 +523,7 @@ UI for gated features (custom domains, folders, export…) checks `usePlan().can
 1. **Foundation:** fix `ProjectRole`, add `config/plans.py`, billing models and migration, `entitlements` service and usage counters. Enforce Free limits on link creation, click recording and seats. Every project is Free at this point.
 2. **Bachs integration:** `bachs_client`, checkout, portal, webhook endpoint. End-to-end test in sandbox: trial, conversion, failed payment, cancel, subscribing again.
 3. **Frontend:** billing page, `usePlan`, `402` interceptor, banners.
-4. **Launch:** create live products, set prices, configure the live webhook, migrate existing projects (see open questions).
+4. **Launch:** create live products, set prices, configure the live webhook, set failed-payment recovery to **"Mark unpaid"**, migrate existing projects (see open questions).
 5. **Pro features:** each in its own PRD (custom domains, folders, retention, export, password and expiry, bulk import).
 6. **Business tier:** add the enum value, `PLANS` entry, Bachs product and env var, plus the `change-plan` route.
 
@@ -495,7 +531,7 @@ UI for gated features (custom domains, folders, export…) checks `usePlan().can
 
 ## Testing
 
-- **Unit:** status → tier mapping, including the edge case of `past_due` at exactly 7 days; period calculation for Free (month boundaries) and paid; webhook signature verification (valid, wrong secret, stale timestamp, tampered body).
+- **Unit:** status → tier mapping (`past_due` keeps the paid tier, `unpaid` is Free, unrecognised Bachs statuses become `canceled`); checkout returns `409 outstanding_payment` while `unpaid`; period calculation for Free (month boundaries) and paid; webhook signature verification (valid, wrong secret, stale timestamp, tampered body).
 - **Integration (sandbox):** run every webhook through `/guides/webhooks/replay-events`, including a duplicate and an out-of-order `subscription.updated`.
 - **Limits:** the 31st link on Free returns `402`; the 5,001st click on Free still redirects and writes no `Click` row; deleting a link doesn't free quota.
 - **Trial:** a second project for the same owner gets the no-trial product.
@@ -520,6 +556,7 @@ UI for gated features (custom domains, folders, export…) checks `usePlan().can
 2. **Pro price:** final USD and NGN amounts.
 3. **Custom domain cap on Pro:** 3, or unlimited?
 4. **Ownership transfer:** if a paid project changes owner, the subscription stays billed to the old owner until it's cancelled. Is that acceptable for v1?
+5. **Outstanding invoice after Switch to Free:** once an `unpaid` subscription is cancelled, can the owner upgrade again with a new checkout, or must the old invoice be paid first? Depends on whether Bachs voids the invoice on cancel (check in sandbox).
 
 ---
 
