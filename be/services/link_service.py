@@ -12,6 +12,7 @@ from crud.click import create_click
 from crud.link import create_link, create_link_with_user
 from models.link import Link
 from config.environment import GEOIP_DB_PATH, ROOT_DOMAIN
+from services.entitlements import reserve_link, track_event
 from utils.generate import generate_slug
 
 
@@ -38,6 +39,7 @@ async def create_link_for_project(
     payload: LinkPayload, project_id: UUID, session: AsyncSession
 ) -> LinkResponse:
     data, short_link = _resolve_slug(payload)
+    await reserve_link(project_id, session)
     try:
         return await create_link_with_user(data, short_link, project_id, session)
     except IntegrityError:
@@ -118,4 +120,6 @@ async def record_click(
         utm_term=link.utm_term,
         utm_content=link.utm_content,
     )
+    if link.project_id and not await track_event(link.project_id, session):
+        return
     await create_click(click_payload, session)

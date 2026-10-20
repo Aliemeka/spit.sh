@@ -4,7 +4,13 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from utils.limiter import limiter
 
-from routers import linkRouter, userRouter, projectRouter, analyticsRouter
+from routers import (
+    linkRouter,
+    userRouter,
+    projectRouter,
+    analyticsRouter,
+    billingRouter,
+)
 
 from typing import List
 
@@ -22,7 +28,14 @@ def configure_routes(routers: List[APIRouter], prefix: str = "/api/v1"):
 
 
 configure_routes(
-    [linkRouter.router, userRouter.router, projectRouter.router, analyticsRouter.router]
+    [
+        linkRouter.router,
+        userRouter.router,
+        projectRouter.router,
+        analyticsRouter.router,
+        billingRouter.router,
+        billingRouter.webhook_router,
+    ]
 )
 
 origins = ["http://localhost:3001", "http://localhost:8000", "https://spit.sh"]

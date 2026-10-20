@@ -49,6 +49,30 @@ async def is_project_member(project_id: uuid.UUID, user_id: uuid.UUID, db: Async
     return result.scalars().one_or_none() is not None
 
 
+async def get_member_role(
+    project_id: uuid.UUID, user_id: uuid.UUID, db: AsyncSession
+) -> ProjectRole | None:
+    result = await db.execute(
+        select(ProjectUsers.role).where(
+            ProjectUsers.project_id == project_id,
+            ProjectUsers.user_id == user_id,
+        )
+    )
+    return result.scalars().one_or_none()
+
+
+async def get_project_owner_id(
+    project_id: uuid.UUID, db: AsyncSession
+) -> uuid.UUID | None:
+    result = await db.execute(
+        select(ProjectUsers.user_id).where(
+            ProjectUsers.project_id == project_id,
+            ProjectUsers.role == ProjectRole.Owner,
+        )
+    )
+    return result.scalars().first()
+
+
 async def get_user_projects(
     user_id: uuid.UUID, db: AsyncSession
 ) -> List[Tuple[Project, int]]:
