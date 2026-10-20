@@ -17,5 +17,5 @@ services:
       - GEOIP_DB_PATH=${GEOIP_DB_PATH}
       - ROOT_DOMAIN=${ROOT_DOMAIN}
       - SECRET=${SECRET}
-      - BACH_KEY=${BACH_KEY}
+      - BACHS_API_KEY=${BACHS_API_KEY}
     command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8555"

@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     better_auth_secret: str = ""
     better_auth_url: str = "http://localhost:3000"
     geoip_db_path: str = ""
-    bach_key: str = ""
+    bachs_api_key: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -17,4 +17,4 @@ settings = Settings()
 ROOT_DOMAIN = settings.root_domain
 DATABASE_URL = settings.database_url
 GEOIP_DB_PATH = settings.geoip_db_path
-BACH_KEY = settings.bach_key
+BACHS_API_KEY = settings.bachs_api_key
