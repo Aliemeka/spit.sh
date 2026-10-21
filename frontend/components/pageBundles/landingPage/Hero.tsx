@@ -77,7 +77,7 @@ const Hero = () => {
           <div className='flex flex-col items-center gap-6'>
             <span className='inline-flex items-center gap-1.5 rounded-full border border-fuchsia-500/20 bg-fuchsia-50 px-3 py-1 text-xs font-semibold text-fuchsia-700 dark:bg-fuchsia-500/10 dark:text-fuchsia-300'>
               <SparkleIcon size={14} weight='fill' />
-              New: dynamic links &amp; pages
+              Short links, smarter insights. Now in beta!
             </span>
             <h1
               className={`${heading} max-w-4xl text-balance text-[44px] font-bold leading-[1.05] md:text-[72px]`}
