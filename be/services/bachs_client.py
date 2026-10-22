@@ -7,7 +7,7 @@ from typing import Any
 import httpx
 
 from config.environment import BACHS_API_BASE_URL, BACHS_API_KEY, BACHS_WEBHOOK_SECRET
-from models.billing import SubscriptionStatus
+from models.billing import BillingCurrency, SubscriptionStatus
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +50,7 @@ async def create_checkout_session(
     cancel_url: str,
     metadata: dict[str, str],
     reference: str,
+    billing_currency: BillingCurrency | None = None,
 ) -> str:
     body = {
         "product_cart": [{"product_id": product_id, "quantity": 1}],
@@ -59,6 +60,8 @@ async def create_checkout_session(
         "metadata": metadata,
         "reference": reference,
     }
+    if billing_currency:
+        body["billing_currency"] = billing_currency.value
     session = await _request("POST", "/v1/checkout-sessions", json=body)
     return session["checkout_url"]
 

@@ -1,11 +1,12 @@
 from datetime import datetime
 from pydantic import BaseModel
 
-from models.billing import PlanTier, SubscriptionStatus
+from models.billing import BillingCurrency, PlanTier, SubscriptionStatus
 
 
 class CheckoutRequest(BaseModel):
     tier: PlanTier
+    currency: BillingCurrency | None = None
 
 
 class CheckoutResponse(BaseModel):

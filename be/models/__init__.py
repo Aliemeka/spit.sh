@@ -2,6 +2,7 @@ from models.project import Project, ProjectRole, ProjectUsers
 from models.user import User
 from models.link import Click, Link, LinkTag
 from models.billing import (
+    BillingCurrency,
     BillingCustomer,
     BillingEvent,
     BillingProvider,
@@ -12,6 +13,7 @@ from models.billing import (
 )
 
 __all__ = [
+    "BillingCurrency",
     "BillingCustomer",
     "BillingEvent",
     "BillingProvider",

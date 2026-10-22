@@ -78,7 +78,9 @@ async def create_checkout(
     project = await _get_project(project_slug, user_id, session, owner_only=True)
 
     try:
-        checkout_url = await start_checkout(project, user_id, payload.tier, session)
+        checkout_url = await start_checkout(
+            project, user_id, payload.tier, payload.currency, session
+        )
     except SubscriptionExists:
         raise HTTPException(status_code=409, detail={"code": "subscription_exists"})
     except OutstandingPayment:
