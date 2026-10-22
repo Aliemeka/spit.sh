@@ -23,6 +23,17 @@ export function getLocalTime(timezone: string): string {
   });
 }
 
+// The API returns naive UTC timestamps (no "Z"), which JS would otherwise parse as local time.
+export function formatUtcDate(value: string): string {
+  const iso = /[zZ]|[+-]\d{2}:\d{2}$/.test(value) ? value : `${value}Z`;
+  return new Date(iso).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export function getLocalDate(timezone: string): string {
   return new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
