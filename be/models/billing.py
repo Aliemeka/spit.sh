@@ -22,6 +22,11 @@ class SubscriptionStatus(str, enum.Enum):
     Canceled = "canceled"
 
 
+class BillingCurrency(str, enum.Enum):
+    USD = "USD"
+    NGN = "NGN"
+
+
 # Stored as VARCHAR (not a native Postgres enum) so adding a provider, tier or
 # status doesn't need an ALTER TYPE migration.
 def _enum_column(enum_cls: type[enum.Enum]) -> sa.Enum:

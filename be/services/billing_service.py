@@ -11,6 +11,7 @@ from crud import billing as billing_crud
 from crud.project import get_project_owner_id
 from crud.user import find_user_by_id
 from models.billing import (
+    BillingCurrency,
     BillingProvider,
     PlanTier,
     ProjectSubscription,
@@ -104,7 +105,11 @@ async def get_billing_state(project: Project, db: AsyncSession) -> BillingState:
 
 
 async def start_checkout(
-    project: Project, owner_id: uuid.UUID, tier: PlanTier, db: AsyncSession
+    project: Project,
+    owner_id: uuid.UUID,
+    tier: PlanTier,
+    currency: BillingCurrency | None,
+    db: AsyncSession,
 ) -> str:
     subscription = await billing_crud.get_project_subscription(project.id, db)
     if subscription and subscription.status == SubscriptionStatus.Unpaid:
@@ -134,6 +139,7 @@ async def start_checkout(
         cancel_url=billing_page,
         metadata={"project_id": str(project.id), "owner_user_id": str(owner.id)},
         reference=f"{project.id}:{uuid.uuid4().hex[:8]}",
+        billing_currency=currency,
     )
 
 
