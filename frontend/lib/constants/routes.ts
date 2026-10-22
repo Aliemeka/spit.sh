@@ -26,6 +26,7 @@ export const dashboardRoutes = {
     `/dashboard/${slug}/analytics${linkId ? `?linkId=${linkId}` : ""}`,
   pages: (slug: string) => `/dashboard/${slug}/pages`,
   settings: (slug: string) => `/dashboard/${slug}/settings`,
+  billing: (slug: string) => `/dashboard/${slug}/settings/billing`,
 };
 
 export const linkRoutes = {

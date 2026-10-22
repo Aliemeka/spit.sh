@@ -3,6 +3,7 @@ import { useState, ReactNode, useEffect } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
+import UpgradeButton from "@/components/billing/UpgradeButton";
 
 const DashboardContainer = ({
   workspaceSlug,
@@ -46,9 +47,12 @@ const DashboardContainer = ({
             )}
             <h1 className='text-lg font-semibold'>Dashboard</h1>
           </div>
-          <p className='text-xs font-medium px-3 py-1.5 border border-fuchsia-200 dark:border-fuchsia-900 text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-950/50 rounded-full'>
-            Currently in beta
-          </p>
+          <div className='flex items-center gap-2'>
+            <p className='text-xs font-medium px-3 py-1.5 border border-fuchsia-200 dark:border-fuchsia-900 text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-50 dark:bg-fuchsia-950/50 rounded-full'>
+              Currently in beta
+            </p>
+            <UpgradeButton projectSlug={workspaceSlug} />
+          </div>
         </nav>
         <main className='p-6 md:px-10 relative w-dvw md:w-full overflow-y-auto h-[calc(100dvh-64px)]'>{children}</main>
       </section>

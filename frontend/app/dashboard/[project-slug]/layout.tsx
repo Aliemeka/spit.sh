@@ -1,5 +1,6 @@
 import DashboardContainer from "@/components/blocks/DashboardContainer";
 import QueryProvider from "@/providers/QueryProvider";
+import { UpgradeModalProvider } from "@/providers/UpgradeModalProvider";
 
 export default async function DashLayout({
   children,
@@ -12,11 +13,13 @@ export default async function DashLayout({
 
   return (
     <QueryProvider>
-      <main className='flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 relative'>
-        <DashboardContainer workspaceSlug={workspaceSlug}>
-          {children}
-        </DashboardContainer>
-      </main>
+      <UpgradeModalProvider projectSlug={workspaceSlug}>
+        <main className='flex h-screen bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 relative'>
+          <DashboardContainer workspaceSlug={workspaceSlug}>
+            {children}
+          </DashboardContainer>
+        </main>
+      </UpgradeModalProvider>
     </QueryProvider>
   );
 }

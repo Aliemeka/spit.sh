@@ -53,7 +53,7 @@ const DashboardSidebar = ({
   };
 
   const linksChildren = [dashboardRoutes.links(workspaceSlug)];
-  const accountChildren: string[] = [];
+  const accountChildren = [dashboardRoutes.billing(workspaceSlug)];
   const isLinksOpen = linksChildren.some(isActive);
   const isAccountOpen = accountChildren.some(isActive);
 
@@ -170,9 +170,16 @@ const DashboardSidebar = ({
 
               <ul className='mt-2 space-y-1 px-4'>
                 <li>
-                  <a href='' className={inactiveClass}>
+                  <Link
+                    href={dashboardRoutes.billing(workspaceSlug)}
+                    className={
+                      isActive(dashboardRoutes.billing(workspaceSlug))
+                        ? activeClass
+                        : inactiveClass
+                    }
+                  >
                     Billing
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href='' className={inactiveClass}>
