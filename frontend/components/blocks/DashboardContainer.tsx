@@ -57,7 +57,9 @@ const DashboardContainer = ({
                 <SidebarIcon className='h-6 w-6 text-zinc-900 dark:text-zinc-200' />
               </button>
             )}
-            <h1 className='text-lg font-semibold'>Dashboard</h1>
+            <h1 className='text-lg font-medium capitalize tracking-wide ml-0.5'>
+              {workspaceSlug}'s workspace
+            </h1>
           </div>
           <div className='flex items-center gap-2'>
             <UpgradeButton projectSlug={workspaceSlug} />
