@@ -1,21 +1,31 @@
+const bar = "rounded-full bg-zinc-200 dark:bg-zinc-800";
+const panel =
+  "rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900";
+
 const BillingSkeleton = () => (
-  <div className='max-w-4xl space-y-6 animate-pulse'>
-    <div className='rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
-      <div className='space-y-3 p-6'>
-        <div className='h-3 w-24 rounded-full bg-zinc-200 dark:bg-zinc-800' />
-        <div className='h-6 w-32 rounded-full bg-zinc-200 dark:bg-zinc-800' />
-        <div className='h-3 w-56 rounded-full bg-zinc-200 dark:bg-zinc-800' />
-      </div>
-      <div className='grid gap-6 border-t border-zinc-200 p-6 sm:grid-cols-3 dark:border-zinc-800'>
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className='space-y-2'>
-            <div className='h-3 w-28 rounded-full bg-zinc-200 dark:bg-zinc-800' />
-            <div className='h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-800' />
-          </div>
-        ))}
-      </div>
+  <div className='mt-4 max-w-4xl space-y-6 md:space-y-10 animate-pulse'>
+    <div className={`${panel} space-y-3 p-6`}>
+      <div className={`${bar} h-5 w-32`} />
+      <div className={`${bar} h-3 w-64`} />
     </div>
-    <div className='h-96 w-full rounded-2xl border border-zinc-200 bg-white md:w-1/2 dark:border-zinc-800 dark:bg-zinc-950' />
+
+    <div className={panel}>
+      <div className='px-6 py-5'>
+        <div className={`${bar} h-4 w-28`} />
+      </div>
+      {[...Array(2)].map((_, i) => (
+        <div
+          key={i}
+          className='space-y-3 border-t border-zinc-200 px-6 py-5 dark:border-zinc-800'
+        >
+          <div className='size-8 rounded-lg bg-zinc-200 dark:bg-zinc-800' />
+          <div className={`${bar} h-3 w-28`} />
+          <div className={`${bar} h-2 w-full`} />
+        </div>
+      ))}
+    </div>
+
+    <div className='h-48 rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900' />
   </div>
 );
 

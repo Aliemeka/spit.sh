@@ -1,9 +1,12 @@
+import { CreditCardIcon } from "@phosphor-icons/react/dist/ssr";
 import { getBillingAction } from "@/app/actions/billing";
 import BillingStatusCallout from "@/components/billing/BillingStatusCallout";
-import PaymentPlanCard from "@/components/billing/PaymentPlanCard";
-import { BillingState, PaymentTier } from "@/lib/types/billingTypes";
+import TabbedCard from "@/components/blocks/TabbedCard";
+import { BillingState } from "@/lib/types/billingTypes";
 import CheckoutActivation from "./CheckoutActivation";
-import PlanUsageCard from "./PlanUsageCard";
+import CurrentPlanCard from "./CurrentPlanCard";
+import InvoicesTable from "./InvoicesTable";
+import MonthlyUsageCard from "./MonthlyUsageCard";
 
 interface Props {
   projectSlug: string;
@@ -22,10 +25,8 @@ const BillingOverview = async ({ projectSlug, checkoutSuccess }: Props) => {
     );
   }
 
-  const showUpgrade = billing.tier === "free" && billing.status !== "unpaid";
-
   return (
-    <div className='max-w-4xl space-y-6'>
+    <div className='mt-4 max-w-4xl space-y-6 md:space-y-10'>
       {checkoutSuccess ? (
         <CheckoutActivation
           projectSlug={projectSlug}
@@ -35,25 +36,25 @@ const BillingOverview = async ({ projectSlug, checkoutSuccess }: Props) => {
         <BillingStatusCallout projectSlug={projectSlug} billing={billing} />
       )}
 
-      <PlanUsageCard projectSlug={projectSlug} billing={billing} />
+      <CurrentPlanCard projectSlug={projectSlug} billing={billing} />
 
-      {showUpgrade && (
-        <section className='space-y-3'>
-          <h2 className='text-lg font-semibold text-zinc-900 dark:text-zinc-100'>
-            Upgrade your plan
-          </h2>
-          <div className='grid gap-6 md:grid-cols-2'>
-            {Object.values(PaymentTier).map((tier) => (
-              <PaymentPlanCard
-                key={tier}
-                projectSlug={projectSlug}
-                tier={tier}
-                billing={billing}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      <MonthlyUsageCard billing={billing} />
+
+      <section className='space-y-3'>
+        <h2 className='text-base font-semibold text-zinc-900 dark:text-zinc-50'>
+          Invoices
+        </h2>
+        <TabbedCard
+          tabs={[
+            {
+              value: "subscription",
+              label: "Subscription",
+              icon: <CreditCardIcon size={16} />,
+              content: <InvoicesTable invoices={[]} />,
+            },
+          ]}
+        />
+      </section>
     </div>
   );
 };

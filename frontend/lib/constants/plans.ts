@@ -37,12 +37,6 @@ export const PAID_PLANS: Record<PaymentTier, PlanConfig> = {
   },
 };
 
-export const USAGE_LABELS = {
-  links_per_period: "Links created",
-  events_per_period: "Tracked clicks",
-  seats: "Team members",
-} as const;
-
 const replaceWithCurrencyWithoutSymbol = (currency: string) => {
   switch (currency) {
     case BillingCurrency.USD:

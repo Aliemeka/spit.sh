@@ -27,6 +27,15 @@ export interface BillingUsage {
   seats: UsageMetric;
 }
 
+export interface Invoice {
+  id: string;
+  number: string;
+  created_at: string;
+  amount: number;
+  currency: BillingCurrency;
+  status: "paid" | "open" | "void";
+}
+
 export interface BillingState {
   tier: PlanTier;
   status: SubscriptionStatus | null;
