@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import DashboardLayout from "@/layouts/DashboardLayout";
+import DashboardContainer from "@/components/blocks/DashboardContainer";
 import FilterBar from "@/components/analytics/FilterBar";
 import ClicksHeroChart from "@/components/analytics/ClicksHeroChart";
 import TopLinksWidget from "@/components/analytics/TopLinksWidget";
@@ -44,11 +44,11 @@ const AnalyticsPage = async ({
   const { "project-slug": projectSlug } = await params;
 
   return (
-    <DashboardLayout title='Analytics'>
+    <DashboardContainer title='Analytics'>
       <Suspense fallback={null}>
         <AnalyticsContent projectSlug={projectSlug} />
       </Suspense>
-    </DashboardLayout>
+    </DashboardContainer>
   );
 };
 
