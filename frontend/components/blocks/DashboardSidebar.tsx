@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { deleteUserCookie } from "@/app/actions/auth";
-import Image from "next/image";
+import AccountMenu from "./AccountMenu";
 import {
   authRoutes,
   marketingRoutes,
@@ -208,25 +208,13 @@ const DashboardSidebar = ({
       </div>
 
       <div className='sticky inset-x-0 bottom-0 border-t border-gray-100 dark:border-gray-700'>
-        <div className='flex items-center gap-2 bg-white dark:bg-slate-900 p-4 dark:text-slate-100'>
-          <Image
-            alt={session?.user.name ?? "User"}
-            src={
-              session?.user.image ??
-              `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(session?.user.email ?? "user")}`
-            }
-            className='rounded-full object-cover'
-            height={40}
-            width={40}
+        <div className='bg-white p-2 dark:bg-slate-900 dark:text-slate-100'>
+          <AccountMenu
+            name={session?.user.name}
+            email={session?.user.email}
+            image={session?.user.image}
+            onLogout={handleLogout}
           />
-          <div>
-            <p className='text-xs'>
-              <strong className='block font-medium'>
-                {session?.user.name ?? "—"}
-              </strong>
-              <span>{session?.user.email}</span>
-            </p>
-          </div>
         </div>
       </div>
     </aside>
