@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { PlusCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import DashboardLayout from "@/layouts/DashboardLayout";
+import DashboardContainer from "@/components/blocks/DashboardContainer";
 import { linkRoutes } from "@/lib/constants/routes";
 import WelcomeCard from "@/components/pageBundles/home/WelcomeCard";
 import OnboardingSteps from "@/components/pageBundles/home/OnboardingSteps";
@@ -16,7 +16,7 @@ const DashboardHomePage = async ({
   const { "project-slug": slug } = await params;
 
   return (
-    <DashboardLayout
+    <DashboardContainer
       title='Home'
       SideButton={
         <Link
@@ -54,7 +54,7 @@ const DashboardHomePage = async ({
 
         <RecentLinks projectSlug={slug} />
       </div>
-    </DashboardLayout>
+    </DashboardContainer>
   );
 };
 

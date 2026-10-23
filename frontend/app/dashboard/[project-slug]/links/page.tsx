@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { PlusCircleIcon } from "@phosphor-icons/react";
-import DashboardLayout from "@/layouts/DashboardLayout";
+import DashboardContainer from "@/components/blocks/DashboardContainer";
 import EmptyState from "@/components/blocks/EmptyState";
 import NewLinkModal from "@/components/links/NewLinkModal";
 import LinksList from "@/components/links/LinksList";
@@ -57,7 +57,7 @@ const LinkPage = () => {
   }, [showModal]);
 
   return (
-    <DashboardLayout title='Links' SideButton={CreateButton}>
+    <DashboardContainer title='Links' SideButton={CreateButton}>
       {loading || links.length > 0 ? (
         <LinksList
           links={links}
@@ -80,7 +80,7 @@ const LinkPage = () => {
       {showModal && (
         <NewLinkModal projectSlug={projectSlug} onSuccess={refresh} />
       )}
-    </DashboardLayout>
+    </DashboardContainer>
   );
 };
 

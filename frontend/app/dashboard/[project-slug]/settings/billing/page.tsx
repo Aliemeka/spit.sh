@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import DashboardLayout from "@/layouts/DashboardLayout";
+import DashboardContainer from "@/components/blocks/DashboardContainer";
 import BillingOverview from "@/components/pageBundles/billingPage/BillingOverview";
 import BillingSkeleton from "@/components/pageBundles/billingPage/BillingSkeleton";
 
@@ -14,14 +14,14 @@ const BillingPage = async ({
   const { checkout } = await searchParams;
 
   return (
-    <DashboardLayout title='Billing'>
+    <DashboardContainer title='Billing'>
       <Suspense fallback={<BillingSkeleton />}>
         <BillingOverview
           projectSlug={projectSlug}
           checkoutSuccess={checkout === "success"}
         />
       </Suspense>
-    </DashboardLayout>
+    </DashboardContainer>
   );
 };
 
