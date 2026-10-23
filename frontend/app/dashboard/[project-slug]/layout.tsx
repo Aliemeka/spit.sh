@@ -1,4 +1,4 @@
-import DashboardContainer from "@/components/blocks/DashboardContainer";
+import DashboardContainer from "@/layouts/DashboardContainer";
 import QueryProvider from "@/providers/QueryProvider";
 import { UpgradeModalProvider } from "@/providers/UpgradeModalProvider";
 

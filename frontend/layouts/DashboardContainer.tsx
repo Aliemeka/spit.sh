@@ -1,6 +1,6 @@
 "use client";
 import { useState, ReactNode, useEffect } from "react";
-import DashboardSidebar from "./DashboardSidebar";
+import DashboardSidebar from "@/components/blocks/DashboardSidebar";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import UpgradeButton from "@/components/billing/UpgradeButton";
