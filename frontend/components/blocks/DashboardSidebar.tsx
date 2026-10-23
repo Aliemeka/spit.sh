@@ -162,7 +162,7 @@ const DashboardSidebar = ({
               className='group [&_summary::-webkit-details-marker]:hidden'
             >
               <summary className='flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700'>
-                <span className='text-sm font-medium'> Account </span>
+                <span className='text-sm font-medium'> Workspace </span>
                 <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
                   <ChevronIcon />
                 </span>
@@ -186,36 +186,19 @@ const DashboardSidebar = ({
                     Settings
                   </a>
                 </li>
-
-                {/* <li>
-                  <a href='' className={inactiveClass}>
-                    Team
-                  </a>
-                </li> */}
-
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className='w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700'
-                  >
-                    Logout
-                  </button>
-                </li>
               </ul>
             </details>
           </li>
         </ul>
       </div>
 
-      <div className='sticky inset-x-0 bottom-0 border-t border-gray-100 dark:border-gray-700'>
-        <div className='bg-white p-2 dark:bg-slate-900 dark:text-slate-100'>
-          <AccountMenu
-            name={session?.user.name}
-            email={session?.user.email}
-            image={session?.user.image}
-            onLogout={handleLogout}
-          />
-        </div>
+      <div className='sticky inset-x-0 bottom-0 border-t border-gray-100 dark:border-gray-700 p-2'>
+        <AccountMenu
+          name={session?.user.name}
+          email={session?.user.email}
+          image={session?.user.image}
+          onLogout={handleLogout}
+        />
       </div>
     </aside>
   );

@@ -32,7 +32,7 @@ const AccountMenu: FC<Props> = ({ name, email, image, onLogout }) => (
     <DropdownMenuTrigger asChild>
       <button
         type='button'
-        className='flex w-full items-center gap-2 rounded-lg p-2 text-left transition hover:bg-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/40 data-[state=open]:bg-zinc-100 dark:hover:bg-zinc-800 dark:data-[state=open]:bg-zinc-800'
+        className='flex w-full items-center gap-2 rounded-lg p-2 text-left transition bg-white dark:bg-slate-900 dark:text-slate-100 hover:bg-zinc-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/40 data-[state=open]:bg-zinc-100 dark:hover:bg-zinc-800 dark:data-[state=open]:bg-zinc-800'
       >
         <Image
           alt={name ?? "User"}
