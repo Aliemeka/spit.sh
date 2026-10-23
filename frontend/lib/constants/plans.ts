@@ -43,10 +43,26 @@ export const USAGE_LABELS = {
   seats: "Team members",
 } as const;
 
+const replaceWithCurrencyWithoutSymbol = (currency: string) => {
+  switch (currency) {
+    case BillingCurrency.USD:
+      return "$";
+    case BillingCurrency.NGN:
+      return "₦";
+    default:
+      return currency;
+  }
+};
+
 export function formatPrice(amount: number, currency: BillingCurrency) {
-  return new Intl.NumberFormat("en", {
+  const formatted = new Intl.NumberFormat("en", {
     style: "currency",
     currency,
     maximumFractionDigits: 0,
   }).format(amount);
+
+  return formatted.replace(
+    currency,
+    replaceWithCurrencyWithoutSymbol(currency),
+  );
 }

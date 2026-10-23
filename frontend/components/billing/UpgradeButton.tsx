@@ -27,7 +27,7 @@ const UpgradeButton: FC<{ projectSlug: string }> = ({ projectSlug }) => {
       className='inline-flex items-center gap-1.5 rounded-full bg-fuchsia-600 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-fuchsia-700 active:bg-fuchsia-800'
     >
       <CrownIcon size={14} weight='fill' />
-      Upgrade
+      Upgrade to Pro
     </button>
   );
 };

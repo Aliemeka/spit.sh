@@ -34,7 +34,7 @@ const PaymentPlanCard: FC<{
     <article
       className={cn(
         card,
-        "relative flex flex-col gap-6 p-6 md:p-8 !border-fuchsia-500/40 ring-4 ring-fuchsia-500/10",
+        "relative flex flex-col gap-6 p-6 md:p-8 !border-fuchsia-500/40 ring-4 ring-fuchsia-500/10 max-w-[450px]",
         className,
       )}
     >
