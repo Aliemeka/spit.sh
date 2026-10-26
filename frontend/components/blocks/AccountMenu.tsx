@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { dashboardRoutes } from "@/lib/constants/routes";
+import { workspaceRoutes } from "@/lib/constants/routes";
 
 interface Props {
   name?: string | null;
@@ -68,7 +68,7 @@ const AccountMenu: FC<Props> = ({ name, email, image, onLogout }) => (
         Profile settings
       </DropdownMenuItem>
       <DropdownMenuItem asChild className={itemClass}>
-        <Link href={dashboardRoutes.home}>
+        <Link href={workspaceRoutes.index}>
           <ArrowsLeftRightIcon size={16} />
           Change workspace
         </Link>

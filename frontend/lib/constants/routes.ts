@@ -17,6 +17,10 @@ export const onboardingRoutes = {
   createProject: "/onboarding/create-workspace",
 };
 
+export const workspaceRoutes = {
+  index: "/workspaces",
+};
+
 export const dashboardRoutes = {
   home: "/dashboard",
   links: "/dashboard/links",
