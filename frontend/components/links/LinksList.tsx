@@ -6,17 +6,11 @@ import { LinkResponse } from "@/lib/types/linkTypes";
 
 interface Props {
   links: LinkResponse[];
-  projectSlug: string;
   loading: boolean;
   onRefresh: () => void;
 }
 
-export default function LinksList({
-  links,
-  projectSlug,
-  loading,
-  onRefresh,
-}: Props) {
+export default function LinksList({ links, loading, onRefresh }: Props) {
   if (loading) {
     return (
       <div className='space-y-3 mt-4'>
@@ -33,12 +27,7 @@ export default function LinksList({
   return (
     <div className='space-y-3 mt-4 lg:mt-6'>
       {links.map((link) => (
-        <LinkCard
-          key={link.id}
-          link={link}
-          projectSlug={projectSlug}
-          onDeleted={onRefresh}
-        />
+        <LinkCard key={link.id} link={link} onDeleted={onRefresh} />
       ))}
     </div>
   );

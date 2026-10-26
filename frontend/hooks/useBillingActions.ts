@@ -10,10 +10,12 @@ import {
 } from "@/app/actions/billing";
 import { BillingCurrency, PaymentTier } from "@/lib/types/billingTypes";
 import { useToast } from "@/hooks/useToast";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 type PendingAction = "checkout" | "portal" | "switch" | null;
 
-export function useBillingActions(projectSlug: string) {
+export function useBillingActions() {
+  const { slug: projectSlug } = useWorkspace();
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toastError, toastSuccess } = useToast();

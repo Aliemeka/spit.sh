@@ -17,14 +17,13 @@ import {
 import UnpaidActions from "./UnpaidActions";
 
 const PaymentPlanCard: FC<{
-  projectSlug: string;
   tier: PaymentTier;
   billing: BillingState | undefined;
   className?: string;
-}> = ({ projectSlug, tier, billing, className }) => {
+}> = ({ tier, billing, className }) => {
   const plan = PAID_PLANS[tier];
   const currency = useDisplayCurrency();
-  const { startCheckout, openPortal, pending } = useBillingActions(projectSlug);
+  const { startCheckout, openPortal, pending } = useBillingActions();
 
   const isUnpaid = billing?.status === "unpaid";
   const isCurrentPlan = billing?.tier === tier;
@@ -57,7 +56,7 @@ const PaymentPlanCard: FC<{
       </p>
 
       {isUnpaid ? (
-        <UnpaidActions projectSlug={projectSlug} />
+        <UnpaidActions />
       ) : isCurrentPlan ? (
         <button
           type='button'

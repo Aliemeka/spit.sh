@@ -28,10 +28,6 @@ import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 import { countryCodeToFlag } from "@/lib/analytics/flags";
 import { DeviceFilter } from "@/lib/types/analyticsTypes";
 
-interface Props {
-  projectSlug: string;
-}
-
 type Dimension = "link" | "country" | "device";
 
 const DIMENSIONS: { value: Dimension; label: string; icon: React.ReactNode }[] =
@@ -48,7 +44,7 @@ const DEVICE_OPTIONS: { value: DeviceFilter; label: string }[] = [
   { value: "unknown", label: "Unknown" },
 ];
 
-const FilterPopover: FC<Props> = ({ projectSlug }) => {
+const FilterPopover: FC = () => {
   const [open, setOpen] = useState(false);
   const [dim, setDim] = useState<Dimension | null>(null);
   const { filters, setFilter } = useAnalyticsFilters();
@@ -111,7 +107,6 @@ const FilterPopover: FC<Props> = ({ projectSlug }) => {
             </button>
             {dim === "link" && (
               <LinkPicker
-                projectSlug={projectSlug}
                 currentLinkId={filters.linkId}
                 onSelect={(linkId) => {
                   setFilter("linkId", linkId);
@@ -121,7 +116,6 @@ const FilterPopover: FC<Props> = ({ projectSlug }) => {
             )}
             {dim === "country" && (
               <CountryPicker
-                projectSlug={projectSlug}
                 currentCountry={filters.country}
                 onSelect={(code) => {
                   setFilter("country", code);
@@ -148,11 +142,10 @@ const FilterPopover: FC<Props> = ({ projectSlug }) => {
 export default FilterPopover;
 
 const LinkPicker: FC<{
-  projectSlug: string;
   currentLinkId?: string;
   onSelect: (linkId: string) => void;
-}> = ({ projectSlug, currentLinkId, onSelect }) => {
-  const { links, loading } = useProjectLinks(projectSlug);
+}> = ({ currentLinkId, onSelect }) => {
+  const { links, loading } = useProjectLinks();
   return (
     <Command className='bg-transparent'>
       <CommandInput placeholder='Search links…' className='h-9' />
@@ -182,14 +175,12 @@ const LinkPicker: FC<{
 };
 
 const CountryPicker: FC<{
-  projectSlug: string;
   currentCountry?: string;
   onSelect: (code: string) => void;
-}> = ({ projectSlug, currentCountry, onSelect }) => {
-  const { data: countries = [], isLoading } = useAnalyticsCountries(
-    projectSlug,
-    { interval: "all" },
-  );
+}> = ({ currentCountry, onSelect }) => {
+  const { data: countries = [], isLoading } = useAnalyticsCountries({
+    interval: "all",
+  });
   return (
     <Command className='bg-transparent'>
       <CommandInput placeholder='Search countries…' className='h-9' />

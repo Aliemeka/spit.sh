@@ -9,44 +9,38 @@ import TopCitiesWidget from "@/components/analytics/TopCitiesWidget";
 import DonutTabbedWidget from "@/components/analytics/DonutTabbedWidget";
 import UtmTabbedWidget from "@/components/analytics/UtmTabbedWidget";
 
-const AnalyticsContent = ({ projectSlug }: { projectSlug: string }) => {
+const AnalyticsContent = () => {
   return (
     <>
-      <FilterBar projectSlug={projectSlug} />
-      <ClicksHeroChart projectSlug={projectSlug} />
+      <FilterBar />
+      <ClicksHeroChart />
 
       <div className='grid gap-5 md:grid-cols-2 mb-5'>
-        <TopLinksWidget projectSlug={projectSlug} />
-        <TopReferersWidget projectSlug={projectSlug} />
+        <TopLinksWidget />
+        <TopReferersWidget />
       </div>
 
       <div className='grid gap-5 md:grid-cols-2 mb-5'>
-        <TopCountriesWidget projectSlug={projectSlug} />
-        <TopCitiesWidget projectSlug={projectSlug} />
+        <TopCountriesWidget />
+        <TopCitiesWidget />
       </div>
 
       <div className='grid gap-5 mb-5'>
-        <DonutTabbedWidget projectSlug={projectSlug} />
+        <DonutTabbedWidget />
       </div>
 
       <div className='grid gap-5'>
-        <UtmTabbedWidget projectSlug={projectSlug} />
+        <UtmTabbedWidget />
       </div>
     </>
   );
 };
 
-const AnalyticsPage = async ({
-  params,
-}: {
-  params: Promise<{ "project-slug": string }>;
-}) => {
-  const { "project-slug": projectSlug } = await params;
-
+const AnalyticsPage = () => {
   return (
     <DashboardContainer title='Analytics'>
       <Suspense fallback={null}>
-        <AnalyticsContent projectSlug={projectSlug} />
+        <AnalyticsContent />
       </Suspense>
     </DashboardContainer>
   );

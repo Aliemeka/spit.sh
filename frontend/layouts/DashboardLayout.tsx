@@ -4,14 +4,10 @@ import DashboardSidebar from "@/components/blocks/DashboardSidebar";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import UpgradeButton from "@/components/billing/UpgradeButton";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
-const DashboardLayout = ({
-  workspaceSlug,
-  children,
-}: {
-  workspaceSlug: string;
-  children: ReactNode;
-}) => {
+const DashboardLayout = ({ children }: { children: ReactNode }) => {
+  const { slug: workspaceSlug } = useWorkspace();
   const [showSidebar, setShowSidebar] = useState(false);
   const pathname = usePathname();
 
@@ -22,7 +18,6 @@ const DashboardLayout = ({
   return (
     <>
       <DashboardSidebar
-        workspaceSlug={workspaceSlug}
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
       />
@@ -62,7 +57,7 @@ const DashboardLayout = ({
             </h1>
           </div>
           <div className='flex items-center gap-2'>
-            <UpgradeButton projectSlug={workspaceSlug} />
+            <UpgradeButton />
           </div>
         </nav>
         {/* Revert to h-[calc(100dvh-64px)] when beta banner is removed */}

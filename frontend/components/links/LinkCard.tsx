@@ -29,14 +29,15 @@ import { deleteProjectLinkAction } from "@/app/actions/link";
 import { useToast } from "@/hooks/useToast";
 import { useClipboard } from "@/hooks/useClipboard";
 import { dashboardRoutes } from "@/lib/constants/routes";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 interface Props {
   link: LinkResponse;
-  projectSlug: string;
   onDeleted: () => void;
 }
 
-export default function LinkCard({ link, projectSlug, onDeleted }: Props) {
+export default function LinkCard({ link, onDeleted }: Props) {
+  const { slug: projectSlug } = useWorkspace();
   const { toastSuccess, toastError } = useToast();
   const { copyToClipboard, copied } = useClipboard();
   const [deleting, setDeleting] = useState(false);

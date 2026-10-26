@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { PlusCircleIcon } from "@phosphor-icons/react";
 import DashboardContainer from "@/components/blocks/DashboardContainer";
 import EmptyState from "@/components/blocks/EmptyState";
@@ -12,16 +12,12 @@ import PrimaryButton from "@/components/ui/primary-button";
 import { Kbd } from "@/components/ui/kbd";
 
 const LinkPage = () => {
-  const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const projectSlug = params["project-slug"] as string;
   const showModal = searchParams.get("action") === "new_link";
 
-  const { links, loading, refresh } = useProjectLinks(projectSlug, {
-    limit: 5,
-  });
+  const { links, loading, refresh } = useProjectLinks({ limit: 5 });
 
   const openModal = () => {
     router.push(`?action=new_link`);
@@ -59,12 +55,7 @@ const LinkPage = () => {
   return (
     <DashboardContainer title='Links' SideButton={CreateButton}>
       {loading || links.length > 0 ? (
-        <LinksList
-          links={links}
-          projectSlug={projectSlug}
-          loading={loading}
-          onRefresh={refresh}
-        />
+        <LinksList links={links} loading={loading} onRefresh={refresh} />
       ) : (
         <EmptyState text='No links yet'>
           <button
@@ -77,9 +68,7 @@ const LinkPage = () => {
         </EmptyState>
       )}
 
-      {showModal && (
-        <NewLinkModal projectSlug={projectSlug} onSuccess={refresh} />
-      )}
+      {showModal && <NewLinkModal onSuccess={refresh} />}
     </DashboardContainer>
   );
 };

@@ -28,15 +28,12 @@ const BillingOverview = async ({ projectSlug, checkoutSuccess }: Props) => {
   return (
     <div className='mt-4 max-w-4xl space-y-6 md:space-y-10'>
       {checkoutSuccess ? (
-        <CheckoutActivation
-          projectSlug={projectSlug}
-          isPaid={billing.tier !== "free"}
-        />
+        <CheckoutActivation isPaid={billing.tier !== "free"} />
       ) : (
-        <BillingStatusCallout projectSlug={projectSlug} billing={billing} />
+        <BillingStatusCallout billing={billing} />
       )}
 
-      <CurrentPlanCard projectSlug={projectSlug} billing={billing} />
+      <CurrentPlanCard billing={billing} />
 
       <MonthlyUsageCard billing={billing} />
 

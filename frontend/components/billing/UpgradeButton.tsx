@@ -6,10 +6,12 @@ import { CrownIcon } from "@phosphor-icons/react";
 import { useBilling } from "@/hooks/useBilling";
 import { useUpgradeModal } from "@/providers/UpgradeModalProvider";
 import { dashboardRoutes } from "@/lib/constants/routes";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
-const UpgradeButton: FC<{ projectSlug: string }> = ({ projectSlug }) => {
+const UpgradeButton: FC = () => {
+  const { slug: projectSlug } = useWorkspace();
   const pathname = usePathname();
-  const { billing } = useBilling(projectSlug);
+  const { billing } = useBilling();
   const { openUpgradeModal } = useUpgradeModal();
 
   if (

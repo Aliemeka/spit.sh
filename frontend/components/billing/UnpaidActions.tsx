@@ -15,8 +15,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useBillingActions } from "@/hooks/useBillingActions";
 
-const UnpaidActions: FC<{ projectSlug: string }> = ({ projectSlug }) => {
-  const { openPortal, switchToFree, pending } = useBillingActions(projectSlug);
+const UnpaidActions: FC = () => {
+  const { openPortal, switchToFree, pending } = useBillingActions();
 
   return (
     <div className='flex flex-wrap gap-2'>

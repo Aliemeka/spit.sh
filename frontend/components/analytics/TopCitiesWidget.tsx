@@ -6,13 +6,9 @@ import { useAnalyticsCities } from "@/hooks/useAnalytics";
 import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 import { countryCodeToFlag } from "@/lib/analytics/flags";
 
-interface Props {
-  projectSlug: string;
-}
-
-const TopCitiesWidget: FC<Props> = ({ projectSlug }) => {
+const TopCitiesWidget: FC = () => {
   const { filters } = useAnalyticsFilters();
-  const { data = [], isLoading } = useAnalyticsCities(projectSlug, filters);
+  const { data = [], isLoading } = useAnalyticsCities(filters);
 
   const rows = useMemo<RichListRow[]>(
     () =>
