@@ -21,6 +21,7 @@ from models.project import Project
 from schemas.billingSchema import BillingState, BillingUsage, UsageMetric
 from services import bachs_client
 from services.entitlements import PAID_STATUSES, get_plan
+from utils.generate import generate_reference
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +83,9 @@ async def get_billing_state(project: Project, db: AsyncSession) -> BillingState:
         trial_end=subscription.trial_end if subscription else None,
         current_period_start=plan.period_start,
         current_period_end=plan.period_end,
-        cancel_at_period_end=subscription.cancel_at_period_end if subscription else False,
+        cancel_at_period_end=(
+            subscription.cancel_at_period_end if subscription else False
+        ),
         past_due_since=subscription.past_due_since if subscription else None,
         trial_eligible=owner is not None and owner.trial_used_at is None,
         usage=BillingUsage(
@@ -138,7 +141,7 @@ async def start_checkout(
         success_url=f"{billing_page}&checkout=success",
         cancel_url=billing_page,
         metadata={"project_id": str(project.id), "owner_user_id": str(owner.id)},
-        reference=f"{project.id}:{uuid.uuid4().hex[:8]}",
+        reference=f"{project.id}:{generate_reference()}",
         billing_currency=currency,
     )
 
@@ -172,7 +175,9 @@ async def handle_webhook(raw_body: bytes, headers: Any, db: AsyncSession) -> Non
     event = bachs_client.verify_webhook(raw_body, headers)
     event_type = event["type"]
 
-    if not await billing_crud.record_billing_event(PROVIDER, event["id"], event_type, db):
+    if not await billing_crud.record_billing_event(
+        PROVIDER, event["id"], event_type, db
+    ):
         return
 
     data = event.get("data") or {}
