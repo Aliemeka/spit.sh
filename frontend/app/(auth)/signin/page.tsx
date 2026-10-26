@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { CircleNotchIcon } from "@phosphor-icons/react";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
@@ -12,6 +13,18 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [socialLoading, setSocialLoading] = useState<
+    "google" | "github" | null
+  >(null);
+
+  // Returning via the back button restores the page from bfcache with the spinner still on
+  useEffect(() => {
+    const reset = (e: PageTransitionEvent) => {
+      if (e.persisted) setSocialLoading(null);
+    };
+    window.addEventListener("pageshow", reset);
+    return () => window.removeEventListener("pageshow", reset);
+  }, []);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +36,6 @@ export default function SignInPage() {
       type: "sign-in",
     });
 
-    setIsLoading(false);
-
     if (error) {
       console.error("Error sending OTP:", error);
       setIsLoading(false);
@@ -32,11 +43,22 @@ export default function SignInPage() {
       return;
     }
 
+    // Keep the spinner until the verify page takes over
     router.push(`${authRoutes.verify}?email=${encodeURIComponent(email)}`);
   };
 
   const handleSocialSignIn = async (provider: "google" | "github") => {
-    await authClient.signIn.social({ provider, callbackURL: "/callback" });
+    setSocialLoading(provider);
+    setError("");
+    const { error } = await authClient.signIn.social({
+      provider,
+      callbackURL: "/callback",
+    });
+    // On success the browser is already navigating away, so keep the spinner
+    if (error) {
+      setSocialLoading(null);
+      setError(error.message ?? "Couldn't connect. Please try again.");
+    }
   };
 
   return (
@@ -70,9 +92,11 @@ export default function SignInPage() {
             {error && <p className='mt-2 text-sm text-red-500'>{error}</p>}
             <button
               type='submit'
-              disabled={isLoading}
-              className='w-full mt-4 px-4 py-2 text-white font-medium bg-fuchsia-600 focus:ring active:bg-fuchsia-500 rounded-lg duration-150 disabled:opacity-60 disabled:cursor-not-allowed'
+              disabled={isLoading || socialLoading !== null}
+              aria-busy={isLoading}
+              className='w-full mt-4 px-4 py-2 flex items-center justify-center gap-x-2 text-white font-medium bg-fuchsia-600 focus:ring active:bg-fuchsia-500 rounded-lg duration-150 disabled:opacity-60 disabled:cursor-not-allowed'
             >
+              {isLoading && <CircleNotchIcon className='w-5 h-5 animate-spin' />}
               {isLoading ? "Sending code..." : "Sign in"}
             </button>
           </form>
@@ -85,8 +109,13 @@ export default function SignInPage() {
           <div className='space-y-4 text-sm font-medium'>
             <button
               onClick={() => handleSocialSignIn("google")}
-              className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100'
+              disabled={socialLoading !== null}
+              aria-busy={socialLoading === "google"}
+              className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed'
             >
+              {socialLoading === "google" ? (
+                <CircleNotchIcon className='w-5 h-5 animate-spin' />
+              ) : (
               <svg
                 className='w-5 h-5'
                 viewBox='0 0 48 48'
@@ -117,12 +146,20 @@ export default function SignInPage() {
                   </clipPath>
                 </defs>
               </svg>
-              Continue with Google
+              )}
+              {socialLoading === "google"
+                ? "Connecting to Google…"
+                : "Continue with Google"}
             </button>
             <button
               onClick={() => handleSocialSignIn("github")}
-              className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100'
+              disabled={socialLoading !== null}
+              aria-busy={socialLoading === "github"}
+              className='w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 duration-150 active:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed'
             >
+              {socialLoading === "github" ? (
+                <CircleNotchIcon className='w-5 h-5 animate-spin' />
+              ) : (
               <svg
                 className='w-5 h-5 text-zinc-900 dark:text-zinc-200'
                 viewBox='0 0 48 48'
@@ -138,7 +175,10 @@ export default function SignInPage() {
                   />
                 </g>
               </svg>
-              Continue with GitHub
+              )}
+              {socialLoading === "github"
+                ? "Connecting to GitHub…"
+                : "Continue with GitHub"}
             </button>
           </div>
         </div>

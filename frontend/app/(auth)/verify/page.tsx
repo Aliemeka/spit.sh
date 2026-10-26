@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { CircleNotchIcon } from "@phosphor-icons/react";
 import AuthLayout from "@/layouts/AuthLayout";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
@@ -38,9 +39,8 @@ function VerifyForm() {
       otp: code,
     });
 
-    setIsVerifying(false);
-
     if (error) {
+      setIsVerifying(false);
       setError(error.message ?? "Invalid code. Please try again.");
       return;
     }
@@ -50,6 +50,7 @@ function VerifyForm() {
       await setUserCookie(userId);
     }
 
+    // Keep the spinner until the dashboard takes over
     router.replace(dashboardRoutes.home);
   };
 
@@ -137,8 +138,12 @@ function VerifyForm() {
             <button
               type='submit'
               disabled={isVerifying || otp.length < 6}
-              className='w-full mt-4 px-4 py-2 text-white font-medium bg-fuchsia-600 focus:ring active:bg-fuchsia-500 rounded-lg duration-150 disabled:opacity-60 disabled:cursor-not-allowed'
+              aria-busy={isVerifying}
+              className='w-full mt-4 px-4 py-2 flex items-center justify-center gap-x-2 text-white font-medium bg-fuchsia-600 focus:ring active:bg-fuchsia-500 rounded-lg duration-150 disabled:opacity-60 disabled:cursor-not-allowed'
             >
+              {isVerifying && (
+                <CircleNotchIcon className='w-5 h-5 animate-spin' />
+              )}
               {isVerifying ? "Verifying..." : "Verify"}
             </button>
           </form>
