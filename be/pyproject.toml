@@ -9,6 +9,7 @@ dependencies = [
     "aiosqlite==0.19.0",
     "alembic>=1.13,<2",
     "asyncpg==0.30.0",
+    "bachs>=2.0.0",
     "fastapi>=0.115,<1",
     "geoip2==5.2.0",
     "greenlet>=3.5.0",

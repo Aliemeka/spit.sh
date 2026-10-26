@@ -168,10 +168,8 @@ async def switch_to_free(project: Project, db: AsyncSession) -> BillingState:
     return await get_billing_state(project, db)
 
 
-async def handle_webhook(
-    raw_body: bytes, signature: str, timestamp: str, db: AsyncSession
-) -> None:
-    event = bachs_client.verify_webhook(raw_body, signature, timestamp)
+async def handle_webhook(raw_body: bytes, headers: Any, db: AsyncSession) -> None:
+    event = bachs_client.verify_webhook(raw_body, headers)
     event_type = event["type"]
 
     if not await billing_crud.record_billing_event(PROVIDER, event["id"], event_type, db):

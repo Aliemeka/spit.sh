@@ -131,12 +131,7 @@ async def downgrade_to_free(
 async def bachs_webhook(request: Request, session: AsyncSession = Depends(get_session)):
     raw_body = await request.body()
     try:
-        await handle_webhook(
-            raw_body,
-            request.headers.get("X-Bachs-Signature", ""),
-            request.headers.get("X-Bachs-Timestamp", ""),
-            session,
-        )
+        await handle_webhook(raw_body, request.headers, session)
     except InvalidWebhook:
         raise HTTPException(status_code=400, detail="Invalid webhook")
     return {"received": True}
