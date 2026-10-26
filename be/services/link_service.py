@@ -20,7 +20,28 @@ class SlugTakenError(Exception):
     pass
 
 
+# Mirrors the paths frontend/middleware.ts handles before the short-link lookup;
+# a link with one of these slugs could never be reached.
+RESERVED_SLUG_PREFIXES = (
+    "dashboard",
+    "workspaces",
+    "onboarding",
+    "signin",
+    "verify",
+    "callback",
+    "api/",
+    "_next",
+)
+RESERVED_SLUGS = {"sw.js", "about", "pricing", "legal/terms", "legal/privacy"}
+
+
+def is_reserved_slug(slug: str) -> bool:
+    return slug in RESERVED_SLUGS or slug.startswith(RESERVED_SLUG_PREFIXES)
+
+
 def _resolve_slug(payload: LinkPayload) -> tuple[LinkCreate, str]:
+    if payload.slug and is_reserved_slug(payload.slug):
+        raise SlugTakenError
     slug = payload.slug or generate_slug()
     data = LinkCreate(**payload.model_dump(exclude={"slug"}), slug=slug)
     return data, ROOT_DOMAIN + slug
