@@ -19,7 +19,11 @@ from crud.link import (
 )
 from schemas.projectSchema import ProjectCreate, ProjectResponse
 from schemas.linkSchema import LinkPayload, LinkUpdate, LinkResponse, ProjectLinks
-from services.link_service import SlugTakenError, create_link_for_project
+from services.link_service import (
+    SlugTakenError,
+    create_link_for_project,
+    is_reserved_slug,
+)
 from services.entitlements import PlanLimitReached
 from models.link import LinkTag
 
@@ -112,6 +116,9 @@ async def update_project_link(
 ):
     user_id = uuid.UUID(current_user["sub"])
     await _get_project_or_403(project_slug, user_id, session)
+
+    if payload.slug and is_reserved_slug(payload.slug):
+        raise HTTPException(status_code=409, detail="Slug already exists")
 
     link = await update_link(link_id, payload, session)
     if not link:
