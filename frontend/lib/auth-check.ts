@@ -23,16 +23,21 @@ export const confirmUserSession = (request: NextRequest) => {
   return !!sessionToken;
 };
 
-export const confirmJWTSession = async (request: NextRequest) => {
+export const getJWTSubject = async (
+  request: NextRequest,
+): Promise<string | null> => {
   const sessionToken = request.cookies.get(jwt_cookie_name)?.value;
-  if (!sessionToken) return false;
+  if (!sessionToken) return null;
   try {
-    await jwtVerify(sessionToken, secret);
-    return true;
+    const { payload } = await jwtVerify(sessionToken, secret);
+    return payload.sub ?? null;
   } catch (error) {
-    return false;
+    return null;
   }
 };
+
+export const confirmJWTSession = async (request: NextRequest) =>
+  (await getJWTSubject(request)) !== null;
 
 export const deleteSessionCookies = (response: NextResponse) => {
   response.cookies.delete(cookieName);
