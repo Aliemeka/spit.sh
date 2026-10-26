@@ -50,7 +50,7 @@ function VerifyForm() {
       await setUserCookie(userId);
     }
 
-    router.push(dashboardRoutes.home);
+    router.replace(dashboardRoutes.home);
   };
 
   const handleVerify = async (e: React.FormEvent) => {

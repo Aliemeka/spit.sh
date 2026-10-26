@@ -18,7 +18,7 @@ export async function createProjectAction(data: {
   name: string;
   slug: string;
   logo?: string;
-}) {
+}): Promise<Project> {
   const token = await getSessionToken();
   if (!token) throw new Error("Unauthorized");
   const res = await axios.post(`${API_URL}/projects/`, data, {
