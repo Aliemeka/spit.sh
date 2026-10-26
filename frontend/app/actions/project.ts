@@ -2,9 +2,10 @@
 
 import axios from "axios";
 import { API_URL } from "@/lib/config/public_env";
+import type { Project } from "@/lib/types/projectTypes";
 import { getSessionToken } from "./auth";
 
-export async function getProjectsAction() {
+export async function getProjectsAction(): Promise<Project[]> {
   const token = await getSessionToken();
   if (!token) throw new Error("Unauthorized");
   const res = await axios.get(`${API_URL}/projects/`, {
