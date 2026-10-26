@@ -21,6 +21,5 @@ services:
       - BACHS_WEBHOOK_SECRET=${BACHS_WEBHOOK_SECRET}
       - BACHS_PRO_PRODUCT_ID=${BACHS_PRO_PRODUCT_ID}
       - BACHS_PRO_TRIAL_PRODUCT_ID=${BACHS_PRO_TRIAL_PRODUCT_ID}
-      - BACHS_API_BASE_URL=${BACHS_API_BASE_URL}
       - FRONTEND_URL=${FRONTEND_URL}
     command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8555"
