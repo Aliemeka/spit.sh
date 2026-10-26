@@ -13,6 +13,9 @@ interface Props {
   }) => Promise<void>;
   onBack: () => void;
   isLoading: boolean;
+  title?: string;
+  description?: string;
+  backLabel?: string;
 }
 
 const slugify = (value: string) =>
@@ -33,7 +36,19 @@ const validationSchema = Yup.object({
   logo: Yup.string().url("Must be a valid URL").optional(),
 });
 
-export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
+const inputClass =
+  "w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent px-4 py-3 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-fuchsia-500";
+const labelClass =
+  "block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1.5";
+
+export default function NewProjectStep({
+  onSubmit,
+  onBack,
+  isLoading,
+  title = "Create your first project",
+  description = "Projects help you organise and share links.",
+  backLabel = "← Back",
+}: Props) {
   const [slugEdited, setSlugEdited] = useState(false);
   const [slugLocked, setSlugLocked] = useState(true);
 
@@ -72,26 +87,24 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
         weight='duotone'
         className='text-fuchsia-500 mx-auto mb-4'
       />
-      <h1 className='text-xl font-bold text-white text-center mb-1'>
-        Create your first project
+      <h1 className='text-xl font-bold text-zinc-900 dark:text-white text-center mb-1'>
+        {title}
       </h1>
-      <p className='text-sm text-zinc-400 text-center mb-8'>
-        Projects help you organise and share links.
+      <p className='text-sm text-zinc-500 dark:text-zinc-400 text-center mb-8'>
+        {description}
       </p>
 
       <form onSubmit={formik.handleSubmit} className='flex flex-col gap-5'>
         {/* Project Name */}
         <div>
-          <label className='block text-xs font-medium text-zinc-400 mb-1.5'>
-            Project Name
-          </label>
+          <label className={labelClass}>Project Name</label>
           <input
             name='name'
             value={formik.values.name}
             onChange={handleNameChange}
             onBlur={formik.handleBlur}
             placeholder='My Workspace'
-            className='w-full rounded-xl border border-zinc-700 bg-transparent px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-fuchsia-500'
+            className={inputClass}
           />
           {formik.touched.name && formik.errors.name && (
             <p className='text-red-400 text-xs mt-1'>{formik.errors.name}</p>
@@ -100,10 +113,8 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
 
         {/* Slug */}
         <div>
-          <label className='block text-xs font-medium text-zinc-400 mb-1.5'>
-            Slug
-          </label>
-          <div className='flex items-center rounded-xl border border-zinc-700 focus-within:ring-2 focus-within:ring-fuchsia-500 overflow-hidden'>
+          <label className={labelClass}>Slug</label>
+          <div className='flex items-center rounded-xl border border-zinc-300 dark:border-zinc-700 focus-within:ring-2 focus-within:ring-fuchsia-500 overflow-hidden'>
             <span className='px-3 text-sm text-zinc-500 select-none whitespace-nowrap'>
               spit.sh/
             </span>
@@ -114,7 +125,7 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
               onBlur={formik.handleBlur}
               disabled={slugLocked}
               placeholder='my-workspace'
-              className='flex-1 bg-transparent py-3 pr-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none disabled:text-zinc-500'
+              className='flex-1 bg-transparent py-3 pr-3 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none disabled:text-zinc-500'
             />
             <button
               type='button'
@@ -136,9 +147,11 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
 
         {/* Logo URL */}
         <div>
-          <label className='block text-xs font-medium text-zinc-400 mb-1.5'>
+          <label className={labelClass}>
             Logo URL{" "}
-            <span className='text-zinc-600 font-normal'>(optional)</span>
+            <span className='text-zinc-400 dark:text-zinc-600 font-normal'>
+              (optional)
+            </span>
           </label>
           <div className='flex items-center gap-3'>
             <div className='relative flex-1'>
@@ -152,17 +165,17 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder='https://example.com/logo.png'
-                className='w-full rounded-xl border border-zinc-700 bg-transparent pl-9 pr-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-fuchsia-500'
+                className={`${inputClass} pl-9`}
               />
             </div>
             {formik.values.logo && isValidUrl(formik.values.logo) ? (
               <img
                 src={formik.values.logo}
                 alt='logo preview'
-                className='w-9 h-9 rounded-full object-cover border border-zinc-700 shrink-0'
+                className='w-9 h-9 rounded-full object-cover border border-zinc-300 dark:border-zinc-700 shrink-0'
               />
             ) : (
-              <div className='w-9 h-9 rounded-full border border-zinc-700 bg-zinc-800 shrink-0' />
+              <div className='w-9 h-9 rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 shrink-0' />
             )}
           </div>
           {formik.touched.logo && formik.errors.logo && (
@@ -182,9 +195,9 @@ export default function NewProjectStep({ onSubmit, onBack, isLoading }: Props) {
         <button
           type='button'
           onClick={onBack}
-          className='text-sm text-zinc-400 hover:text-zinc-200 transition-colors text-center'
+          className='text-sm text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors text-center'
         >
-          ← Back
+          {backLabel}
         </button>
       </form>
     </div>

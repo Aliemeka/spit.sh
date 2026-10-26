@@ -8,7 +8,7 @@ export default function OnboardingFlow() {
     useOnboarding();
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-zinc-950 to-zinc-900 flex flex-col items-center justify-center px-4">
+    <main className="dark min-h-screen bg-gradient-to-br from-zinc-950 to-zinc-900 flex flex-col items-center justify-center px-4">
       <div className="mb-8 text-2xl font-bold text-white tracking-tight">
         spit<span className="text-fuchsia-500">.sh</span>
       </div>
