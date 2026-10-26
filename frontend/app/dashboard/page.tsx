@@ -1,57 +1,55 @@
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { PlusCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import { getProjectsAction } from "@/app/actions/project";
-import DashboardHomeNavbar from "@/components/DashboardHomeNavbar";
-import { onboardingRoutes, dashboardRoutes } from "@/lib/constants/routes";
+import DashboardContainer from "@/components/blocks/DashboardContainer";
+import { linkRoutes } from "@/lib/constants/routes";
+import WelcomeCard from "@/components/pageBundles/home/WelcomeCard";
+import OnboardingSteps from "@/components/pageBundles/home/OnboardingSteps";
+import RecentLinks from "@/components/pageBundles/home/RecentLinks";
+import { Kbd } from "@/components/ui/kbd";
 
-interface Project {
-  id: string;
-  name: string;
-  slug: string;
-  logo?: string | null;
-  links_count: number;
-}
-
-export default async function DashboardPage() {
-  let projects: Project[] = [];
-  try {
-    projects = await getProjectsAction();
-  } catch {
-    redirect(onboardingRoutes.index);
-  }
-
-  if (projects.length === 0) redirect(onboardingRoutes.index);
-  if (projects.length === 1)
-    redirect(dashboardRoutes.project(projects[0].slug));
-
+const DashboardHomePage = () => {
   return (
-    <div className='min-h-screen bg-zinc-950 text-zinc-100'>
-      <DashboardHomeNavbar />
-      <main className='px-8 py-10'>
-        <section aria-labelledby='workspaces-heading'>
-          <h1 id='workspaces-heading' className='sr-only'>
-            Your workspaces
-          </h1>
-          <ul className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none'>
-            {projects.map((project) => (
-              <li key={project.id}>
-                <Link
-                  href={dashboardRoutes.project(project.slug)}
-                  className='flex flex-col justify-between border border-zinc-700 rounded-xl p-6 h-44 hover:border-fuchsia-500 hover:bg-zinc-800/30 transition-all'
-                >
-                  <h2 className='text-base font-semibold text-zinc-100'>
-                    {project.name}
-                  </h2>
-                  <p className='text-sm text-zinc-400'>
-                    {project.links_count} active{" "}
-                    {project.links_count === 1 ? "link" : "links"}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </main>
-    </div>
+    <DashboardContainer
+      title='Home'
+      SideButton={
+        <Link
+          href={linkRoutes.newLink}
+          className='inline-flex items-center rounded-full bg-fuchsia-600 px-6 py-2.5 text-sm font-semibold text-white gap-x-1.5 hover:bg-fuchsia-700 focus:outline-none focus:ring active:bg-fuchsia-800 transition'
+        >
+          <span>Create new link</span>
+          <span className='flex items-center gap-0.5'>
+            <Kbd>N</Kbd>
+            <PlusCircleIcon size={16} weight='bold' />
+          </span>
+        </Link>
+      }
+    >
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6 md:gap-y-10 mt-4'>
+        <WelcomeCard />
+
+        <Suspense
+          fallback={
+            <div className='rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 animate-pulse'>
+              <div className='h-3 w-24 rounded-full bg-zinc-200 dark:bg-zinc-700 mb-4' />
+              <div className='space-y-3'>
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className='flex items-center gap-3'>
+                    <div className='h-4 w-4 rounded-full bg-zinc-200 dark:bg-zinc-700 shrink-0' />
+                    <div className='h-3 rounded-full bg-zinc-200 dark:bg-zinc-700 w-3/5' />
+                  </div>
+                ))}
+              </div>
+            </div>
+          }
+        >
+          <OnboardingSteps />
+        </Suspense>
+
+        <RecentLinks />
+      </div>
+    </DashboardContainer>
   );
-}
+};
+
+export default DashboardHomePage;

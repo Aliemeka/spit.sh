@@ -141,7 +141,7 @@ export default function LinkCard({ link, onDeleted }: Props) {
             <ShareNetworkIcon size={15} />
           </button>
           <Link
-            href={dashboardRoutes.analytics(projectSlug, link.id)}
+            href={dashboardRoutes.analytics(link.id)}
             title='View analytics'
             className='p-1.5 rounded-md hover:bg-fuchsia-50 dark:hover:bg-fuchsia-950 hover:text-fuchsia-600 dark:hover:text-fuchsia-400 transition'
           >

@@ -4,22 +4,16 @@ import BillingOverview from "@/components/pageBundles/billingPage/BillingOvervie
 import BillingSkeleton from "@/components/pageBundles/billingPage/BillingSkeleton";
 
 const BillingPage = async ({
-  params,
   searchParams,
 }: {
-  params: Promise<{ "project-slug": string }>;
   searchParams: Promise<{ checkout?: string }>;
 }) => {
-  const { "project-slug": projectSlug } = await params;
   const { checkout } = await searchParams;
 
   return (
     <DashboardContainer title='Billing'>
       <Suspense fallback={<BillingSkeleton />}>
-        <BillingOverview
-          projectSlug={projectSlug}
-          checkoutSuccess={checkout === "success"}
-        />
+        <BillingOverview checkoutSuccess={checkout === "success"} />
       </Suspense>
     </DashboardContainer>
   );
