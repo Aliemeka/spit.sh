@@ -5,11 +5,10 @@ import { cn } from "@/lib/utils";
 import { useBillingActions } from "@/hooks/useBillingActions";
 
 const ManageBillingButton: FC<{
-  projectSlug: string;
   label?: string;
   className?: string;
-}> = ({ projectSlug, label = "Manage billing", className }) => {
-  const { openPortal, pending } = useBillingActions(projectSlug);
+}> = ({ label = "Manage billing", className }) => {
+  const { openPortal, pending } = useBillingActions();
 
   return (
     <button

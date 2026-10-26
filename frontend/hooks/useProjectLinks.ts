@@ -5,11 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { getProjectLinksAction } from "@/app/actions/link";
 import { revalidateCurrentPath } from "@/app/actions/revalidatePath";
 import { LinkQueryParams } from "@/lib/types/linkTypes";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
-export function useProjectLinks(
-  projectSlug: string,
-  filters?: Partial<LinkQueryParams>,
-) {
+export function useProjectLinks(filters?: Partial<LinkQueryParams>) {
+  const { slug: projectSlug } = useWorkspace();
   const queryClient = useQueryClient();
   const router = useRouter();
   const pathname = usePathname();

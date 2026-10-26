@@ -10,10 +10,7 @@ const STATUS_LABELS: Partial<Record<SubscriptionStatus, string>> = {
   unpaid: "On hold",
 };
 
-const CurrentPlanCard: FC<{ projectSlug: string; billing: BillingState }> = ({
-  projectSlug,
-  billing,
-}) => {
+const CurrentPlanCard: FC<{ billing: BillingState }> = ({ billing }) => {
   const planName =
     billing.tier === "free" ? "Free" : PAID_PLANS[billing.tier].name;
   const statusLabel = billing.status ? STATUS_LABELS[billing.status] : null;
@@ -46,7 +43,7 @@ const CurrentPlanCard: FC<{ projectSlug: string; billing: BillingState }> = ({
 
       {billing.tier === "free" && !isUnpaid && <UpgradePlanButton />}
       {billing.tier !== "free" && (
-        <ManageBillingButton projectSlug={projectSlug} className='rounded-lg' />
+        <ManageBillingButton className='rounded-lg' />
       )}
     </section>
   );

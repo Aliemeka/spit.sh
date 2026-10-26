@@ -6,16 +6,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getBillingAction } from "@/app/actions/billing";
 import Callout from "@/components/billing/Callout";
 import { useToast } from "@/hooks/useToast";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 const POLL_MS = 2000;
 const TIMEOUT_MS = 30000;
 
 // Shown after returning from Bachs checkout. The webhook, not the redirect,
 // activates the plan, so we poll until the tier changes.
-const CheckoutActivation: FC<{ projectSlug: string; isPaid: boolean }> = ({
-  projectSlug,
-  isPaid,
-}) => {
+const CheckoutActivation: FC<{ isPaid: boolean }> = ({ isPaid }) => {
+  const { slug: projectSlug } = useWorkspace();
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();

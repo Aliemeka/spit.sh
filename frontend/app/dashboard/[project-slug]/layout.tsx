@@ -20,11 +20,9 @@ export default async function DashLayout({
   return (
     <QueryProvider>
       <WorkspaceProvider slug={workspaceSlug} userId={userId}>
-        <UpgradeModalProvider projectSlug={workspaceSlug}>
+        <UpgradeModalProvider>
           <main className='flex h-dvh bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 relative'>
-            <DashboardLayout workspaceSlug={workspaceSlug}>
-              {children}
-            </DashboardLayout>
+            <DashboardLayout>{children}</DashboardLayout>
           </main>
         </UpgradeModalProvider>
       </WorkspaceProvider>

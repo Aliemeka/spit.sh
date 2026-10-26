@@ -52,7 +52,7 @@ const DashboardHomePage = async ({
           <OnboardingSteps projectSlug={slug} />
         </Suspense>
 
-        <RecentLinks projectSlug={slug} />
+        <RecentLinks />
       </div>
     </DashboardContainer>
   );

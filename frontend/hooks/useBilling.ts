@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getBillingAction } from "@/app/actions/billing";
 import { BillingCurrency } from "@/lib/types/billingTypes";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
-export function useBilling(projectSlug: string) {
+export function useBilling() {
+  const { slug: projectSlug } = useWorkspace();
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["billing", projectSlug],
     queryFn: () => getBillingAction(projectSlug),

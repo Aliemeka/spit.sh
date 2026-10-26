@@ -8,6 +8,7 @@ import AccountMenu from "./AccountMenu";
 import { marketingRoutes, dashboardRoutes } from "@/lib/constants/routes";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 const activeClass =
   "block rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200";
@@ -30,14 +31,13 @@ const ChevronIcon = () => (
 );
 
 const DashboardSidebar = ({
-  workspaceSlug,
   showSidebar,
   setShowSidebar,
 }: {
-  workspaceSlug: string;
   showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { slug: workspaceSlug } = useWorkspace();
   const { data: session } = useSession();
   const pathname = usePathname();
 

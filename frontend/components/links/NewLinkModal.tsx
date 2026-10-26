@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { createProjectLinkAction } from "@/app/actions/link";
 import { useToast } from "@/hooks/useToast";
+import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 const TAGS = [
   "invite",
@@ -44,11 +45,11 @@ interface OGData {
 }
 
 interface Props {
-  projectSlug: string;
   onSuccess: () => void;
 }
 
-export default function NewLinkModal({ projectSlug, onSuccess }: Props) {
+export default function NewLinkModal({ onSuccess }: Props) {
+  const { slug: projectSlug } = useWorkspace();
   const router = useRouter();
   const { toastSuccess, toastError } = useToast();
 

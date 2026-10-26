@@ -23,12 +23,11 @@ const DEFAULT_REASON: UpgradeReason = {
 };
 
 const UpgradeModal: FC<{
-  projectSlug: string;
   open: boolean;
   reason?: UpgradeReason;
   onOpenChange: (open: boolean) => void;
-}> = ({ projectSlug, open, reason = DEFAULT_REASON, onOpenChange }) => {
-  const { billing } = useBilling(projectSlug);
+}> = ({ open, reason = DEFAULT_REASON, onOpenChange }) => {
+  const { billing } = useBilling();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,12 +46,7 @@ const UpgradeModal: FC<{
 
         <div className='flex flex-col md:flex-row justify-center w-full gap-4 overflow-scroll'>
           {Object.values(PaymentTier).map((tier) => (
-            <PaymentPlanCard
-              key={tier}
-              projectSlug={projectSlug}
-              tier={tier}
-              billing={billing}
-            />
+            <PaymentPlanCard key={tier} tier={tier} billing={billing} />
           ))}
         </div>
       </DialogContent>

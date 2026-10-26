@@ -25,21 +25,17 @@ import {
   formatTooltipLabel,
 } from "@/lib/analytics/intervals";
 
-interface Props {
-  projectSlug: string;
-}
-
-const ClicksHeroChart: FC<Props> = ({ projectSlug }) => {
+const ClicksHeroChart: FC = () => {
   const { filters } = useAnalyticsFilters();
   const interval = filters.interval ?? "24h";
   const {
     data: countData,
     isLoading: countLoading,
-  } = useAnalyticsCount(projectSlug, filters);
+  } = useAnalyticsCount(filters);
   const {
     data: series = [],
     isLoading: seriesLoading,
-  } = useAnalyticsTimeseries(projectSlug, filters);
+  } = useAnalyticsTimeseries(filters);
 
   return (
     <WidgetCard className='mb-5'>

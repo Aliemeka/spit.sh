@@ -11,13 +11,7 @@ const UpgradeModalContext = createContext<UpgradeModalContextValue | null>(
   null,
 );
 
-export function UpgradeModalProvider({
-  projectSlug,
-  children,
-}: {
-  projectSlug: string;
-  children: ReactNode;
-}) {
+export function UpgradeModalProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState<UpgradeReason | undefined>();
 
@@ -30,7 +24,6 @@ export function UpgradeModalProvider({
     <UpgradeModalContext.Provider value={{ openUpgradeModal }}>
       {children}
       <UpgradeModal
-        projectSlug={projectSlug}
         open={open}
         reason={reason}
         onOpenChange={setOpen}

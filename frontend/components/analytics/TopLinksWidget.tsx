@@ -5,10 +5,6 @@ import RichListWidget, { RichListRow } from "./RichListWidget";
 import { useAnalyticsTopLinks } from "@/hooks/useAnalytics";
 import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 
-interface Props {
-  projectSlug: string;
-}
-
 function faviconFor(url: string): string | null {
   try {
     const hostname = new URL(url).hostname;
@@ -18,9 +14,9 @@ function faviconFor(url: string): string | null {
   }
 }
 
-const TopLinksWidget: FC<Props> = ({ projectSlug }) => {
+const TopLinksWidget: FC = () => {
   const { filters, setFilter } = useAnalyticsFilters();
-  const { data = [], isLoading } = useAnalyticsTopLinks(projectSlug, filters);
+  const { data = [], isLoading } = useAnalyticsTopLinks(filters);
 
   const rows = useMemo<RichListRow[]>(
     () =>

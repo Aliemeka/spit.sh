@@ -17,15 +17,11 @@ import {
 } from "@/hooks/useAnalytics";
 import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 
-interface Props {
-  projectSlug: string;
-}
-
-const UtmTabbedWidget: FC<Props> = ({ projectSlug }) => {
+const UtmTabbedWidget: FC = () => {
   const { filters, setFilter } = useAnalyticsFilters();
-  const sources = useAnalyticsUtmSources(projectSlug, filters);
-  const mediums = useAnalyticsUtmMediums(projectSlug, filters);
-  const campaigns = useAnalyticsUtmCampaigns(projectSlug, filters);
+  const sources = useAnalyticsUtmSources(filters);
+  const mediums = useAnalyticsUtmMediums(filters);
+  const campaigns = useAnalyticsUtmCampaigns(filters);
 
   return (
     <WidgetCard className='min-h-[300px]'>

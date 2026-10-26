@@ -9,19 +9,15 @@ import {
 import { useProjectLinks } from "@/hooks/useProjectLinks";
 import { countryCodeToFlag } from "@/lib/analytics/flags";
 
-interface Props {
-  projectSlug: string;
-}
-
 interface Chip {
   key: FilterKey;
   label: string;
   value: React.ReactNode;
 }
 
-const ActiveFilterChips: FC<Props> = ({ projectSlug }) => {
+const ActiveFilterChips: FC = () => {
   const { filters, removeFilter, clearAll } = useAnalyticsFilters();
-  const { links } = useProjectLinks(projectSlug);
+  const { links } = useProjectLinks();
 
   const chips = useMemo<Chip[]>(() => {
     const out: Chip[] = [];

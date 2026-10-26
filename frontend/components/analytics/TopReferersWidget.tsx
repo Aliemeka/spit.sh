@@ -5,13 +5,9 @@ import RichListWidget, { RichListRow } from "./RichListWidget";
 import { useAnalyticsReferers } from "@/hooks/useAnalytics";
 import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 
-interface Props {
-  projectSlug: string;
-}
-
-const TopReferersWidget: FC<Props> = ({ projectSlug }) => {
+const TopReferersWidget: FC = () => {
   const { filters } = useAnalyticsFilters();
-  const { data = [], isLoading } = useAnalyticsReferers(projectSlug, filters);
+  const { data = [], isLoading } = useAnalyticsReferers(filters);
 
   const rows = useMemo<RichListRow[]>(
     () =>

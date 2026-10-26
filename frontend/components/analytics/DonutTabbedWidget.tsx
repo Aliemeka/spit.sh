@@ -23,15 +23,11 @@ import {
 import { useAnalyticsFilters } from "@/hooks/useAnalyticsFilters";
 import { buildDonutConfig } from "@/lib/analytics/chartConfigs";
 
-interface Props {
-  projectSlug: string;
-}
-
-const DonutTabbedWidget: FC<Props> = ({ projectSlug }) => {
+const DonutTabbedWidget: FC = () => {
   const { filters } = useAnalyticsFilters();
-  const devices = useAnalyticsDevices(projectSlug, filters);
-  const browsers = useAnalyticsBrowsers(projectSlug, filters);
-  const oses = useAnalyticsOSes(projectSlug, filters);
+  const devices = useAnalyticsDevices(filters);
+  const browsers = useAnalyticsBrowsers(filters);
+  const oses = useAnalyticsOSes(filters);
 
   return (
     <WidgetCard>

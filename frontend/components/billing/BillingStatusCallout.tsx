@@ -5,16 +5,13 @@ import Callout from "./Callout";
 import ManageBillingButton from "./ManageBillingButton";
 import UnpaidActions from "./UnpaidActions";
 
-const BillingStatusCallout: FC<{
-  projectSlug: string;
-  billing: BillingState;
-}> = ({ projectSlug, billing }) => {
+const BillingStatusCallout: FC<{ billing: BillingState }> = ({ billing }) => {
   if (billing.status === "unpaid") {
     return (
       <Callout
         tone='danger'
         title='Your Pro plan is on hold'
-        action={<UnpaidActions projectSlug={projectSlug} />}
+        action={<UnpaidActions />}
       >
         We couldn&apos;t collect your last payment, so this project is on Free
         limits. Pay the outstanding invoice to restore Pro, or switch to Free.
@@ -27,12 +24,7 @@ const BillingStatusCallout: FC<{
       <Callout
         tone='warning'
         title='Payment failed'
-        action={
-          <ManageBillingButton
-            projectSlug={projectSlug}
-            label='Update payment method'
-          />
-        }
+        action={<ManageBillingButton label='Update payment method' />}
       >
         We&apos;ll retry automatically over the next few days. Update your
         payment method to keep Pro.
