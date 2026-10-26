@@ -65,7 +65,11 @@ async def create_checkout_session(
             cancel_url=cancel_url,
             metadata=metadata,
             reference=reference,
-            billing_currency=billing_currency.value if billing_currency else None,
+            **(
+                {"billing_currency": billing_currency.value}
+                if billing_currency is not None
+                else {}
+            ),
             idempotency_key=f"checkout-{reference}",
         ),
     )
