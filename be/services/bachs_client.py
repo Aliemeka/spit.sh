@@ -24,9 +24,7 @@ class InvalidWebhook(Exception):
     pass
 
 
-async def _call(
-    action: str, request: Callable[[AsyncBachs], Awaitable[T]]
-) -> T:
+async def _call(action: str, request: Callable[[AsyncBachs], Awaitable[T]]) -> T:
     try:
         async with AsyncBachs(
             api_key=BACHS_API_KEY, timeout=REQUEST_TIMEOUT_SECONDS
