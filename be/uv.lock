@@ -138,6 +138,20 @@ wheels = [
 ]
 
 [[package]]
+name = "bachs"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "httpx" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7b/c9/f70e983671e78fa4ee328262c27cd1c88316870c228d0756232f6c59a2a1/bachs-2.0.0.tar.gz", hash = "sha256:a3f83959f81ca3ca75a5ecdde055ff62dcbde5de667c2825a9ea7c66e46e3470", size = 48692, upload-time = "2026-10-23T12:04:47.697Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/67/b7/119a086955ac7ea3729a02fc8a6a28d29517d34ab7ab0855100e944571a5/bachs-2.0.0-py3-none-any.whl", hash = "sha256:dea0bcf96a295170ddd7b387bba1c05275bc77b7881f6ba40439effa33e48ed7", size = 35850, upload-time = "2026-10-23T12:04:46.378Z" },
+]
+
+[[package]]
 name = "be"
 version = "0.1.0"
 source = { virtual = "." }
@@ -145,6 +159,7 @@ dependencies = [
     { name = "aiosqlite" },
     { name = "alembic" },
     { name = "asyncpg" },
+    { name = "bachs" },
     { name = "fastapi" },
     { name = "geoip2" },
     { name = "greenlet" },
@@ -168,6 +183,7 @@ requires-dist = [
     { name = "aiosqlite", specifier = "==0.19.0" },
     { name = "alembic", specifier = ">=1.13,<2" },
     { name = "asyncpg", specifier = "==0.30.0" },
+    { name = "bachs", specifier = ">=2.0.0" },
     { name = "fastapi", specifier = ">=0.115,<1" },
     { name = "geoip2", specifier = "==5.2.0" },
     { name = "greenlet", specifier = ">=3.5.0" },
