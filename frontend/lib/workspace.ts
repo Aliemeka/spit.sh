@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import { decodeJwt } from "jose";
 import { getSessionToken } from "@/app/actions/auth";
 import { getProjectsAction } from "@/app/actions/project";
-import { workspaceCookieName } from "@/lib/constants/cookies";
+import {
+  workspaceCookieName,
+  workspaceCookieOptions,
+} from "@/lib/constants/cookies";
 import { authRoutes, onboardingRoutes } from "@/lib/constants/routes";
 import type { Project } from "@/lib/types/projectTypes";
 
@@ -42,11 +45,5 @@ export const getActiveWorkspace = cache(async (): Promise<Project> => {
 // Only callable from Server Actions and Route Handlers
 export async function setWorkspaceCookie(userId: string, slug: string) {
   const cookieStore = await cookies();
-  cookieStore.set(workspaceCookieName(userId), slug, {
-    httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 365,
-  });
+  cookieStore.set(workspaceCookieName(userId), slug, workspaceCookieOptions);
 }

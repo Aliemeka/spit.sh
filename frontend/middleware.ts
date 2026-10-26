@@ -4,9 +4,14 @@ import { API_URL } from "@/lib/config/public_env";
 import {
   confirmUserSession,
   confirmJWTSession,
+  getJWTSubject,
   deleteSessionCookies,
 } from "./lib/auth-check";
 import { marketingRoutes } from "./lib/constants/routes";
+import {
+  workspaceCookieName,
+  workspaceCookieOptions,
+} from "./lib/constants/cookies";
 
 const marketingLinks = Object.values(marketingRoutes);
 
@@ -38,15 +43,30 @@ export async function middleware(request: NextRequest) {
     slug.startsWith("workspaces") ||
     slug.startsWith("onboarding")
   ) {
-    const [sessionValid, jwtValid] = await Promise.all([
+    const [sessionValid, userId] = await Promise.all([
       confirmUserSession(request),
-      confirmJWTSession(request),
+      getJWTSubject(request),
     ]);
-    if (!sessionValid || !jwtValid) {
+    if (!sessionValid || !userId) {
       const redirectResponse = NextResponse.redirect(
         new URL("/signin", request.url),
       );
       deleteSessionCookies(redirectResponse);
+      return redirectResponse;
+    }
+
+    // ?ws=<slug> deep links (e.g. billing return URLs) pick the active workspace.
+    // Membership is checked by the dashboard layout, which falls back if invalid.
+    const ws = request.nextUrl.searchParams.get("ws");
+    if (ws) {
+      const cleanUrl = request.nextUrl.clone();
+      cleanUrl.searchParams.delete("ws");
+      const redirectResponse = NextResponse.redirect(cleanUrl);
+      redirectResponse.cookies.set(
+        workspaceCookieName(userId),
+        ws,
+        workspaceCookieOptions,
+      );
       return redirectResponse;
     }
     return NextResponse.next();
