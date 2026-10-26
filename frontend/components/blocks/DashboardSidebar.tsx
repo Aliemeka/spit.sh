@@ -5,11 +5,7 @@ import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { deleteUserCookie } from "@/app/actions/auth";
 import AccountMenu from "./AccountMenu";
-import {
-  authRoutes,
-  marketingRoutes,
-  dashboardRoutes,
-} from "@/lib/constants/routes";
+import { marketingRoutes, dashboardRoutes } from "@/lib/constants/routes";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
@@ -48,8 +44,11 @@ const DashboardSidebar = ({
   const isActive = (href: string) => pathname === href;
 
   const handleLogout = async () => {
-    await Promise.all([signOut(), deleteUserCookie()]);
-    window.location.href = authRoutes.signIn;
+    try {
+      await Promise.all([signOut(), deleteUserCookie()]);
+    } finally {
+      window.location.reload();
+    }
   };
 
   const linksChildren = [dashboardRoutes.links(workspaceSlug)];
