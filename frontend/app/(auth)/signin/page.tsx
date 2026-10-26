@@ -46,9 +46,13 @@ export default function SignInPage() {
           <div className='text-center'>
             <Link
               href={marketingRoutes.home}
-              className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-3xl md:text-4xl'
+              className='font-bold inline-block text-3xl md:text-4xl'
             >
-              Spit.sh ✨
+              Spit
+              <span className='text-fuchsia-600 dark:text-fuchsia-500'>
+                .sh
+              </span>{" "}
+              ✨
             </Link>
             <div className='mt-5 space-y-2'>
               <h3 className='text-2xl font-bold'>Sign in to your account</h3>

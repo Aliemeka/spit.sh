@@ -4,7 +4,10 @@ import ThemeButton from "@/components/units/ThemeButton";
 import { ListIcon, XIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { btnPrimary, container } from "@/components/pageBundles/landingPage/tokens";
+import {
+  btnPrimary,
+  container,
+} from "@/components/pageBundles/landingPage/tokens";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -21,11 +24,9 @@ const Navbar = () => {
       <nav
         className={`${container} grid grid-cols-[1fr_auto] items-center gap-6 py-3 md:grid-cols-[1fr_auto_1fr]`}
       >
-        <Link
-          href='/'
-          className='text-xl font-bold text-fuchsia-600 dark:text-fuchsia-500'
-        >
-          Spit.sh ✨
+        <Link href='/' className='text-xl font-bold'>
+          Spit
+          <span className='text-fuchsia-600 dark:text-fuchsia-500'>.sh</span> ✨
         </Link>
 
         <div className='hidden items-center gap-8 md:flex'>
@@ -72,7 +73,10 @@ const Navbar = () => {
             </a>
           ))}
           <SignInLink className='rounded-xl px-3 py-2.5 text-[15px] text-zinc-700 hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/5' />
-          <AuthCta label='Get started' className={`${btnPrimary} mt-2 w-full`} />
+          <AuthCta
+            label='Get started'
+            className={`${btnPrimary} mt-2 w-full`}
+          />
         </div>
       ) : null}
     </header>

@@ -80,9 +80,11 @@ const DashboardSidebar = ({
           </button>
           <Link
             href={marketingRoutes.home}
-            className='text-fuchsia-600 dark:text-fuchsia-500 font-bold inline-block text-xl'
+            className='font-bold inline-block text-xl'
           >
-            Spit.sh ✨
+            Spit
+            <span className='text-fuchsia-600 dark:text-fuchsia-500'>.sh</span>{" "}
+            ✨
           </Link>
         </div>
 
@@ -91,9 +93,7 @@ const DashboardSidebar = ({
             <Link
               href={dashboardRoutes.home}
               className={
-                isActive(dashboardRoutes.home)
-                  ? activeClass
-                  : inactiveClass
+                isActive(dashboardRoutes.home) ? activeClass : inactiveClass
               }
             >
               Home
