@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfileAction } from "@/app/actions/user";
-import { createProjectAction } from "@/app/actions/project";
+import { createWorkspaceAction } from "@/app/actions/workspace";
 import { useToast } from "@/hooks/useToast";
 import { dashboardRoutes } from "@/lib/constants/routes";
 
@@ -35,9 +35,9 @@ export function useOnboarding() {
   }) => {
     setIsLoading(true);
     try {
-      await createProjectAction(values);
+      await createWorkspaceAction(values);
       showToast("Project created!", "success");
-      router.push(dashboardRoutes.home);
+      router.replace(dashboardRoutes.home);
     } catch (err: any) {
       if (err?.response?.status === 409) {
         showToast(
