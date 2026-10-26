@@ -233,9 +233,8 @@ While the status is `unpaid`, **Upgrade is blocked**: checkout returns `409 outs
 ### Verification
 
 1. Read the **raw body** before parsing it as JSON.
-2. Reject the request if `X-Bachs-Timestamp` is more than 300 seconds from now.
-3. Compute `HMAC-SHA256(BACHS_WEBHOOK_SECRET, f"{timestamp}.{raw_body}")` as hex and compare it to `X-Bachs-Signature` with `hmac.compare_digest`.
-4. Return `400` on any failure.
+2. Pass the raw body, the request headers and `BACHS_WEBHOOK_SECRET` to the SDK's `bachs.webhooks.construct_event`. It checks the `X-Bachs-Signature-V2` header (falling back to `X-Bachs-Signature` + `X-Bachs-Timestamp`), rejects deliveries more than 300 seconds old or ahead, and parses the event.
+3. Return `400` on any failure (`BachsWebhookError`, surfaced by our client as `InvalidWebhook`).
 
 ### Idempotency
 
@@ -455,16 +454,16 @@ class SubscriptionStatus(str, enum.Enum):
 | File | Responsibility |
 |---|---|
 | `config/plans.py` | `PlanLimits`, `PLANS` dict, product id → tier map (`PlanTier` itself lives in `models/billing.py`) |
-| `config/environment.py` | New settings: `bachs_api_key`, `bachs_api_base_url`, `bachs_webhook_secret`, `bachs_pro_product_id`, `bachs_pro_trial_product_id`, `frontend_url` |
+| `config/environment.py` | New settings: `bachs_api_key`, `bachs_webhook_secret`, `bachs_pro_product_id`, `bachs_pro_trial_product_id`, `frontend_url` |
 | `models/billing.py` | `BillingCustomer`, `ProjectSubscription`, `ProjectUsage`, `BillingEvent`, and the `BillingProvider` / `PlanTier` / `SubscriptionStatus` enums |
 | `schemas/billingSchema.py` | Request/response models above |
 | `crud/billing.py` | Subscription upsert, usage upsert and atomic increments, event dedupe insert |
-| `services/bachs_client.py` | Thin async `httpx` wrapper: `create_checkout_session`, `create_portal_session`, `update_subscription`, `cancel_subscription`, `verify_webhook`; maps Bachs statuses to `SubscriptionStatus` |
+| `services/bachs_client.py` | Thin wrapper around the official `bachs` Python SDK (`AsyncBachs`): `create_checkout_session`, `create_portal_session`, `cancel_subscription`, `verify_webhook`. Translates SDK errors into our own `BachsError` / `InvalidWebhook` and maps Bachs statuses to `SubscriptionStatus` |
 | `services/billing_service.py` | Webhook dispatch, checkout and portal orchestration, status → tier |
 | `services/entitlements.py` | `get_plan(project)`, `get_current_usage(project)`, `check_limit(...)`, `require_feature(...)`, raising the `402` errors |
 | `routers/billingRouter.py` | Routes above; thin |
 
-**Why not the `bachs-io` SDK:** it is v0.0.3 (released August 2026). We need about four endpoints, so our own `httpx` wrapper keeps us safe from SDK API churn. Webhook verification is about 10 lines of `hmac`.
+**Bachs SDK:** we use the official `bachs` package (v2, released October 2026) instead of raw HTTP calls. It handles authentication, retries, timeouts, idempotency keys and webhook signature checks. The sandbox or production API is picked from the key prefix (`sk_sandbox_` / `sk_live_`), so there's no base URL setting. `bachs_client.py` is the only file that imports the SDK: services and routers only see our own functions and exceptions, so an SDK upgrade or a provider change stays in one file.
 
 **Changes to existing code:**
 - Link creation (link router or service): call `check_limit(project, "links_per_period")` before inserting, and increment the counter after.
@@ -509,8 +508,7 @@ UI for gated features (custom domains, folders, export…) checks `usePlan().can
 
 | Variable | Workspace | Notes |
 |---|---|---|
-| `BACHS_API_KEY` | be | `sk_sandbox_...` in dev, `sk_live_...` in prod |
-| `BACHS_API_BASE_URL` | be | `https://sandbox-api.bachs.io` in dev |
+| `BACHS_API_KEY` | be | `sk_sandbox_...` in dev, `sk_live_...` in prod. The prefix also picks the sandbox or production API |
 | `BACHS_WEBHOOK_SECRET` | be | `whsec_...` |
 | `BACHS_PRO_PRODUCT_ID` | be | |
 | `BACHS_PRO_TRIAL_PRODUCT_ID` | be | |
@@ -545,7 +543,7 @@ UI for gated features (custom domains, folders, export…) checks `usePlan().can
 | Bachs is not a Merchant of Record; spit.sh stays the seller for tax purposes | Bachs calculates tax/VAT; review obligations before selling outside Nigeria at scale |
 | Recurring charges may not work for every payment method (e.g. NGN bank transfer can't be charged automatically) | Check in sandbox which methods Bachs allows for recurring products; limit `payment_method_types` on subscription checkouts if needed |
 | International card fee (5% + 40¢) takes about 8% of a $15 plan | Accept for v1; yearly billing later reduces fees per month |
-| The Bachs platform and SDK are young | Own `httpx` wrapper; webhooks are the source of truth; keep an admin script that refetches a subscription from the API |
+| The Bachs platform and SDK are young | All SDK use is isolated in `bachs_client.py`; webhooks are the source of truth; keep an admin script that refetches a subscription from the API |
 | A webhook is missed or delayed and a paying customer stays on Free | Success page polling plus a "Refresh plan" admin action that pulls the subscription from Bachs |
 
 ---
