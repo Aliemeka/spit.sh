@@ -34,8 +34,8 @@ export default function DashboardHomeNavbar() {
     )}`;
 
   return (
-    <header className="flex items-center justify-between px-8 py-4 border-b border-zinc-800">
-      <Link href={dashboardRoutes.home} className="font-bold text-2xl tracking-tight text-white">
+    <header className="flex items-center justify-between px-8 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+      <Link href={dashboardRoutes.home} className="font-bold text-2xl tracking-tight text-zinc-900 dark:text-white">
         Spit<span className="text-fuchsia-500">.sh</span>
       </Link>
 
@@ -56,7 +56,7 @@ export default function DashboardHomeNavbar() {
             <p className="text-sm font-medium leading-none">
               {session?.user.name ?? session?.user.email ?? "—"}
             </p>
-            <p className="text-xs text-zinc-400 mt-0.5">{session?.user.email}</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{session?.user.email}</p>
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,10 +73,10 @@ export default function DashboardHomeNavbar() {
         </button>
 
         {open && (
-          <div className="absolute right-0 mt-2 w-44 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl z-50 overflow-hidden">
+          <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-xl z-50 overflow-hidden">
             <button
               onClick={handleLogout}
-              className="w-full px-4 py-2.5 text-sm text-left text-zinc-300 hover:bg-zinc-800 transition-colors"
+              className="w-full px-4 py-2.5 text-sm text-left text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
               Log out
             </button>

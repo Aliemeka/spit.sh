@@ -17,12 +17,14 @@ const CardButton: FC<{ project: Project; isActive: boolean }> = ({
       type='submit'
       disabled={pending}
       className={cn(
-        "flex flex-col justify-between w-full h-44 p-6 text-left border rounded-xl transition-all hover:border-fuchsia-500 hover:bg-zinc-800/30 disabled:opacity-60",
-        isActive ? "border-fuchsia-500" : "border-zinc-700",
+        "flex flex-col justify-between w-full h-44 p-6 text-left border rounded-xl bg-white dark:bg-zinc-900 transition-all hover:border-fuchsia-500 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 disabled:opacity-60",
+        isActive
+          ? "border-fuchsia-500"
+          : "border-zinc-200 dark:border-zinc-800",
       )}
     >
       <span className='flex items-start justify-between gap-2'>
-        <span className='text-base font-semibold text-zinc-100'>
+        <span className='text-base font-semibold text-zinc-900 dark:text-zinc-100'>
           {project.name}
         </span>
         {isActive && (
@@ -31,7 +33,7 @@ const CardButton: FC<{ project: Project; isActive: boolean }> = ({
           </span>
         )}
       </span>
-      <span className='text-sm text-zinc-400'>
+      <span className='text-sm text-zinc-500 dark:text-zinc-400'>
         {pending
           ? "Opening…"
           : `${project.links_count} active ${project.links_count === 1 ? "link" : "links"}`}
