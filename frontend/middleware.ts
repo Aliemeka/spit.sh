@@ -32,8 +32,12 @@ const fetchSlug = async (
 export async function middleware(request: NextRequest) {
   const slug = request.nextUrl.pathname.slice(1);
 
-  // Protect dashboard and onboarding — redirect to sign-in if no session cookie
-  if (slug.startsWith("dashboard") || slug.startsWith("onboarding")) {
+  // Protect dashboard, workspaces and onboarding — redirect to sign-in if no session cookie
+  if (
+    slug.startsWith("dashboard") ||
+    slug.startsWith("workspaces") ||
+    slug.startsWith("onboarding")
+  ) {
     const [sessionValid, jwtValid] = await Promise.all([
       confirmUserSession(request),
       confirmJWTSession(request),
