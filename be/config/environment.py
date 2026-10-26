@@ -5,7 +5,6 @@ class Settings(BaseSettings):
     root_domain: str = "https://spit.sh/"
     database_url: str = "sqlite+aiosqlite:///./test_db.db"
     better_auth_secret: str = ""
-    better_auth_url: str = "http://localhost:3000"
     geoip_db_path: str = ""
     bachs_api_key: str = ""
     bachs_webhook_secret: str = ""
