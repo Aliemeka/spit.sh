@@ -6,10 +6,8 @@ import { CrownIcon } from "@phosphor-icons/react";
 import { useBilling } from "@/hooks/useBilling";
 import { useUpgradeModal } from "@/providers/UpgradeModalProvider";
 import { dashboardRoutes } from "@/lib/constants/routes";
-import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 const UpgradeButton: FC = () => {
-  const { slug: projectSlug } = useWorkspace();
   const pathname = usePathname();
   const { billing } = useBilling();
   const { openUpgradeModal } = useUpgradeModal();
@@ -17,7 +15,7 @@ const UpgradeButton: FC = () => {
   if (
     !billing ||
     billing.tier !== "free" ||
-    pathname === dashboardRoutes.billing(projectSlug)
+    pathname === dashboardRoutes.billing
   ) {
     return null;
   }

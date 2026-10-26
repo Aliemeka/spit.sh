@@ -1,5 +1,6 @@
 import { CheckCircleIcon, CircleIcon } from "@phosphor-icons/react/dist/ssr";
 import { getProjectLinksAction } from "@/app/actions/link";
+import { getActiveWorkspace } from "@/lib/workspace";
 
 const steps = [
   { label: "Create profile" },
@@ -8,14 +9,11 @@ const steps = [
   { label: "Upgrade to Pro" },
 ];
 
-interface Props {
-  projectSlug: string;
-}
-
-const OnboardingSteps = async ({ projectSlug }: Props) => {
+const OnboardingSteps = async () => {
+  const { slug } = await getActiveWorkspace();
   let links: unknown[] = [];
   try {
-    links = await getProjectLinksAction(projectSlug, { limit: 1 });
+    links = await getProjectLinksAction(slug, { limit: 1 });
   } catch {
     // If fetching links fails (e.g. missing/expired session), fall back to no links
     links = [];

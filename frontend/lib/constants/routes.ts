@@ -19,18 +19,16 @@ export const onboardingRoutes = {
 
 export const dashboardRoutes = {
   home: "/dashboard",
-  project: (slug: string) => `/dashboard/${slug}`,
-  links: (slug: string) => `/dashboard/${slug}/links`,
-  domains: (slug: string) => `/dashboard/${slug}/domains`,
-  analytics: (slug: string, linkId?: string) =>
-    `/dashboard/${slug}/analytics${linkId ? `?linkId=${linkId}` : ""}`,
-  pages: (slug: string) => `/dashboard/${slug}/pages`,
-  settings: (slug: string) => `/dashboard/${slug}/settings`,
-  billing: (slug: string) => `/dashboard/${slug}/settings/billing`,
+  links: "/dashboard/links",
+  domains: "/dashboard/domains",
+  analytics: (linkId?: string) =>
+    `/dashboard/analytics${linkId ? `?linkId=${linkId}` : ""}`,
+  pages: "/dashboard/pages",
+  settings: "/dashboard/settings",
+  billing: "/dashboard/settings/billing",
 };
 
 export const linkRoutes = {
-  newLink: (slug: string) => `/dashboard/${slug}/links?action=new_link`,
-  linkDetails: (projectSlug: string, linkId: string) =>
-    `/dashboard/${projectSlug}/links/${linkId}`,
+  newLink: "/dashboard/links?action=new_link",
+  linkDetails: (linkId: string) => `/dashboard/links/${linkId}`,
 };

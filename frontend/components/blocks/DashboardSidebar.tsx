@@ -8,7 +8,6 @@ import AccountMenu from "./AccountMenu";
 import { marketingRoutes, dashboardRoutes } from "@/lib/constants/routes";
 import { SidebarSimpleIcon as SidebarIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
-import { useWorkspace } from "@/providers/WorkspaceProvider";
 
 const activeClass =
   "block rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200";
@@ -37,7 +36,6 @@ const DashboardSidebar = ({
   showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { slug: workspaceSlug } = useWorkspace();
   const { data: session } = useSession();
   const pathname = usePathname();
 
@@ -51,8 +49,8 @@ const DashboardSidebar = ({
     }
   };
 
-  const linksChildren = [dashboardRoutes.links(workspaceSlug)];
-  const accountChildren = [dashboardRoutes.billing(workspaceSlug)];
+  const linksChildren = [dashboardRoutes.links];
+  const accountChildren = [dashboardRoutes.billing];
   const isLinksOpen = linksChildren.some(isActive);
   const isAccountOpen = accountChildren.some(isActive);
 
@@ -91,9 +89,9 @@ const DashboardSidebar = ({
         <ul className='mt-6 space-y-1'>
           <li>
             <Link
-              href={dashboardRoutes.project(workspaceSlug)}
+              href={dashboardRoutes.home}
               className={
-                isActive(dashboardRoutes.project(workspaceSlug))
+                isActive(dashboardRoutes.home)
                   ? activeClass
                   : inactiveClass
               }
@@ -117,9 +115,9 @@ const DashboardSidebar = ({
               <ul className='mt-2 space-y-1 px-4'>
                 <li>
                   <Link
-                    href={dashboardRoutes.links(workspaceSlug)}
+                    href={dashboardRoutes.links}
                     className={
-                      isActive(dashboardRoutes.links(workspaceSlug))
+                      isActive(dashboardRoutes.links)
                         ? activeClass
                         : inactiveClass
                     }
@@ -138,19 +136,13 @@ const DashboardSidebar = ({
           </li>
 
           <li>
-            <Link
-              href={dashboardRoutes.analytics(workspaceSlug)}
-              className={inactiveClass}
-            >
+            <Link href={dashboardRoutes.analytics()} className={inactiveClass}>
               Analytics
             </Link>
           </li>
 
           <li>
-            <Link
-              href={dashboardRoutes.pages(workspaceSlug)}
-              className={inactiveClass}
-            >
+            <Link href={dashboardRoutes.pages} className={inactiveClass}>
               Pages
             </Link>
           </li>
@@ -170,9 +162,9 @@ const DashboardSidebar = ({
               <ul className='mt-2 space-y-1 px-4'>
                 <li>
                   <Link
-                    href={dashboardRoutes.billing(workspaceSlug)}
+                    href={dashboardRoutes.billing}
                     className={
-                      isActive(dashboardRoutes.billing(workspaceSlug))
+                      isActive(dashboardRoutes.billing)
                         ? activeClass
                         : inactiveClass
                     }

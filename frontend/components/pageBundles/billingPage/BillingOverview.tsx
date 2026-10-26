@@ -3,20 +3,21 @@ import { getBillingAction } from "@/app/actions/billing";
 import BillingStatusCallout from "@/components/billing/BillingStatusCallout";
 import TabbedCard from "@/components/blocks/TabbedCard";
 import { BillingState } from "@/lib/types/billingTypes";
+import { getActiveWorkspace } from "@/lib/workspace";
 import CheckoutActivation from "./CheckoutActivation";
 import CurrentPlanCard from "./CurrentPlanCard";
 import InvoicesTable from "./InvoicesTable";
 import MonthlyUsageCard from "./MonthlyUsageCard";
 
 interface Props {
-  projectSlug: string;
   checkoutSuccess: boolean;
 }
 
-const BillingOverview = async ({ projectSlug, checkoutSuccess }: Props) => {
+const BillingOverview = async ({ checkoutSuccess }: Props) => {
+  const { slug } = await getActiveWorkspace();
   let billing: BillingState;
   try {
-    billing = await getBillingAction(projectSlug);
+    billing = await getBillingAction(slug);
   } catch {
     return (
       <p className='text-sm text-zinc-500 dark:text-zinc-400'>
