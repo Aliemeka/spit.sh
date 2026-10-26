@@ -64,7 +64,7 @@ def _parse_time(value: str | None) -> datetime | None:
 
 
 def _billing_page_url(project_slug: str) -> str:
-    return f"{FRONTEND_URL}/dashboard/{project_slug}/settings/billing"
+    return f"{FRONTEND_URL}/dashboard/settings/billing?ws={project_slug}"
 
 
 async def get_billing_state(project: Project, db: AsyncSession) -> BillingState:
@@ -135,7 +135,7 @@ async def start_checkout(
     return await bachs_client.create_checkout_session(
         product_id=product_id,
         customer=customer,
-        success_url=f"{billing_page}?checkout=success",
+        success_url=f"{billing_page}&checkout=success",
         cancel_url=billing_page,
         metadata={"project_id": str(project.id), "owner_user_id": str(owner.id)},
         reference=f"{project.id}:{uuid.uuid4().hex[:8]}",
